@@ -11,7 +11,6 @@
     .header {
       width: 100%;
       height: 60px;
-
     }
 
     .logoimage {
@@ -77,7 +76,7 @@
     }
 
     li a {
-      padding: 18px 0 18px 0;
+      margin: 18px 0 18px 0;
       display: inline-block;
       text-decoration: none;
       color: rgb(0, 0, 0);
@@ -87,7 +86,17 @@
       color: #8ad3c0;
     }
 
+    #tap1 {
+      margin-left: -10px;
+    }
+
+    #tap2 {
+      margin-left: -25px;
+    }
+
+
     .tap {
+      margin: 0px;
       background: #f9f9f9;
       border-radius: 20px;
       position: absolute;
@@ -184,7 +193,7 @@
         <li><a href="{% url 'home' %}"><b>홈</b></a></li>
         <li class="dropdown">
           <a href="#" class="dropbtn"><b>카테고리</b></a>
-          <div class="tap">
+          <div class="tap" id="tap1">
             <a href="#">전신</a>
             <a href="#">목</a>
             <a href="#">어깨</a>
@@ -198,7 +207,7 @@
         </li>
         <li class="dropdown">
           <a href="#" class="dropbtn"><b>통계</b></a>
-          <div class="tap">
+          <div class="tap" id="tap2">
             <a href="{% url 'day' %}">일</a>
             <a href="#">주</a>
             <a href="#">월</a>
