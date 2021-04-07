@@ -7,3 +7,12 @@ def home(request):
 
 def day(request):
     return render(request, 'day.html')
+
+def wholebody(request):
+    return render(request, 'wholebody.html')
+
+def videoplayer(request):
+    return render(request, 'videoplayer.html')
+
+def ytbChannel(request):
+    return render(request, 'ytbchannel.html')

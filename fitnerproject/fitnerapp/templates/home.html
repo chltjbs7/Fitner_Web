@@ -1,153 +1,306 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-        <meta charset="utf-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
-    </head>
-    <body>
         <style>
-            /* html,
             body {
-                max-width: 100%;
-                max-height: 100%;
+                background-image: url('../static/main_image(1320).png');
+                background-repeat: no-repeat;
+                background-position-x: right;
+            }
+            .header {
+                width: 100%;
+                height: 90px;
+                position: absolute;
+                padding: 0;
                 margin: 0;
             }
-            .container {
-                max-width: 100%;
-                max-height: 100%;
-                background: pink;
-            } */
-            ul{ list-style:none; margin:0; padding:0; overflow:hidden; float: right; }
-            li { float:left; margin-right: 80px; }
-            li a{ padding:18px 18px; display:inline-block; text-decoration:none; color:rgb(0, 0, 0); }
-            li a:hover{color:#8ad3c0; }
-            .content { background:#f9f9f9; border-radius: 20px; position: absolute; min-width: 85px; z-index: 1; display: none; }
-            .content a{ display:block; color:#333; text-align: center; }
-            .content a:hover { color:#6c5ce7; }
-            .dropdown:hover .content{ display:block; }
-            body { background-image: url('../static/main_image(1320).png'); background-repeat: no-repeat; background-position-x: right; }
-            #top_title { margin: 192px 0 0 136px; font-size: 34px; font-weight: bold; font-stretch: normal; font-style: normal; line-height: 1.24;
-                            letter-spacing: 0.34px; text-align: left; color: #001220; float: left; }
-            .search { position: absolute; margin: 294px 0 0 115px; padding: 15px 146px 15px 24px;}
-            .button { position: absolute; margin: 310px 0 0 492px; }
-            .fa-search { position: absolute; left: 24px; top: 18px; color: white; font-size: 20px;}
-            #middie_title { position: absolute; margin: 418px 0 0 136px; font-size: 16px; font-weight: bold; font-stretch: normal; font-style: normal;
-                            line-height: 1.25; letter-spacing: normal; text-align: left; color: #0a0a0a; }
-            .left_arrow_button { position: absolute; margin: 562px 0 0 77px; }
-            .fa-arrow-left { color: #adadad;}
-            .right_arrow_button { position: absolute; margin: 562px 0 0 1209px; }
+            /*Drop Down Menu*/
+            .dropdown-button {
+                background-color: transparent !important;
+                padding: 8px;
+                font-size: 15px;
+                border: none;
+                margin: 10px 0 0 85px;
+                font-weight: bold;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                background-color: #f5f5f5;
+                display: none;
+                position: absolute;
+                min-width: 85px;
+                border-radius: 20px;
+                padding: 8px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                margin-left: 75px;
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: black;
+                padding: 10px;
+                text-decoration: none;
+                text-align: center;
+                display: block;
+            }
+            .dropdown-content a:hover { color: #6c5ce7; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropdown-button { color: #8ad3c0; }
+            #tab1 {
+                margin-right: 10px;
+            }
+            #tab2 {
+                margin-left: 58px;;
+            }
+            /* Top Title */
+            #top_title {
+                margin: 192px 0 0 130px;
+                font-size: 34px;
+                font-weight: bold;
+                line-height: 1.24;
+                letter-spacing: 0.34px;
+                text-align: left;
+                color: #001220;
+                float: left;
+                position: absolute;
+            }
+             /* Search Bar */
+            .search {
+                float: left;
+                position: absolute;
+                margin: 314px 0 0 130px;
+            }
+            .search_button {
+                float: left;
+                position: absolute;
+                margin: 314px 0 0 502px;
+            }
+            .fa-search {
+                left: 26px;
+                top: 17px;
+                color: white;
+                font-size: 17px;
+            }
+            /* Middle Title */
+            #middie_title {
+                position: absolute;
+                margin: 418px 0 0 170px;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 1.25;
+                letter-spacing: normal;
+                text-align: left;
+                color: #0a0a0a;
+            }
+            .left_arrow_button { position: absolute; margin: 562px 0 0 137px; }
+            .fa-arrow-left { color: #adadad; }
+            .right_arrow_button { position: absolute; margin: 562px 0 0 1269px; }
             .fa-arrow-right { color: #adadad;}
-            #bottom_title { position: absolute; margin: 782px 0 0 140px; font-size: 16px; font-weight: bold; line-height: 1.75; text-align: left; color: #0a0a0a; }
-        /*마진, 패딩 :(4개)위쪽 오른쪽 아래쪽 왼쪽, (3개)위쪽 오른쪽 왼쪽 아래쪽, (2개)위쪽 아래쪽 오른쪽 왼쪽 (1개)위쪽 오른쪽 아래쪽 왼쪽*/
-        /*<img src="image.png" width="693" height="732" style="position: relative; float: right;">*/
+            #bottom_title {
+                position: absolute;
+                margin: 782px 0 0 140px;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 1.75;
+                text-align: left;
+                color: #0a0a0a;
+            }
+            #footer {
+                float: left;
+                position: absolute;
+                width: 100%;
+                height: 70px;
+                margin-top: 1450px;
+            }
         </style>
-        <div class="container">
-        <ul>
-            <li><a href="{% url 'home' %}"><b>홈</b></a></li>
-            <li class="dropdown">
-                <a href="#" class="dropbtn"><b>카테고리</b></a>
-                <div class="content">
-                    <a href="#">전신</a>
-                    <a href="#">목</a>
-                    <a href="#">어깨</a>
-                    <a href="#">팔</a>
-                    <a href="#">가슴</a>
-                    <a href="#">복근</a>    
-                    <a href="#">엉덩이</a>
-                    <a href="#">허벅지</a>
-                    <a href="#">다리</a>    
+        
+    </head>
+
+    <body style="overflow-x:hidden; overflow-y:auto;">
+        <!-- Header -->
+        <div class="header">
+            <!-- Drop Down Menu -->
+            <div style="margin-left: 107px; float: left;">
+                <div class="dropdown">
+                    <button class="dropdown-button">
+                        <a href="{% url 'home' %}" style="text-decoration: none; color: black; margin-left: 693px;">홈</a>
+                    </button>
+                </div>  
+                <div class="dropdown">
+                    <button class="dropdown-button">카테고리</button>
+                        <div class="dropdown-content" id="tab1">
+                            <a href="{% url 'wholebody' %}">전신</a>
+                            <a href="#">목</a>
+                            <a href="#">어깨</a>
+                            <a href="#">팔</a>
+                            <a href="#">가슴</a>
+                            <a href="#">복근</a>    
+                            <a href="#">엉덩이</a>
+                            <a href="#">허벅지</a>
+                            <a href="#">다리</a>
+                        </div>
                 </div>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropbtn"><b>통계</b></a>
-                <div class="content">
-                    <a href="{% url 'day' %}">일</a>
-                    <a href="#">주</a>
-                    <a href="#">월</a>      
+                <div class="dropdown">
+                    <button class="dropdown-button">통계</button>
+                        <div class="dropdown-content" id="tab2">
+                            <a href="{% url 'day' %}">일</a>
+                            <a href="#">주</a>
+                            <a href="#">월</a>
+                        </div>
                 </div>
-            </li>
-            <li><a href="#"><b>로그인</b></a></li>
-        </ul>
-        <!-- Logo -->
-        <img src="../static/logo.png" width="160" height="57" style="margin: 115px 197px 0 132px; position: absolute;">
-        <!--Top Bar-->
-        <div style="width: 10px; height: 10px; position: absolute; margin-left: 510px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>
-        <div style="width: 10px; height: 10px; position: absolute; margin-left: 545px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>
-        <p id="top_title">한 발 더 앞서간 Fitner 홈트레이닝<br>
-                    이제 스마트한 파트너와 함께 하세요.
-        </p>
-        <!-- Searc Bar -->
-        <div class="search">
-            <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 336px; height: 54px; border: 0px; padding-left: 24px; border-radius: 50px; background-color: #f5f5f5;">
-        </div>
-        <div class="button">
-            <button style="width: 72px; height: 54px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        <!-- Middle Bar -->
-        <p id="middie_title">Fitner 인기 트레이너</p>
-        <div class="left_arrow_button">
-            <button style="width: 35px; height: 35px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-        </div>
-        <!-- 1th YouTuber -->
-        <div>
-            <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                        margin: 461px 0 0 140px;">
-                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
-                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
-                <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
-                <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">1</p>
-                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                <div class="dropdown">
+                    <button class="dropdown-button">로그인</button>
+                </div>               
             </div>
-            <!-- 2th YouTuber -->
-            <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                        margin: 461px 0 0 355px;">
-                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
-                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
-                <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
-                <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">2</p>
-                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+            <div style="margin-left: 90px;">
+                <!-- Logo -->
+                <div style="float: left; position: absolute;">
+                    <img src="../static/logo.png" width="160px" height="57px" style="margin: 115px 0 0 130px; float: left;">
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search">
+                    <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 336px; height: 54px; border: 0px; padding-left: 20px; font-size: 16px; border-radius: 50px; background-color: #f5f5f5;">
+                </div>
+                <!-- Top Title -->
+                <div>
+                    <div style="width: 10px; height: 10px; position: absolute; margin-left: 511px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>
+                    <div style="width: 10px; height: 10px; position: absolute; margin-left: 546px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>
+                    <p id="top_title">한 발 더 앞서간 Fitner 홈트레이닝<br>
+                                    이제 스마트한 파트너와 함께 하세요.</p>            
+                </div>
+                <!-- Search -->
+                <div class="search_button">
+                    <button type='submit' style="width: 72px; height: 54px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>                
             </div>
-            <!-- 3th YouTuber -->
-            <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                        margin: 461px 0 0 570px;">
-                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
-                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
-                <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
-                <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">3</p>
-                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+
+            <!-- Middle Title -->
+            <div style="margin-left: 50px;">
+                <div>
+                    <p id="middie_title">Fitner 인기 트레이너</p>           
+                </div>
+                <div style="margin-left: -15px;">
+                    <div class="left_arrow_button">
+                        <button style="width: 35px; height: 35px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div> 
+                    <!-- 1th YouTuber -->
+                    <div style="margin-left: 60px;">
+                        <div onclick="location.href='/ytbchannel';"
+                        style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                                    margin: 461px 0 0 140px;">
+                            <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
+                            <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
+                            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
+                            <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">1</p>
+                            <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                        </div>
+                        <!-- 2th YouTuber -->
+                        <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                                    margin: 461px 0 0 355px;">
+                            <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
+                            <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
+                            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
+                            <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">2</p>
+                            <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                        </div>
+                        <!-- 3th YouTuber -->
+                        <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                                    margin: 461px 0 0 570px;">
+                            <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
+                            <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
+                            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
+                            <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">3</p>
+                            <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                        </div>
+                        <!-- 4th YouTuber -->
+                        <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                                    margin: 461px 0 0 785px;">
+                            <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
+                            <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
+                            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
+                            <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">4</p>
+                            <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                        </div>
+                        <!-- 5th YouTuber -->
+                        <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                                    margin: 461px 0 0 1000px;">
+                            <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
+                            <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
+                            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
+                            <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">5</p>
+                            <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+                        </div>
+                    </div>
+                    <div class="right_arrow_button">
+                        <button style="width: 35px; height: 35px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>                    
+                </div>
+
             </div>
-            <!-- 4th YouTuber -->
-            <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                        margin: 461px 0 0 785px;">
-                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
-                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
-                <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
-                <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">4</p>
-                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
+            <!--Action Similarity-->
+            <div style="float: left; position: absolute; margin-top: 752px;">
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">맞춤 동영상</p>
+                <div>
+                    <div style="float: left;">
+                        <div onclick="location.href='/videoplayer';"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></div>
+                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>                    
+                </div>
+                <div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></div>
+                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>                    
+                </div>
             </div>
-            <!-- 5th YouTuber -->
-            <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                        margin: 461px 0 0 1000px;">
-                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;"></div>
-                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
-                <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
-                <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; color: #ffffff; margin: 123px 0 0 86px;">5</p>
-                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 160px 0 0 34px;">유튜버 이름</p>
-            </div>
+            <div id="footer"></div>
         </div>
-        <div class="right_arrow_button">
-            <button style="width: 35px; height: 35px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-        <!-- Bottom Bar -->
-        <p id="bottom_title">맞춤 동영상</p>
-        </div>
-    </body>
+    <body>
 </html>

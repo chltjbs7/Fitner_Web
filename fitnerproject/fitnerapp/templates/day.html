@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Fitner</title>
+        <style>
+            .header {
+                width: 100%;
+                height: 90px;
+                position: absolute;
+                padding: 0;
+                margin: 0;
+            }
+            /* Search Bar */
+            .search {
+                float: left;
+                margin: 10px 0 0 70px;
+                }
+            .search_button {
+                float: left;
+                margin: 10px 0 0 16px;
+                }
+            .fa-search {
+                left: 26px;
+                top: 17px;
+                color: white;
+                font-size: 17px;
+                }
+            /*Drop Down Menu*/
+            .dropdown-button {
+                background-color: transparent !important;
+                padding: 8px;
+                font-size: 15px;
+                border: none;
+                margin: 10px 0 0 85px;
+                font-weight: bold;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                background-color: #f5f5f5;
+                display: none;
+                position: absolute;
+                min-width: 85px;
+                border-radius: 20px;
+                padding: 8px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                margin-left: 75px;
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: black;
+                padding: 10px;
+                text-decoration: none;
+                text-align: center;
+                display: block;
+            }
+            .dropdown-content a:hover { color: #6c5ce7; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropdown-button { color: #8ad3c0; }
+            #tab1 {
+                margin-right: 10px;
+            }
+            #tab2 {
+                margin-left: 58px;;
+            }
+            /* Banner */
+            .banner {
+                width: 100%;
+                height: 90px;
+                background-color: #6c5ce7;
+                padding: 0;
+                margin: 17px 0 0 0 ;
+                float: left;
+            }
+            /* Sub Menu */
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                float: left;
+            }
+            li { float: left; margin-right: 85px; }
+            li a {
+                padding: 18px 0 18px 0;
+                display: inline-block;
+                text-decoration: none;
+                color: rgb(0, 0, 0);
+            }
+            li a:hover { color: #8ad3c0; }
+            .second_container {
+                float: left;
+                position: absolute;
+                width: 100%;
+                height: 52px;
+                text-align: center;
+                margin: 164px 0px 0px 650px;
+            }
+            .detail_tap { margin-right: 80px; }
+            /* Graph */
+            .left_arrow_button { margin: 254px 0 0 370px; }
+            .fa-arrow-left { color: #adadad; padding-top: 3px;}
+            .right_arrow_button { margin: 254px 0 0 310px; }
+            .fa-arrow-right { color: #adadad; padding-top: 3px;}
+            #graph_container { width: 800px; height: 400px; margin-top: 500px; margin-left: 355px; }
+            #footer {
+                float: left;
+                position: absolute;
+                width: 100%;
+                height: 70px;
+                margin-top: 650px;
+            }
+        </style>
+        
+    </head>
+
+    <body style="overflow-x:hidden; overflow-y:auto;">
+        <!-- Header -->
+        <div class="header">
+            <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
+            <!-- Search Bar -->
+            <div class="search">
+                <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+            </div>
+            <div class="search_button">
+                <button type='submit' style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <!-- Drop Down Menu -->
+            <div style="margin-left: 107px; float: left;">
+                <div class="dropdown">
+                    <button class="dropdown-button">
+                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
+                    </button>
+                </div>  
+                <div class="dropdown">
+                    <button class="dropdown-button">카테고리</button>
+                    <div class="dropdown-content" id="tab1">
+                        <a href="{% url 'wholebody' %}">전신</a>
+                        <a href="#">목</a>
+                        <a href="#">어깨</a>
+                        <a href="#">팔</a>
+                        <a href="#">가슴</a>
+                        <a href="#">복근</a>    
+                        <a href="#">엉덩이</a>
+                        <a href="#">허벅지</a>
+                        <a href="#">다리</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-button">통계</button>
+                    <div class="dropdown-content" id="tab2">
+                        <a href="{% url 'day' %}">일</a>
+                        <a href="#">주</a>
+                        <a href="#">월</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-button">로그인</button>
+                </div>               
+            </div>
+            <!--Banner-->
+            <div class="banner">
+                <p style="font-size: 18px; color: #ffffff; text-align: center;">Fitner에서의 꾸준한 기록</p>
+                <p style="font-size: 20px; color: #ffffff; text-align: center; margin-top: -13px; font-weight: bold;">나의 운동데이터</p>
+            </div>
+            <!--Sub Menu-->
+            <div class="second_container">
+                <ul>
+                  <li class="detail_tap"><a href="{% url 'day' %}"><b>일</b></a></li>
+                  <li class="detail_tap"><a href="#"><b>주</b></a></li>
+                  <li class="detail_tap"><a href="#"><b>월</b></a></li>
+                </ul>
+              </div>
+            <!--Exercise Feedback-->
+            <div style="float: left;">
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
+                <div style="display: flex;">
+                    <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 410px;">
+                        <img src="../static/clock.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
+                        <span style="position: absolute; margin: 18.8px 0 0 120px; font-size: 14px;">총 운동시간</span>
+                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">1시간 30분</span>
+                    </div>
+                    <div>
+                        <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
+                            <img src="../static/play-button.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
+                            <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">완료한 영상</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">3개</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
+                            <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
+                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <!--Graph Button-->
+            <div style="position: absolute; display: flex; margin-top: 200px;">
+                <div class="left_arrow_button">
+                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+                <p style="font-size: 14px; line-height: 1; color: #9b90ee; margin: 259px 0 0 320px;">3월 28일 일요일</p>
+                <div class="right_arrow_button">
+                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            <!--Graph-->
+            <div id="graph_container">
+                <canvas id="myChart"></canvas>
+                <script type="text/javascript">
+                    var ctx = document.getElementById("myChart");
+                    var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                        datasets: [
+                        { label: '# time',
+                            data: [0, 0, 0, 91, 0, 0],
+                            backgroundColor :[
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',],
+                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
+                            borderWidth: 1,
+                        }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                }
+                            }]
+                        }
+                    }
+                    });
+                </script>
+            </div>
+            <!--Action Similarity-->
+            <div style="float: left; position: absolute;">
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
+                <div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>                    
+                </div>
+                <div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>
+                    <div style="float: left;">
+                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
+                        </div>
+                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
+                    </div>                    
+                </div>
+            </div>
+            <div id="footer"></div>
+        </div>
+    <body>
+</html>
