@@ -4,7 +4,7 @@
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Fitner</title>
         <style>
             body {
@@ -53,12 +53,9 @@
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
-            #tab1 {
-                margin-right: 10px;
-            }
-            #tab2 {
-                margin-left: 58px;;
-            }
+            #tab0 { margin-left: 778px; }
+            #tab1 { margin-right: 10px; }
+            #tab2 { margin-left: 58px;; }
             /* Top Title */
             #top_title {
                 margin: 192px 0 0 130px;
@@ -129,8 +126,8 @@
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
-                    <button class="dropdown-button">
-                        <a href="{% url 'home' %}" style="text-decoration: none; color: black; margin-left: 693px;">홈</a>
+                    <button class="dropdown-button" id="tab0">
+                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
                     </button>
                 </div>  
                 <div class="dropdown">
@@ -156,7 +153,7 @@
                         </div>
                 </div>
                 <div class="dropdown">
-                    <button class="dropdown-button">로그인</button>
+                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
                 </div>               
             </div>
             <div style="margin-left: 90px;">

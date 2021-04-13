@@ -109,6 +109,80 @@
             .right_arrow_button { margin: 254px 0 0 310px; }
             .fa-arrow-right { color: #adadad; padding-top: 3px;}
             #graph_container { width: 800px; height: 400px; margin-top: 500px; margin-left: 355px; }
+            /* Thumnail */
+            .box {
+                width: 248px;
+                height: 139px; 
+                opacity: 0.9;
+                background-color: grey;
+                margin: 20px 0 0 220px;
+                border: none;
+            }
+            /* Modal Screen */
+            .modal_title1 {
+                font-size: 16px;
+                font-weight: bolder;
+                line-height: 0.94;
+                text-align: center;
+                color: #0a0a0a;
+                margin-top: 40px;
+            }
+            .modal_title2 {
+                font-size: 18px;
+                font-weight: bold;
+                line-height: 0.83;
+                text-align: center;
+                color: #0a0a0a;
+            }
+            .modal_subtitle {
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 1.31;
+                text-align: left;
+                color: #0a0a0a;
+            }
+            #modal_subtitle_1 { margin-top: 50px; margin-left: 91px; }
+            #modal_subtitle_2 { margin-top: 50px; margin-left: 335px; }
+
+            /* The Modal (background) */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            /* Modal Content */
+            .modal-content {
+                background-color: #ffffff;
+                margin: auto;
+                padding: 20px;
+                border-radius: 20px;
+                border: solid 1px #707070;
+                width: 70%;
+                height: 75%;
+            }
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                margin-top: -10px;
+            }
+            .close:hover,
+            .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            }
+            /* Footer */
             #footer {
                 float: left;
                 position: absolute;
@@ -117,9 +191,7 @@
                 margin-top: 650px;
             }
         </style>
-        
     </head>
-
     <body style="overflow-x:hidden; overflow-y:auto;">
         <!-- Header -->
         <div class="header">
@@ -165,12 +237,12 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button class="dropdown-button">로그인</button>
+                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
                 </div>               
             </div>
             <!--Banner-->
             <div class="banner">
-                <p style="font-size: 18px; color: #ffffff; text-align: center;">Fitner에서의 꾸준한 기록</p>
+                <p style="font-size: 18px; color: #ffffff; text-align: center; margin-top: 17px;">Fitner에서의 꾸준한 기록</p>
                 <p style="font-size: 20px; color: #ffffff; text-align: center; margin-top: -13px; font-weight: bold;">나의 운동데이터</p>
             </div>
             <!--Sub Menu-->
@@ -259,7 +331,7 @@
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
                 <div>
                     <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
+                        <div id="myBtn" style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
                             <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
                         </div>
                         <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
@@ -317,8 +389,68 @@
                         <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
                     </div>                    
                 </div>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div style="margin-left: -15px;">
+                        <div>
+                            <p class="modal_title1">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</p>
+                            <p class="modal_title2">영상의 전체 평균 유사도 : 80%</p>
+                        </div>
+                        <div style="float: left; display: flex;">
+                            <p class="modal_subtitle" id="modal_subtitle_1">가장 높은 유사도 동작</p>
+                            <p class="modal_subtitle" id="modal_subtitle_2">가장 낮은 유사도 동작</p>
+                        </div>
+                        <div style="float: left; display: flex;">
+                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 91px"></div>
+                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 20px"></div>
+                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 71px"></div>
+                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 20px"></div>
+                        </div>
+                        <div style="float: left;">
+                            <div style="margin: 16px 0 0 174px;">
+                                <span>영상의</span><span style="color: #6c5ce7;"> 5분 20초에서~25초 사이</span><span>의</span>
+                            </div>
+                            <div style="margin: 0 0 0 254px;">
+                                <span>유사도</span><span style="color: #6c5ce7;"> 90%</span>
+                            </div>
+                        </div>
+                        <div style="float: left;">
+                            <div style="margin: 16px 0 0 238px;">
+                                <span>영상의</span><span style="color: #6c5ce7;"> 8분 12초에서~17초 사이</span><span>의</span>
+                            </div>
+                            <div style="margin: 0 0 0 324px;">
+                                <span>유사도</span><span style="color: #6c5ce7;"> 90%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="footer"></div>
+            <script>
+                // Get the modal
+                var modal = document.getElementById("myModal");
+                // Get the button that opens the modal
+                var btn = document.getElementById("myBtn");
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+                // When the user clicks the button, open the modal 
+                btn.onclick = function() {
+                  modal.style.display = "block";
+                }
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
+            </script>
         </div>
     <body>
 </html>

@@ -16,3 +16,15 @@ def videoplayer(request):
 
 def ytbChannel(request):
     return render(request, 'ytbchannel.html')
+
+def detail(request):
+    return render(request, 'detail.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def signup(request):
+    return render(request, 'signup.html')
+
+def mypage(request):
+    return render(request, 'mypage.html')
