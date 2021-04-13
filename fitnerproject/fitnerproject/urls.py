@@ -15,4 +15,5 @@ urlpatterns = [
     path('login/', fitnerapp.views.login, name='login'),
     path('signup/', fitnerapp.views.signup, name='signup'),
     path('mypage/', fitnerapp.views.mypage, name='mypage'),
+    path('search/', fitnerapp.views.search, name='search'),
 ]

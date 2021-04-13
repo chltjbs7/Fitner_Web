@@ -28,3 +28,6 @@ def signup(request):
 
 def mypage(request):
     return render(request, 'mypage.html')
+
+def search(request):
+    return render(request, 'search.html')
