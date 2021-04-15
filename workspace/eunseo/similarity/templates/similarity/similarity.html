@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Live Stream</title>
+    <meta charset="UTF-8" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <!-- Load Posenet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/posenet-similarity/dist/posenet-similarity.min.js"></script>
+    <!-- p5  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+
+  
+  </head>
+      <div>
+        <!--p><button id=youtube_video>main play</button>&nbsp;<button id="mainpause">video pause</button></p-->
+        <video id="youtube_video"  controls name='media' width="900" height="506" style="float: left;">
+        <source src={{video_address}} type="video/mp4">
+        </video>
+      </div>
+
+      <!-- ----------------------- webcam ----------------------- -->
+
+      <video id="webcam" width="900" height="506" autoplay style="display: none"></video>
+      <canvas id="webcam_canvas" width="900" height="506"></canvas>
+
+      <script>
+      var webcam_canvas = document.getElementById('webcam_canvas');
+      var context = webcam_canvas.getContext('2d');
+      var webcam_video = document.getElementById('webcam');
+      let poses = [];
+
+      if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+          webcam_video.srcObject = stream;
+          webcam_video.play();
+        });
+      }
+      function drawCameraIntoCanvas() {
+        // Draw the video element into the canvas
+        context.drawImage(webcam_video, 0, 0, 900, 506);
+        // We can call both functions to draw all keypoints and the skeletons
+        drawKeypoints();
+        drawSkeleton();
+        window.requestAnimationFrame(drawCameraIntoCanvas);
+      }
+      drawCameraIntoCanvas();
+
+      const poseNet = ml5.poseNet(webcam_video, modelReady);
+      poseNet.on("pose", gotPoses);
+
+      // A function that gets called every time there's an update from the model
+      function gotPoses(results) {
+        poses = results;
+      }
+
+      function modelReady() {
+        console.log("model ready");
+        poseNet.singlePose(webcam_video);
+      }
+
+
+      function drawKeypoints() {
+        // Loop through all the poses detected
+        for (let i = 0; i < poses.length; i += 1) {
+          // For each pose detected, loop through all the keypoints
+          for (let j = 0; j < poses[i].pose.keypoints.length; j += 1) {
+            let keypoint = poses[i].pose.keypoints[j];
+            // Only draw an ellipse is the pose probability is bigger than 0.2
+            if (keypoint.score > 0.2) {
+              context.beginPath();
+              context.arc(keypoint.position.x, keypoint.position.y, 10, 0, 2 * Math.PI);
+              context.strokeStyle="#53FF4C";
+              context.stroke();
+            }
+          }
+        }
+      }
+
+      // A function to draw the skeletons
+      function drawSkeleton() {
+        // Loop through all the skeletons detected
+        for (let i = 0; i < poses.length; i += 1) {
+          // For every skeleton, loop through all body connections
+          for (let j = 0; j < poses[i].skeleton.length; j += 1) {
+            let partA = poses[i].skeleton[j][0];
+            let partB = poses[i].skeleton[j][1];
+            context.beginPath();
+            context.moveTo(partA.position.x, partA.position.y);
+            context.lineTo(partB.position.x, partB.position.y);
+            context.strokeStyle="#53FF4C";
+            context.stroke();
+          }
+        }
+      }
+      
+      </script>
+
+      <!-- ----------------------- youtube player canvas ----------------------- -->
+      <div>
+        <canvas id="youtube_video_back" width="900" height="506" ></canvas>
+      </div>
+      <script>
+          var canvas = document.getElementById('youtube_video_back');
+          canvas.style.display="none"
+          var ctx    = canvas.getContext('2d');
+          var youtube_video  = document.getElementById('youtube_video');
+          youtube_video.setAttribute('crossOrigin','Anonymous')
+          
+          var pose1ImageElement = document.getElementById('youtube_video_back');
+          var pose2ImageElement = document.getElementById('webcam_canvas');
+
+          youtube_video.onloadeddata = function() {
+            youtube_video.addEventListener('loadedmetadata', function() {
+              canvas.width = "900";
+              canvas.height = "506";
+            });  
+            
+          youtube_video.addEventListener('play', function() {
+            var $this = this; //cache
+            (function loop() {
+              if (!$this.paused && !$this.ended) {
+                ctx.drawImage($this, 0, 0,canvas.width, canvas.height);
+                setTimeout(loop, 1000 / 25); // drawing at 30fps
+                //console.log(youtube_video.currentTime);
+              }
+            })();
+            setup();
+          }, 0);
+          
+
+          
+          async function setup() {
+          // Grab elements, create settings, etc.
+          posenetInput = document.getElementById("youtube_video");
+
+          // Create a new poseNet method with a single detection
+          poseNet = await ml5.poseNet(modelReady);
+          // This sets up an event that fills the global variable "poses"
+          // with an array every time new poses are detected
+          poseNet.on("pose", function(results) {
+            poses = results;
+            console.log(poses);
+          });
+
+          function modelReady() {
+            console.log("model loaded!");
+            poseNet.singlePose(posenetInput);
+          };
+
+}
+
+
+
+          //pose-similarity
+          /*
+          posenet.load().then(function(net) {
+            setInterval(function() {
+            return Promise.all([
+                  net.estimateSinglePose(pose1ImageElement),
+                  net.estimateSinglePose(pose2ImageElement)
+                ]).then(function(poses){
+                  var weightedDistance = pns.poseSimilarity(poses[0], poses[1]);
+                  console.log(weightedDistance)
+                })
+          }, 600);    
+          })
+           */ 
+        };
+
+
+
+      </script>
+
+      <!--img src="{% url 'webcam_feed' %}" width="40%" height="480" style="float: left;"-->
+      
+
+      <!-- ----------------------- youtube player ----------------------- 
+
+          //const video = document.querySelector('video');
+          //video.addEventListener('timeupdate', (event) => {
+          //console.log(video.currentTime);
+
+          //});
+
+          -->
+
+      
+      <!-- ----------------------- webcam-posenet ----------------------- 
+      <script>
+        //const video = document.getElementById("webcam");
+
+        // Create a new poseNet method
+        const poseNet = ml5.poseNet(webcam_video, modelLoaded);
+
+        // When the model is loaded
+        function modelLoaded() {
+          console.log("Model Loaded!");
+        }
+        // Listen to new 'pose' events
+        poseNet.on("pose", function(results) {
+          poses = results;
+          console.log(poses)
+        });
+      </script>
+    -->
+
+
+      <!-- ----------------------- similarity ----------------------- 
+      
+      <script>
+        var pose1ImageElement = document.getElementById('youtube_video_back');
+        var pose2ImageElement = document.getElementById('webcam');
+    
+        // For more detailed Posenet setup, please refer its own document.
+        // Load Posenet model
+        posenet.load().then(function(net) {
+          // Estimate the two poses
+          return Promise.all([
+            net.estimateSinglePose(pose1ImageElement),
+            net.estimateSinglePose(pose2ImageElement)
+          ])
+        }).then(function(poses){
+          // Calculate the weighted distance between the two poses
+          var weightedDistance = pns.poseSimilarity(poses[0], poses[1]);
+          console.log(weightedDistance)
+        })
+      </script>
+    -->
+
+
+
+      
+
+      <!--      print stream data  
+      <h1 id=pose></h1>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var last_response_len = false;
+        $.ajax({
+          url:"{% url 'stream_response' %}",
+          xhrFields: {
+            onprogress: function(e)
+            {
+              var this_response, response = e.currentTarget.response;
+              if(last_response_len === false)
+                {
+                  this_response = response;
+                  last_response_len = response.length;
+                }
+                else
+                  {
+                    this_response = response.substring(last_response_len);
+                    last_response_len = response.length;
+                  }
+                  document.getElementById("pose").innerHTML = this_response;
+
+              console.log(this_response);
+              
+            }
+          }
+        })
+        .done(function(data)
+        {
+          console.log('Complete response(done) = ' + data);
+        })
+        .fail(function(data)
+        {
+            console.log('Error: ', data);
+        });
+        //console.log('Request Sent');
+        </script>
+        -->
+
+  </body>
+  <style>     
+    #webcam_canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */         
+      -moz-transform:rotateY(180deg); /* Firefox */     
+      } 
+  </style>
+</html>
