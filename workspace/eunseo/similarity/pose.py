@@ -1,5 +1,5 @@
 import cv2
-from vidgear.gears import CamGear
+#from vidgear.gears import CamGear
 import pafy
 import tensorflow as tf
 import posenet
