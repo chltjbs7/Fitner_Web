@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fitner</title>
+
+  <style media="screen">
+    .header {
+      width: 100%;
+      height: 60px;
+
+    }
+
+    .logoimage {
+      float: left;
+      margin: 11px 70px 11px 138px;
+      /*위 오른쪽 아래 왼쪽 */
+    }
+
+    .search_bar {
+      float: left;
+      margin-right: 8%;
+    }
+
+    .search_text {
+      margin: 10px 16px 10px 0;
+      width: 287px;
+      height: 40px;
+      border-radius: 50px;
+      border: none;
+      background-color: #f5f5f5;
+      display: inline-block;
+    }
+
+    input {
+      width: 227px;
+      color: #9f9f9f;
+      margin-left: 20px;
+      margin-top: 12px;
+      border: none;
+      background-color: #f5f5f5;
+    }
+
+    button {
+      width: 54px;
+      height: 40px;
+      border-radius: 50px;
+      border: none;
+      background-color: #6c5ce7;
+    }
+
+    #sButton {
+      width: 20px;
+      height: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+      max-height: 100%;
+      float: left;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      float: left;
+    }
+
+    li {
+      float: left;
+      margin-right: 85px;
+    }
+
+    li a {
+      margin: 18px 0 18px 0;
+      display: inline-block;
+      text-decoration: none;
+      color: rgb(0, 0, 0);
+    }
+
+    li a:hover {
+      color: #8ad3c0;
+    }
+
+    #tap1 {
+      margin-left: -10px;
+    }
+
+    #tap2 {
+      margin-left: -25px;
+    }
+
+    .tap {
+      background: #f9f9f9;
+      border-radius: 20px;
+      position: absolute;
+      width: 85px;
+      z-index: 1;
+      display: none;
+      text-align: center;
+    }
+
+    .tap a {
+      display: block;
+      color: #020202;
+      text-align: center;
+    }
+
+    .tap a:hover {
+      color: #6c5ce7;
+    }
+
+    .dropdown:hover .tap {
+      display: block;
+    }
+
+    /* 배너 시작 */
+
+    .title {
+      width: 100%;
+      height: 90px;
+      background-color: #6c5ce7;
+      text-align: center;
+      margin: 0;
+    }
+
+    /* 세부 카테고리 */
+
+    .second_container {
+      width: 100%;
+      height: 52px;
+      text-align: center;
+      margin: 0px 0px 0px 176px
+    }
+
+    .detail_tap {
+      margin-right: 80px;
+    }
+
+
+    /* 비디오영상 */
+
+    .main_content {
+      margin: 20px 228px 0px 228px;
+      display: inline-block;
+    }
+
+    .video {
+      width: 264px;
+      height: 149px;
+      background-color: #aaaaaa;
+      float: left;
+    }
+
+    .videoInfo {
+      float: left;
+      margin-left: 14px;
+    }
+
+    .youtuber_img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #aaaaaa;
+      margin-top: 14px;
+      margin-right: 14px;
+      float: left;
+    }
+
+    /* 푸터 */
+    .footer {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <img src="images/logo.png" alt="이미지가 없습니다." class='logoimage' width="106px" height="38px">
+
+    <div class="search_bar">
+      <div class="search_text">
+        <input type="text" placeholder="어떤 운동을 하고 싶나요?" class='input_text' />
+      </div>
+      <button type='submit'><img src="images/search_white.png" id="sButton"></button>
+    </div>
+
+    <div class="container">
+      <ul>
+        <li><a href="{% url 'home' %}"><b>홈</b></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn"><b>카테고리</b></a>
+          <div class="tap" id="tap1">
+            <a href="#">전신</a>
+            <a href="#">목</a>
+            <a href="#">어깨</a>
+            <a href="#">팔</a>
+            <a href="#">가슴</a>
+            <a href="#">복근</a>
+            <a href="#">엉덩이</a>
+            <a href="#">허벅지</a>
+            <a href="#">다리</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn"><b>통계</b></a>
+          <div class="tap" id="tap2">
+            <a href="{% url 'day' %}">일</a>
+            <a href="#">주</a>
+            <a href="#">월</a>
+          </div>
+        </li>
+        <li><a href="#"><b>로그인</b></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="title">
+    <p style="font-size: 18px; color: #ffffff; line-height: 1.56; margin: 0;  padding: 17px 0px 0px 0px; ">오늘은 어떤 운동을 해볼까요? </p>
+    <p style="font-size: 20px; color: #ffffff; font-weight: bold; margin: 0">Fitner 운동 목록 </p>
+  </div>
+
+  <div class="second_container">
+    <ul>
+      <li class="detail_tap"><a href="#"><b>전신</b></a></li>
+      <li class="detail_tap"><a href="#"><b>목</b></a></li>
+      <li class="detail_tap"><a href="#"><b>어깨</b></a></li>
+      <li class="detail_tap"><a href="#"><b>팔</b></a></li>
+      <li class="detail_tap"><a href="#"><b>가슴</b></a></li>
+      <li class="detail_tap"><a href="#"><b>복근</b></a></li>
+      <li class="detail_tap"><a href="#"><b>엉덩이</b></a></li>
+      <li class="detail_tap"><a href="#"><b>허벅지</b></a></li>
+      <li class="detail_tap"><a href="#"><b>다리</b></a></li>
+    </ul>
+  </div>
+
+  <div class="main_content">
+    <div class="video"> </div>
+    <div class="videoInfo">
+      <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
+      <div class="youtuber_img"></div>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
+    </div>
+  </div>
+
+  <div class="main_content">
+    <div class="video"> </div>
+    <div class="videoInfo">
+      <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> (층간소음X) 역대급 홈트레이닝 루틴 공개!!!! 급찐급빠 매운맛ver. 살찐자, 확찐자 다 들어오세요ㅋㅋㅋ </p>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
+      <div class="youtuber_img"></div>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 발레테라핏 </p>
+    </div>
+  </div>
+
+  <div class="main_content">
+    <div class="video"> </div>
+    <div class="videoInfo">
+      <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
+      <div class="youtuber_img"></div>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
+    </div>
+  </div>
+
+  <div class="main_content">
+    <div class="video"> </div>
+    <div class="videoInfo">
+      <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
+      <div class="youtuber_img"></div>
+      <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
+    </div>
+  </div>
+
+  <div class="footer"></div>
+
+
+</body>
+
+</html>

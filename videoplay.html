@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fitner</title>
+
+  <style media="screen">
+    .header {
+      width: 100%;
+      height: 60px;
+
+    }
+
+    .logoimage {
+      float: left;
+      margin: 11px 70px 11px 138px;
+      /*위 오른쪽 아래 왼쪽 */
+    }
+
+    .search_bar {
+      float: left;
+      margin-right: 8%;
+    }
+
+    .search_text {
+      margin: 10px 16px 10px 0;
+      width: 287px;
+      height: 40px;
+      border-radius: 50px;
+      border: none;
+      background-color: #f5f5f5;
+      display: inline-block;
+    }
+
+    input {
+      width: 227px;
+      color: #9f9f9f;
+      margin-left: 20px;
+      margin-top: 12px;
+      border: none;
+      background-color: #f5f5f5;
+    }
+
+    .search_button {
+      width: 54px;
+      height: 40px;
+      border-radius: 50px;
+      border: none;
+      background-color: #6c5ce7;
+    }
+
+    #sButton {
+      width: 20px;
+      height: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+      max-height: 100%;
+      float: left;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      float: left;
+    }
+
+    li {
+      float: left;
+      margin-right: 85px;
+    }
+
+    li a {
+      margin: 18px 0 18px 0;
+      display: inline-block;
+      text-decoration: none;
+      color: rgb(0, 0, 0);
+    }
+
+    li a:hover {
+      color: #8ad3c0;
+    }
+
+    #tap1 {
+      margin-left: -10px;
+    }
+
+    #tap2 {
+      margin-left: -25px;
+    }
+
+
+    .tap {
+      background: #f9f9f9;
+      border-radius: 20px;
+      position: absolute;
+      width: 85px;
+      z-index: 1;
+      display: none;
+      text-align: center;
+    }
+
+    .tap a {
+      display: block;
+      color: #020202;
+      text-align: center;
+    }
+
+    .tap a:hover {
+      color: #6c5ce7;
+    }
+
+    .dropdown:hover .tap {
+      display: block;
+    }
+
+    /* 영상 */
+
+    .video {
+      width: 1040px;
+      height: 585px;
+      background-color: #aaaaaa;
+      margin: 20px 140px 14px 140px;
+    }
+
+    .videoInfo {
+      margin-left: 140px;
+    }
+
+    Button {
+      background: none;
+      border: none;
+    }
+
+    .listButton {
+      position: absolute;
+      margin: 16px 20px 0px 660px;
+      text-align: center;
+    }
+
+    .ai_fitner {
+      position: absolute;
+      width: 248px;
+      height: 44px;
+      border-radius: 30px;
+      background-color: #8ad3c0;
+      margin: 20px 140px 0px 792px;
+    }
+
+    .line {
+      width: 1040px;
+      height: 0;
+      margin: 20px 0px 20px 0px;
+      border: solid 1px #e8e8e8;
+    }
+
+    .youtuber_img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #aaaaaa;
+    }
+
+    /* 그래프 */
+
+    .graph {
+      margin-left: 140px;
+      height: 90px;
+    }
+
+    .graph_title {
+      display: inline-block;
+      text-align: center;
+    }
+
+    .graph_bgr {
+      margin-left: 140px;
+      width: 78.8%;
+      height: 304px;
+      border-radius: 20px;
+      background-color: #fbfbfb;
+    }
+
+    .rank {
+      height: 32px;
+      margin: 24px 31px 0px 31px;
+      float: left;
+    }
+
+    #list {
+      float: left;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 90px;
+    }
+
+    .ratio {
+      width: 739px;
+      height: 28px;
+      border-radius: 20px;
+      border: solid 2px #8ad3c0;
+      background-color: rgba(138, 211, 192, 0.5);
+      margin-left: 270px;
+    }
+
+    /* 맞춤 동영상 */
+
+    .customizedVideo {
+      margin-left: 140px;
+    }
+
+    .cVideoblock {
+      display: inline-block;
+      margin-right: 16px;
+    }
+
+    .miniVideo {
+      width: 248px;
+      height: 139px;
+      background-color: #aaaaaa;
+    }
+
+    /* 푸터 */
+
+    .footer {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 헤더 부분 -->
+  <div class="header">
+    <img src="images/logo.png" alt="이미지가 없습니다." class='logoimage' width="106px" height="38px">
+
+    <div class="search_bar">
+      <div class="search_text">
+        <input type="text" placeholder="어떤 운동을 하고 싶나요?" class='input_text' />
+      </div>
+      <button type='submit' class="search_button"><img src="images/search_white.png" id="sButton"></button>
+    </div>
+
+    <div class="container">
+      <ul>
+        <li><a href="{% url 'home' %}"><b>홈</b></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn"><b>카테고리</b></a>
+          <div class="tap" id="tap1">
+            <a href="#">전신</a>
+            <a href="#">목</a>
+            <a href="#">어깨</a>
+            <a href="#">팔</a>
+            <a href="#">가슴</a>
+            <a href="#">복근</a>
+            <a href="#">엉덩이</a>
+            <a href="#">허벅지</a>
+            <a href="#">다리</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn"><b>통계</b></a>
+          <div class="tap" id="tap2">
+            <a href="{% url 'day' %}">일</a>
+            <a href="#">주</a>
+            <a href="#">월</a>
+          </div>
+        </li>
+        <li><a href="#"><b>로그인</b></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 비디오 콘텐츠 부분 -->
+
+  <div class="videoContent">
+    <div class="video"> </div>
+
+    <div class="videoInfo">
+      <div class="listButton">
+        <button type='submit'><img src="images/videolist.png" ></button>
+        <p style=" width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
+      </div>
+      <div class="ai_fitner">
+        <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 8px 20% 8px 20%"> AI와 함께 운동하기 </p>
+      </div>
+
+      <p style="width: 330px; font-size: 13px; color: #8ad3c0; margin: 0;"> #cardioworkout #층간소음없는유산소 #전신유산소운동 </p>
+      <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+      <p style="width: 170px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 1.5만회 · 1개월 전 </p>
+
+      <hr class="line">
+      <div class="youtuber_img">
+        <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 16px 0px 0px 995px; position: absolute;"> 구독 </p>
+        <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> 힙으뜸 </p>
+        <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 84.8만명 </p>
+      </div>
+      <hr class="line">
+    </div>
+  </div>
+
+  <!-- 유사도랭킹 부분 -->
+
+  <div class="graph">
+    <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
+    <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 12px 33px; " class="graph_title"> 순위 </p>
+    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 412px 12px 0px; " class="graph_title"> 아이디 </p>
+    <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 10px; " class="graph_title"> 유사도 비율 </p>
+  </div>
+
+  <div class="graph_bgr">
+    <div class="rank">
+      <div id="list" style="background-color: #6c5ce7">
+        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 1 </p>
+      </div>
+      <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> abc123 </p>
+      <div class="ratio">
+        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
+      </div>
+    </div>
+
+    <div class="rank">
+      <div id="list" style="background-color: #9b90ee">
+        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 2 </p>
+      </div>
+      <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitneraiai </p>
+      <div class="ratio">
+        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
+      </div>
+    </div>
+
+    <div class="rank">
+      <div id="list" style="background-color: #c8bffc">
+        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 3 </p>
+      </div>
+      <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitfit </p>
+      <div class="ratio">
+        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
+      </div>
+    </div>
+
+    <div class="rank">
+      <div id="list" style="background-color: #ffffff">
+        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 4 </p>
+      </div>
+      <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> qqoopp </p>
+      <div class="ratio">
+        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
+      </div>
+    </div>
+
+    <div class="rank">
+      <div id="list" style="background-color: #ffffff">
+        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 5 </p>
+      </div>
+      <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> zzxx333 </p>
+      <div class="ratio">
+        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 맞춤동영상 부분 -->
+  <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 40px 0 15px 140px;"> 맞춤동영상 </p>
+
+  <div class="allcVideo">
+    <div class="customizedVideo">
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+    </div>
+
+    <div class="customizedVideo">
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+      <div class="cVideoblock">
+        <div class="miniVideo"> </div>
+        <p style="width: 248px; font-size: 14px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
+        <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: 0"> 힙으뜸 </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 푸터 부분 -->
+
+  <div class="footer"></div>
+
+</body>
+
+</html>
