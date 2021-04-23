@@ -121,7 +121,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-YOUTUBE_DATA_API_KEY = 'AIzaSyDu61S8UigTl9oXeiP9jDZ838l1tgclNe4'
+YOUTUBE_DATA_API_KEY = 'AIzaSyCPrQU6a__95tq8QCsfMtiSG2_QjcrhAm4'
 
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'fitneraapp','static')
