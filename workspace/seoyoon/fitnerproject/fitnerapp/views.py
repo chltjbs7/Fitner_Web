@@ -58,7 +58,7 @@ def search(request):
 
         video_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part' : 'snippet,contentDetails,statistics',
+            'part' : 'snippet,contentDetails',
             'id' : ','.join(video_ids),
             'maxResults' : 1
         }
@@ -67,24 +67,20 @@ def search(request):
 
         results = r.json()['items']
 
+        
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
                 'id' : result['id'],
                 'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
-                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
+                'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
-                'channelTitle' : result['snippet']['channelTitle'],
-                'publishedAt' : result['snippet']['publishedAt'],
-                'viewCount' : result['statistics']['viewCount'],
+                'channelTitle' : result['snippet']['channelTitle']
             }
 
             videos.append(video_data)
 
     context = {
-        'videos' : videos,
+        'videos' : videos
     }
     return render(request, 'search.html', context)
-
-def smartmode(request):
-    return render(request, 'smartmode.html')
