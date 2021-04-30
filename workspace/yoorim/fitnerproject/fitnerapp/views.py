@@ -1,9 +1,9 @@
 import requests
-
 from isodate import parse_duration
-
+from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.shortcuts import render, redirect
+import pafy
 
 def home(request):
     return render(request, 'home.html')
@@ -11,11 +11,26 @@ def home(request):
 def day(request):
     return render(request, 'day.html')
 
+def week(request):
+    return render(request, 'week.html')
+
+def month(request):
+    return render(request, 'month.html')
+
 def wholebody(request):
     return render(request, 'wholebody.html')
 
+def smartmode(request):
+    return render(request, 'smartmode.html')
+
+@csrf_exempt
 def videoplayer(request):
-    return render(request, 'videoplayer.html')
+    if request.method=='GET':
+        url=request.GET
+        video = pafy.new(url['cmd'])
+        best = video.getbest(preftype="mp4")
+        data={ 'video_address': best.url }
+    return render(request, 'videoplayer.html', data)
 
 def ytbChannel(request):
     return render(request, 'ytbchannel.html')
@@ -85,6 +100,3 @@ def search(request):
         'videos' : videos,
     }
     return render(request, 'search.html', context)
-
-def smartmode(request):
-    return render(request, 'smartmode.html')

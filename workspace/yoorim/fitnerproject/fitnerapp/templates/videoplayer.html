@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -71,10 +72,8 @@
             }
             /* Videos */
             .video {
-                width: 1040px;
-                height: 585px;
-                background-color: #aaaaaa;
                 margin: 20px 140px 14px 140px;
+                object-fit: cover;
             }
             .videoInfo { margin-left: 140px; }
             Button { background: none; border: none; }
@@ -102,6 +101,47 @@
                 height: 48px;
                 border-radius: 50%;
                 background-color: #aaaaaa;
+            }
+            /* Modal Screen */
+            /* The Modal (background) */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            /* Modal Content */
+            .modal-content {
+                background-color: #ffffff;
+                margin: auto;
+                margin-top: 115px;
+                padding: 20px;
+                border-radius: 20px;
+                border: solid 1px #707070;
+                width: 292px;
+                height: 264px;
+            }
+            /* The Close Button */
+            .close {
+                color: #000000;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                margin-top: -10px;
+                cursor: pointer;
+            }
+            .close:hover,
+            .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
             }
             /* Graph */
             .graph {
@@ -195,8 +235,8 @@
                     <button class="dropdown-button">통계</button>
                     <div class="dropdown-content" id="tab2">
                         <a href="{% url 'day' %}">일</a>
-                        <a href="#">주</a>
-                        <a href="#">월</a>
+                        <a href="{% url 'week' %}">주</a>
+                        <a href="{% url 'month' %}">월</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -206,12 +246,16 @@
             <div style="margin-top: 80px; margin-left: 110px;">
                 <!-- Videos -->
                 <div class="videoContent">
-                    <div class="video"> </div>
+                    <div class="video">
+                        <video id="youtube_video"  controls name='media' width="1040px" height="585px">
+                            <source src={{video_address}} type="video/mp4">
+                        </video>
+                    </div>
 
                     <div class="videoInfo">
-                    <div class="listButton">
-                        <button type='submit'><img src="../static/videolist.png" ></button>
-                        <p style=" width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
+                    <div class="listButton" id="myBtn">
+                        <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
+                        <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
                     </div>
                     <div class="ai_fitner">
                         <p onclick="location.href='/smartmode';"
@@ -231,7 +275,6 @@
                     <hr class="line">
                     </div>
                 </div>
-
                 <!-- Ranking -->
                 <div class="graph">
                     <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
@@ -344,6 +387,42 @@
                 </div>
             </div>
             <div id="footer"></div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div>
+                    <p style="font-weight: bold; margin-top: -1px;">재생목록 추가</p>
+                    <div style="width: 176px; height: 40px; border-radius: 5px; margin: 20px 0 0 60px; background-color: #8ad3c0;">
+                        <img src="../static/folder.png" width="20px" height="20px" style="margin: 10px 0 0 12px; float: left;">
+                        <p style="padding-top: 11px; padding-left: 42px; font-size: 14px; color: #ffffff;">새 재생목록 만들기</p>
+                    </div>
+
+                </div>
+            </div>
+            <script>
+                // Get the modal
+                var modal = document.getElementById("myModal");
+                // Get the button that opens the modal
+                var btn = document.getElementById("myBtn");
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+                // When the user clicks the button, open the modal 
+                btn.onclick = function() {
+                modal.style.display = "block";
+                }
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+                }
+            </script>
         </div>
     <body>
 </html>

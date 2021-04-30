@@ -64,6 +64,65 @@
             #tab2 {
                 margin-left: 58px;;
             }
+            .tap::before {
+                content: '';
+                position: absolute;
+                bottom: -140%;
+                left: 265px;
+                width: 80px;
+                height: 4px;
+                background: #8ad3c0;
+                display: block;
+                -webkit-transform-origin: right top;
+                -ms-transform-origin: right top;
+                transform-origin: right top;
+                -webkit-transform: scale(0, 1);
+                -ms-transform: scale(0, 1);
+                transform: scale(0, 1);
+                -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
+                transition: transform 0.4s cubic-bezier(1, 0, 0, 1)
+            }
+
+            .tap:hover::before {
+                -webkit-transform-origin: left top;
+                -ms-transform-origin: left top;
+                transform-origin: left top;
+                -webkit-transform: scale(1, 1);
+                -ms-transform: scale(1, 1);
+                transform: scale(1, 1)
+            }
+
+            #effect1::before {
+                left: 370px;
+            }
+
+            #effect2::before {
+                left: 475px;
+            }
+
+            #effect3::before {
+                left: 580px;
+            }
+
+            #effect4::before {
+                left: 682px;
+            }
+
+            #effect5::before {
+                left: 795px;
+            }
+
+            #effect6::before {
+                left: 915px;
+            }
+
+            #effect7::before {
+                left: 1045px;
+            }
+
+            #effect8::before {
+                left: 1165px;
+            }
             /* Banner */
             .banner {
                 width: 100%;
@@ -191,15 +250,15 @@
             <!--Sub Menu-->
             <div class="second_container">
               <ul>
-                <li class="detail_tap"><a href="#"><b>전신</b></a></li>
-                <li class="detail_tap"><a href="#"><b>목</b></a></li>
-                <li class="detail_tap"><a href="#"><b>어깨</b></a></li>
-                <li class="detail_tap"><a href="#"><b>팔</b></a></li>
-                <li class="detail_tap"><a href="#"><b>가슴</b></a></li>
-                <li class="detail_tap"><a href="#"><b>복근</b></a></li>
-                <li class="detail_tap"><a href="#"><b>엉덩이</b></a></li>
-                <li class="detail_tap"><a href="#"><b>허벅지</b></a></li>
-                <li class="detail_tap"><a href="#"><b>다리</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap"><b>전신</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect1"><b>목</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect2"><b>어깨</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect3"><b>팔</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect4"><b>가슴</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect5"><b>복근</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect6"><b>엉덩이</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect7"><b>허벅지</b></a></li>
+                <li class="detail_tap"><a href="#" class="tap" id="effect8"><b>다리</b></a></li>
               </ul>
             </div>
             <div class="main_content">
