@@ -63,6 +63,8 @@
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
+            
+
             #tab1 {
                 margin-right: 10px;
             }
@@ -102,7 +104,45 @@
                 text-align: center;
                 margin: 164px 0px 0px 650px;
             }
-            .detail_tap { margin-right: 80px; }
+            .detail_tap { 
+                margin-right: 80px; 
+            }
+
+            .tap::before {
+                content: '';
+                position: absolute;
+                bottom: 0%;
+                left: -30px;
+                width: 80px;
+                height: 4px;
+                background: #8ad3c0;
+                display: block;
+                -webkit-transform-origin: right top;
+                -ms-transform-origin: right top;
+                transform-origin: right top;
+                -webkit-transform: scale(0, 1);
+                -ms-transform: scale(0, 1);
+                transform: scale(0, 1);
+                -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
+                transition: transform 0.4s cubic-bezier(1, 0, 0, 1)
+            }
+
+            .tap:hover::before {
+                -webkit-transform-origin: left top;
+                -ms-transform-origin: left top;
+                transform-origin: left top;
+                -webkit-transform: scale(1, 1);
+                -ms-transform: scale(1, 1);
+                transform: scale(1, 1)
+            }
+
+            #tap1::before {
+                left: 65px;
+            }
+            #tap2::before {
+                left: 160px;
+            }
+
             /* Graph */
             .left_arrow_button { margin: 254px 0 0 370px; }
             .fa-arrow-left { color: #adadad; padding-top: 3px;}
@@ -230,7 +270,7 @@
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
-                    <div class="dropdown-content" id="tab2">
+                    <div class="dropdown-content">
                         <a href="{% url 'day' %}">일</a>
                         <a href="#">주</a>
                         <a href="#">월</a>
@@ -248,9 +288,9 @@
             <!--Sub Menu-->
             <div class="second_container">
                 <ul>
-                  <li class="detail_tap"><a href="{% url 'day' %}"><b>일</b></a></li>
-                  <li class="detail_tap"><a href="#"><b>주</b></a></li>
-                  <li class="detail_tap"><a href="#"><b>월</b></a></li>
+                  <li class="detail_tap"><a href="{% url 'day' %}" class="tap"><b>일</b></a></li>
+                  <li class="detail_tap"><a href="#" class="tap" id="tap1"><b>주</b></a></li>
+                  <li class="detail_tap"><a href="#" class="tap" id="tap2"><b>월</b></a></li>
                 </ul>
               </div>
             <!--Exercise Feedback-->
