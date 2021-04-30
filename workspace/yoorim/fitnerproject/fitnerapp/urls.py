@@ -16,4 +16,5 @@ urlpatterns = [
     path('signup/', fitnerapp.views.signup, name='signup'),
     path('mypage/', fitnerapp.views.mypage, name='mypage'),
     path('search/', fitnerapp.views.search, name='search'),
+    path('smartmode/', fitnerapp.views.smartmode, name='smartmode'),
 ]

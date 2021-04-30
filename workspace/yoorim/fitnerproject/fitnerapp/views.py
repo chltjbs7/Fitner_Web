@@ -38,7 +38,6 @@ def search(request):
     if request.method == 'POST':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
-        channel_url = 'https://youtube.googleapis.com/youtube/v3/channels'
 
         search_params = {
             'part' : 'snippet',
@@ -68,7 +67,6 @@ def search(request):
 
         results = r.json()['items']
 
-        
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
@@ -84,6 +82,9 @@ def search(request):
             videos.append(video_data)
 
     context = {
-        'videos' : videos
+        'videos' : videos,
     }
     return render(request, 'search.html', context)
+
+def smartmode(request):
+    return render(request, 'smartmode.html')
