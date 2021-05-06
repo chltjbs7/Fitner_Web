@@ -11,8 +11,24 @@ def home(request):
 def day(request):
     return render(request, 'day.html')
 
+def week(request):
+    return render(request, 'week.html')
+
+def month(request):
+    return render(request, 'month.html')
+
 def wholebody(request):
     return render(request, 'wholebody.html')
+
+def smartmode(request):
+    if request.method=='GET':
+        url=request.GET
+        video = pafy.new(url['cmd'])
+        best = video.getbest(preftype="mp4")
+        data={ 'video_address': best.url,
+                'url':url['cmd'] }
+    
+    return render(request, 'smartmode.html',data)
 
 @csrf_exempt
 def videoplayer(request):
@@ -20,9 +36,9 @@ def videoplayer(request):
         url=request.GET
         video = pafy.new(url['cmd'])
         best = video.getbest(preftype="mp4")
-        data={ 'video_address': best.url }
-        return render(request, 'videoplayer.html',data)
-    return render(request, 'videoplayer.html')
+        data={ 'video_address': best.url,
+                'url':url['cmd'] }
+    return render(request, 'videoplayer.html', data)
 
 def ytbChannel(request):
     return render(request, 'ytbchannel.html')
@@ -45,7 +61,6 @@ def search(request):
     if request.method == 'POST':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
-        channel_url = 'https://youtube.googleapis.com/youtube/v3/channels'
 
         search_params = {
             'part' : 'snippet',
@@ -75,7 +90,6 @@ def search(request):
 
         results = r.json()['items']
 
-        
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
@@ -91,6 +105,6 @@ def search(request):
             videos.append(video_data)
 
     context = {
-        'videos' : videos
+        'videos' : videos,
     }
     return render(request, 'search.html', context)
