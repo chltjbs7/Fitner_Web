@@ -1,11 +1,24 @@
 import requests
+import pafy
+
 from isodate import parse_duration
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.shortcuts import render, redirect
-import pafy
+from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password, check_password #비밀번호 암호화 / 패스워드 체크(db에있는거와 일치성확인)
+from .models import User
+from django.contrib.auth.models import User
+from django.contrib import auth
+
+# Create your views here.
 
 def home(request):
+    user_id = request.session.get('user')
+    if user_id :
+        myuser_info = Myuser.objects.get(pk=user_id)  #pk : primary key
+        return HttpResponse(myuser_info.username)
+
     return render(request, 'home.html')
 
 def day(request):
@@ -21,7 +34,14 @@ def wholebody(request):
     return render(request, 'wholebody.html')
 
 def smartmode(request):
-    return render(request, 'smartmode.html')
+    if request.method=='GET':
+        url=request.GET
+        video = pafy.new(url['cmd'])
+        best = video.getbest(preftype="mp4")
+        data={ 'video_address': best.url,
+                'url':url['cmd'] }
+    
+    return render(request, 'smartmode.html',data)
 
 @csrf_exempt
 def videoplayer(request):
@@ -29,7 +49,8 @@ def videoplayer(request):
         url=request.GET
         video = pafy.new(url['cmd'])
         best = video.getbest(preftype="mp4")
-        data={ 'video_address': best.url }
+        data={ 'video_address': best.url,
+                'url':url['cmd'] }
     return render(request, 'videoplayer.html', data)
 
 def ytbChannel(request):
@@ -38,11 +59,8 @@ def ytbChannel(request):
 def detail(request):
     return render(request, 'detail.html')
 
-def login(request):
-    return render(request, 'login.html')
-
-def signup(request):
-    return render(request, 'signup.html')
+def user_home(request):
+    return render(request, 'user_home.html')
 
 def mypage(request):
     return render(request, 'mypage.html')
@@ -100,3 +118,42 @@ def search(request):
         'videos' : videos,
     }
     return render(request, 'search.html', context)
+
+def signup(request):   #회원가입 페이지를 보여주기 위한 함수
+    if request.method == "GET":
+        return render(request, 'signup.html')
+
+    elif request.method == "POST":
+        username = request.POST.get('username',None)   #딕셔너리형태
+        password = request.POST.get('password',None)
+        re_password = request.POST.get('re_password',None)
+        res_data = {} 
+        if not (username and password and re_password) :
+            res_data['error'] = "모든 값을 입력해야 합니다."
+        if password != re_password :
+            # return HttpResponse('비밀번호가 다릅니다.')
+            res_data['error'] = '비밀번호가 다릅니다.'
+        else :
+            user = User(username=username, password=make_password(password))
+            user.save()
+            return redirect('login')
+        return render(request, 'signup.html', res_data) #signup 요청받으면 signup.html 로 응답.
+
+def login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(
+            request, username=username, password=password
+        )
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('user_home')
+        else:
+            return render(request, "login.html", {
+                'error': '비밀번호를 틀렸습니다.',
+            })
+    else:
+        return render(request, "login.html")

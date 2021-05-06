@@ -258,7 +258,7 @@
                         <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
                     </div>
                     <div class="ai_fitner">
-                        <p onclick="location.href='/smartmode';"
+                        <p onclick="location.href='/smartmode?cmd='+'{{ url }}';  "
                         style="cursor: pointer; width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
                     </div>
 
@@ -394,11 +394,22 @@
                 <span class="close">&times;</span>
                 <div>
                     <p style="font-weight: bold; margin-top: -1px;">재생목록 추가</p>
-                    <div style="width: 176px; height: 40px; border-radius: 5px; margin: 20px 0 0 60px; background-color: #8ad3c0;">
+                    <div style="width: 176px; height: 40px; border-radius: 5px; margin: 30px 0 0 60px; background-color: #8ad3c0;">
                         <img src="../static/folder.png" width="20px" height="20px" style="margin: 10px 0 0 12px; float: left;">
                         <p style="padding-top: 11px; padding-left: 42px; font-size: 14px; color: #ffffff;">새 재생목록 만들기</p>
                     </div>
-
+                    <div style="margin: 30px 0 0 60px;">
+                        <i class="fas fa-check-circle fa-lg" style="color: #6c5ce7;"></i>
+                        <span style="font-size: 14px; margin-left: 14px;">전신운동루틴</span>
+                    </div>
+                    <div style="margin: 20px 0 0 60px;">
+                        <i class="fas fa-check-circle fa-lg" style="color: #8a8a8a;"></i>
+                        <span style="font-size: 14px; margin-left: 14px;">30일 홈트레이닝 루틴</span>
+                    </div>
+                    <div style="margin: 20px 0 0 60px;">
+                        <i class="fas fa-check-circle fa-lg" style="color: #8a8a8a;"></i>
+                        <span style="font-size: 14px; margin-left: 14px;">하루 10분 운동</span>
+                    </div>
                 </div>
             </div>
             <script>
