@@ -57,6 +57,7 @@
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
             #tab1 { margin-right: 10px; }
             #tab2 { margin-left: 58px;; }
+            #tab3 { margin-left: 50px; }
             /* Videos */
             .left_arrow_button { margin: 20px 0 0 137px; }
             .fa-arrow-left { color: #000000; cursor: pointer; margin-right: 5px; }
@@ -85,7 +86,7 @@
                 margin: 20px 140px 0px 792px;
                 border: none;
             }
-                        /* Modal Screen */
+            /* Modal Screen */
             /* The Modal (background) */
             .modal {
                 display: none; /* Hidden by default */
@@ -104,12 +105,12 @@
             .modal-content {
                 background-color: #ffffff;
                 margin: auto;
-                margin-top: 115px;
+                margin-top: 0px;
                 padding: 20px;
                 border-radius: 20px;
                 border: solid 1px #707070;
-                width: 302px;
-                height: 284px;
+                width: 350px;
+                height: 500px;
             }
             /* The Close Button */
             .close {
@@ -136,6 +137,31 @@
                 border: solid 2px #e8e8e8;
                 outline: none;
                 padding: 0px 0px 0px 20px;
+            }
+            .submit {
+                cursor: pointer;
+                margin: 20px 0 0 50px;
+                width: 224px;
+                height: 54px;
+                border-radius: 20px;
+                background-color: #8ad3c0;
+                font-size: 14px;
+                color: white;
+                font-weight: bold;
+                outline: none;
+                border: none;
+            }
+            .enrollment {
+                width: 234px;
+                height: 54px;
+                background-color: #8ad3c0;
+                color: white;
+                font-size: 16px;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                margin: 38px 0 0 48px;
+                cursor: pointer;
             }
             /* footer */
             #footer { width: 100%; height: 150px; }
@@ -187,7 +213,18 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
+                    <button onclick="location.href='/mypage';" class="dropdown-button">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                        <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
+                    </button>
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
                 </div>               
             </div>
             <div style="margin-top: 80px; margin-left: 6px;">
@@ -303,14 +340,20 @@
             </div>
             <div id="footer"></div>
             <!-- The Modal -->
-            <div id="myModal" class="modal">
-                <!-- Modal content -->
+            <div id="myModal2" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <div>
-                        <p style="font-weight: bold; margin-top: -1px;">랭킹 등록</p>
-                        <div style="float: left;">
-                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 22px 0 0 25px;">이름</p>
+                    <div style="margin-left: 10px;">
+                        <p style="font-weight: bold; margin-top: -1px;">최종 유사도 결과</p>
+                        <p style="font-size: 18px; font-weight: 550; margin: 33px 0 0 36px;">바른 자세에 가까워지고 있어요!</p>
+                        <p style="font-size: 16px; margin: 23px 0 0 125px;">평균 유사도</p>
+                        <p style="font-size: 50px; font-weight: bold; margin: 3px 0 0 125px;">63%</p>
+                        <!-- <button class="enrollment" id="myBtn2">랭킹에 등록할래요</button> -->
+                        <img src="../static/Image_main.png" width="125px" height="135px" style="margin: -100px 0 0 214px; float: left;">
+                        <form method = "POST" action = ".">
+                            {% csrf_token %}
+                        <div style="float: left; margin-left: 15px; margin-top: -8px;">
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
                             <div class="userInput">
                                 <input type="text" 
                                 class="form-control"
@@ -318,7 +361,7 @@
                                 id="username" 
                                 placeholder="">                                
                             </div>
-                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 22px 0 0 25px;">전화번호</p>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">전화번호</p>
                             <div class="userInput">
                                 <input type="text" 
                                 class="form-control"
@@ -326,17 +369,72 @@
                                 id="userphone" 
                                 placeholder="">
                             </div>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">유사도</p>
+                            <div class="userInput">
+                                <input type="text" 
+                                class="form-control"
+                                name = "similarity"
+                                id="similarity" 
+                                placeholder="">
+                            </div>
                         </div>
-                        <div style="cursor: pointer; padding-top: 5px; margin: 200px 0 0 35px; width: 224px; height: 54px; border-radius: 20px; background-color: #8ad3c0;">
-                            <p style="font-size: 14px; color: white; font-weight: bold; margin: 15px 0 0 80px">등록하기</p>
+                        <div>
+                            <button class="submit" type="submit">등록하기</button>
                         </div>
+                        </form>
+                    </div>
                     </div>
                 </div>
+            </div>
+            <!-- The Modal -->
+            <!-- <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div>
+                        <p style="font-weight: bold; margin-top: -1px;">랭킹 등록</p>
+                        <form method = "POST" action = ".">
+                            {% csrf_token %}
+                        <div style="float: left; margin-left: 15px;">
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
+                            <div class="userInput">
+                                <input type="text" 
+                                class="form-control"
+                                name = "username"
+                                id="username" 
+                                placeholder="">                                
+                            </div>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">전화번호</p>
+                            <div class="userInput">
+                                <input type="text" 
+                                class="form-control"
+                                name = "userphone"
+                                id="userphone" 
+                                placeholder="">
+                            </div>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">유사도</p>
+                            <div class="userInput">
+                                <input type="text" 
+                                class="form-control"
+                                name = "similarity"
+                                id="similarity" 
+                                placeholder="">
+                            </div>
+                        </div>
+                        <div>
+                            <button class="submit" type="submit">등록하기</button>
+                        </div>
+                        </form>
+                    </div>
+                </div> -->
                 <script>
                     // Get the modal
-                    var modal = document.getElementById("myModal");
+                    var modal = document.getElementById("myModal"); // 랭킹 등록 모달창
+                    var modal = document.getElementById("myModal2"); // 유사도 확인 모달창
+
                     // Get the button that opens the modal
-                    var btn = document.getElementById("myBtn");
+                    var btn = document.getElementById("myBtn2"); // 랭킹 등록 모달창
+                    var btn = document.getElementById("myBtn"); // 유사도 확인 모달창
+
                     // Get the <span> element that closes the modal
                     var span = document.getElementsByClassName("close")[0];
                     // When the user clicks the button, open the modal 
@@ -351,7 +449,7 @@
                     window.onclick = function(event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
-                    }
+                        }
                     }
                 </script>
         </div>

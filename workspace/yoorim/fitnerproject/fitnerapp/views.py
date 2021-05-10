@@ -10,15 +10,11 @@ from django.contrib.auth.hashers import make_password, check_password #비밀번
 from .models import User
 from django.contrib.auth.models import User
 from django.contrib import auth
+from .models import Ranking
 
 # Create your views here.
 
 def home(request):
-    user_id = request.session.get('user')
-    if user_id :
-        myuser_info = Myuser.objects.get(pk=user_id)  #pk : primary key
-        return HttpResponse(myuser_info.username)
-
     return render(request, 'home.html')
 
 def day(request):
@@ -38,10 +34,20 @@ def smartmode(request):
         url=request.GET
         video = pafy.new(url['cmd'])
         best = video.getbest(preftype="mp4")
+        global data
         data={ 'video_address': best.url,
                 'url':url['cmd'] }
+
+    if request.method == "POST":
+        username = request.POST.get('username',None)   #딕셔너리형태
+        userphone = request.POST.get('userphone',None)
+        similarity = request.POST.get('similarity',None)
+        if username and userphone :
+            ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
+            ranking.save()
+            #return redirect('smartmode')
     
-    return render(request, 'smartmode.html',data)
+    return render(request, 'smartmode.html', data)
 
 @csrf_exempt
 def videoplayer(request):
@@ -49,9 +55,16 @@ def videoplayer(request):
         url=request.GET
         video = pafy.new(url['cmd'])
         best = video.getbest(preftype="mp4")
+        rankings = Ranking.objects.all().order_by('-similarity')  # 유사도 높은 순으로, 내림차순으로 정렬
+        #context = {'rankings':rankings}
         data={ 'video_address': best.url,
-                'url':url['cmd'] }
-    return render(request, 'videoplayer.html', data)
+                'url':url['cmd'],
+                 'rankings':rankings,}
+
+    #rankings = Ranking.objects.all()
+    #context = {'rankings':rankings}
+
+    return render(request, 'videoplayer.html',  data)
 
 def ytbChannel(request):
     return render(request, 'ytbchannel.html')
@@ -153,7 +166,7 @@ def login(request):
             return redirect('user_home')
         else:
             return render(request, "login.html", {
-                'error': '비밀번호를 틀렸습니다.',
+                'error': '비밀번호가 틀렸습니다.',
             })
     else:
         return render(request, "login.html")

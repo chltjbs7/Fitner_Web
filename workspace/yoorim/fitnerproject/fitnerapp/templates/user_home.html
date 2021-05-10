@@ -48,13 +48,15 @@
                 text-decoration: none;
                 text-align: center;
                 display: block;
+                font-size: 16px;
             }
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
             #tab0 { margin-left: 778px; }
             #tab1 { margin-right: 10px; }
-            #tab2 { margin-left: 58px;; }
+            #tab2 { margin-left: 58px; }
+            #tab3 { margin-left: 50px; }
             /* Top Title */
             #top_title {
                 margin: 192px 0 0 130px;
@@ -156,7 +158,15 @@
                         <i class="fas fa-user-circle fa-lg"></i>
                         <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
                     </button>
-                </div>               
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
+                </div>
             </div>
             <div style="margin-left: 90px;">
                 <!-- Logo -->
