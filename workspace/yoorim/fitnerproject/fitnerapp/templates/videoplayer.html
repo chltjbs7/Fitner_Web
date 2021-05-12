@@ -271,21 +271,22 @@
                         <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
                     </div>
                     <div class="ai_fitner">
-                        <p onclick="location.href='/smartmode?cmd='+'{{ url }}';  "
+                        <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
                         style="cursor: pointer; width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
                     </div>
 
-                    <p style="width: 330px; font-size: 13px; color: #8ad3c0; margin: 0;"> #cardioworkout #층간소음없는유산소 #전신유산소운동 </p>
-                    <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
-                    <p style="width: 170px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 1.5만회 · 1개월 전 </p>
+                    <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
+                    <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
+                    <p style="width: 300px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} · {{publishedAt}} </p>
 
                     <hr class="line">
                     <div class="youtuber_img">
-                        <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 16px 0px 0px 995px; position: absolute;"> 구독 </p>
-                        <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> 힙으뜸 </p>
-                        <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 84.8만명 </p>
+                        <img src='{{ channelImage }}' id='youtuber_img' width="48px" height="48px" style="border-radius: 50px; position: absolute;" />
+                        <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 14px 0px 0px 995px; position: absolute;"> 구독 </p>
+                        <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
+                        <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 {{ channelSubscriber }}명 </p>
                     </div>
-                    <hr class="line">
+                    <hr class="line">   
                     </div>
                 </div>
                 <!-- Ranking -->
@@ -307,45 +308,6 @@
                             <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
                         </div>
                     </div>
-                    <!--<div class="rank">
-                    <div id="list" style="background-color: #9b90ee">
-                        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 2 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitneraiai </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #c8bffc">
-                        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 3 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitfit </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #ffffff">
-                        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 4 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> qqoopp </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #ffffff">
-                        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 5 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> zzxx333 </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>-->
                     {% endfor %}
                 </div>
                 <!-- Fit Videos -->

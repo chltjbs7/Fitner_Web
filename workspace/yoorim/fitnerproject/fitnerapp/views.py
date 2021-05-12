@@ -1,5 +1,7 @@
 import requests
 import pafy
+import re
+import random
 
 from isodate import parse_duration
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +13,7 @@ from .models import User
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Ranking
+from django.views.decorators.http import condition
 
 # Create your views here.
 
@@ -33,10 +36,40 @@ def smartmode(request):
     if request.method=='GET':
         url=request.GET
         video = pafy.new(url['cmd'])
+        channel_id=url['channel']
         best = video.getbest(preftype="mp4")
-        global data
+
+        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
+        video_id=re_result.group(1)
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet, statistics',
+            'id' : video_id,
+        }
+
+        r = requests.get(video_url, params=video_params)
+        result = r.json()['items'][0]
+        snippet=result['snippet']
+        statistics=result['statistics']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+        
+        tags=snippet["tags"]
+        tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
+           '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
+           '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
+           '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
+           
         data={ 'video_address': best.url,
-                'url':url['cmd'] }
+                'url':url['cmd'],
+                'title':snippet['title'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount':statistics['viewCount'],
+                'tags':tags_rand[0],
+                'channelId':channel_id,
+             }
 
     if request.method == "POST":
         username = request.POST.get('username',None)   #딕셔너리형태
@@ -54,17 +87,64 @@ def videoplayer(request):
     if request.method=='GET':
         url=request.GET
         video = pafy.new(url['cmd'])
+        channel_id=url['channel']
+
+        rankings = Ranking.objects.all().order_by('-similarity')
+
         best = video.getbest(preftype="mp4")
-        rankings = Ranking.objects.all().order_by('-similarity')  # 유사도 높은 순으로, 내림차순으로 정렬
-        #context = {'rankings':rankings}
+        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
+        video_id=re_result.group(1)
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+        channel_url='https://youtube.googleapis.com/youtube/v3/channels'
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet, statistics',
+            'id' : video_id,
+        }
+
+        r = requests.get(video_url, params=video_params)
+        result = r.json()['items'][0]
+        snippet=result['snippet']
+        statistics=result['statistics']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+
+        try:
+            tags=snippet["tags"]
+            tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
+        except:
+            tags_rand=['']
+
+
+        channelTitle=snippet["channelTitle"]
+
+        channel_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"statistics,snippet",
+            'id':channel_id
+        }
+
+        channel_r=requests.get(channel_url, params=channel_params)
+        channel_result=channel_r.json()['items'][0]
+        #print(channel_result['snippet']['thumbnails']['default']['url'])
         data={ 'video_address': best.url,
                 'url':url['cmd'],
-                 'rankings':rankings,}
+                'rankings':rankings,
+                'title':snippet['title'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount':statistics['viewCount'],
+                'tags':tags_rand[0],
+                'channelTitle':channelTitle,
+                'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
+                'channelSubscriber':channel_result['statistics']['subscriberCount'],
+                'channelId':channel_id,
+             }
 
-    #rankings = Ranking.objects.all()
-    #context = {'rankings':rankings}
-
-    return render(request, 'videoplayer.html',  data)
+    return render(request, 'videoplayer.html', data)
 
 def ytbchannel(request):
     return render(request, 'ytbchannel.html')
@@ -110,6 +190,7 @@ def search(request):
 
         results = r.json()['items']
 
+        
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
@@ -120,10 +201,10 @@ def search(request):
                 'channelTitle' : result['snippet']['channelTitle'],
                 'publishedAt' : result['snippet']['publishedAt'],
                 'viewCount' : result['statistics']['viewCount'],
+                'channel_id':result['snippet']['channelId']
             }
 
             videos.append(video_data)
-
     context = {
         'videos' : videos,
     }
