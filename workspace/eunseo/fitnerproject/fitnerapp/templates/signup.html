@@ -7,40 +7,17 @@
   <title>Fitner</title>
 
   <style media="screen">
-    html,
-    body {
-      width: 100%;
-      margin: 0;
-    }
-
-    .logoimage {
-      margin: 120px 561px 20px 561px;
-    }
-
-    h2 {
-      margin: 0px 0px 4px 616px;
-      font-size: 24px;
-    }
-
-    h3 {
-      margin: 0px 0px 40px 472px;
-      font-weight: normal;
-    }
-
+    html, body { width: 100%; margin: 0;}
+    .logoimage { margin: 120px 561px 20px 561px; }
+    h2 { margin: 0px 0px 4px 616px; font-size: 24px; }
+    h3 { margin: 0px 0px 40px 472px; font-weight: normal; }
     p {
       margin: 20px 0px 6px 430px;
       font-size: 14px;
       color: #6c5ce7;
       font-weight: bold;
-
     }
-
-    input,
-    button {
-      margin-left: 430px;
-      margin-bottom: 10px;
-    }
-
+    input, button { margin-left: 430px; margin-bottom: 10px; }
     .login_id input {
       width: 430px;
       height: 53px;
@@ -52,8 +29,6 @@
       outline: none;
       padding: 5px 0px 0px 24px;
     }
-
-
     .login_pw input {
       width: 430px;
       height: 53px;
@@ -65,44 +40,65 @@
       outline: none;
       padding: 5px 0px 0px 24px;
     }
-
-    input::placeholder {
-      color: #aaaaaa;
-    }
-
+    input::placeholder { color: #aaaaaa; }
     button {
       margin-top: 40px;
       width: 460px;
       height: 53px;
       border-radius: 30px;
       border: none;
-      background-color: #e8e8e8;
+      background-color: #6c5ce7;
       outline: none;
       font-size: 18px;
       color: #ffffff;
     }
-
   </style>
 </head>
 
 <body>
-    <div style="margin-left: 100px;">
+    <div style="margin-left: 100px; margin-top: -40px;">
         <img src="../static/logo.png" alt="이미지가 없습니다." class='logoimage' width="198px" height="71px">
         <h2>회원가입</h2>
         <h3>Fitner 이용을 위한 회원 정보를 입력해주세요.</h3>
-        <div class="login_id">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <form method = "POST" action = ".">
+        {% csrf_token %}
+        <div style="margin-left: 5px;">
+          <div class="login_id">
             <p>아이디</p>
-            <input type="text" placeholder="아이디">
+            <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            placeholder="아이디"
+            name="username">
+          </div>
+          <div class="login_pw">
+              <p>비밀번호</p>
+              <input type="password" 
+              class="form-control"
+              id="password"
+              placeholder="비밀번호"
+              name= "password">
+          </div>
+          <div class="login_pw">
+            <p>비밀번호 확인</p>
+            <input 
+            type= "password" 
+            class="form-control"
+            id="re_password"
+            placeholder="비밀번호 확인"
+            name = "re_password">
         </div>
-        <div class="login_pw">
-            <p>비밀번호</p>
-            <input type="password" placeholder="비밀번호">
+        <div style="color: red; font-weight: bold; margin-left: 580px;">
+          {{error}}
         </div>
-        <div class="submit">
-            <button type="submit">회원가입</button>
-        </div>       
+          <div class="submit">
+              <button type="submit">회원가입</button>
+          </div>
+        </div>  
     </div>
-
+  </form>
 </body>
-
 </html>

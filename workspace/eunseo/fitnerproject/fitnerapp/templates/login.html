@@ -7,19 +7,9 @@
   <title>Fitner</title>
 
   <style media="screen">
-    html,
-    body {
-      width: 100%;
-      margin: 0;
-    }
-    .logoimage {
-      margin: 180px 561px 40px 561px;
-    }
-    input,
-    button {
-      margin-left: 430px;
-      margin-bottom: 10px;
-    }
+    html, body { width: 100%; margin: 0; }
+    .logoimage { margin: 180px 561px 40px 561px;}
+    input, button { margin-left: 430px; margin-bottom: 10px; }
     .login_id input {
       width: 430px;
       height: 53px;
@@ -42,9 +32,7 @@
       outline: none;
       padding: 5px 0px 0px 24px;
     }
-    input::placeholder {
-      color: #aaaaaa;
-    }
+    input::placeholder { color: #aaaaaa; }
     button {
       margin-top: 20px;
       width: 460px;
@@ -56,9 +44,7 @@
       font-size: 18px;
       color: #ffffff;
     }
-    a {
-      text-decoration: none;
-    }
+    a { text-decoration: none; }
     .findId {
       color: #9f9f9f;
       margin: 14px 26px 0px 540px;
@@ -71,25 +57,36 @@
     }
   </style>
 </head>
-
 <body>
-    <div style="margin-left: 100px;;">
+    <div style="margin-left: 100px;">
+      <a href="{% url 'home' %}">
         <img src="../static/logo.png" alt="이미지가 없습니다." class='logoimage' width="198px" height="71px">
+      </a>
+        {% block contents %}
+        <form method = "POST">
+          {% csrf_token %}
         <div class="login_id">
-            <input type="text" placeholder="아이디">
+          <input type="text" 
+          class="form-control" 
+          name = "username" 
+          id="username" 
+          placeholder="아이디">
         </div>
         <div class="login_pw">
-            <input type="password" placeholder="비밀번호">
+          <input type="password" 
+          name = "password" 
+          class="form-control"
+          id="password"
+          placeholder="비밀번호">
         </div>
+        <p style="color:red; text-align: center; margin-top: 5px; margin-left: -100px;"><strong>{{ error }}</strong> </p>
         <div class="submit">
             <button type="submit">로그인</button>
         </div>
-
         <a href="#" class="findId">아이디/비밀번호 찾기</a>
         <a href="{% url 'signup' %}" class="signUp">회원가입</a>        
     </div>
-
-
+  </form>
+  {% endblock %}
 </body>
-
 </html>
