@@ -26,7 +26,7 @@ SECRET_KEY = 'uzk8^($gjvi6ach-#htq8^t!n_=owg2=^9#9(h-2ei(np9%zpe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,3 +129,8 @@ STATICFILES_DIRS=[
 
 STATIC_ROOT= os.path.join(BASE_DIR,'static')
 #static 파일들이 어디로 모일 것인지를 쓰는 곳
+
+TIME_ZONE =  'Asia/Seoul'   # timezone1서울
+USE_I18N = True
+USE_L10N = True
+USE_TZ = False

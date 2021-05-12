@@ -163,7 +163,7 @@
             <div>
                 {% for video in videos %}
                 <div class="main_content">
-                    <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}';" src="{{ video.thumbnail }}" width="264px" height="148px"
+                    <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';" src="{{ video.thumbnail }}" width="264px" height="148px"
                     style="cursor: pointer; float: left; object-fit: cover;"></img>
                     
                     <div class="videoInfo">
@@ -174,37 +174,7 @@
                     </div>
                 </div>
                 {% endfor %}
-                <!-- <div class="main_content">
-                <div class="video"> </div>
-                <div class="videoInfo">
-                    <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> (층간소음X) 역대급 홈트레이닝 루틴 공개!!!! 급찐급빠 매운맛ver. 살찐자, 확찐자 다 들어오세요ㅋㅋㅋ </p>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                    <div class="youtuber_img"></div>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 발레테라핏 </p>
-                </div>
-                </div>
-            
-                <div class="main_content">
-                <div class="video"> </div>
-                <div class="videoInfo">
-                    <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                    <div class="youtuber_img"></div>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
-                </div>
-                </div>
-            
-                <div class="main_content">
-                <div class="video"> </div>
-                <div class="videoInfo">
-                    <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                    <div class="youtuber_img"></div>
-                    <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
-                </div>
-                </div>                 -->
             </div>
-
             <div id="footer"></div>
         </div>
     <body>
