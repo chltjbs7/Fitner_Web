@@ -66,17 +66,14 @@ def videoplayer(request):
 
     return render(request, 'videoplayer.html',  data)
 
-def ytbChannel(request):
+def ytbchannel(request):
     return render(request, 'ytbchannel.html')
-
-def detail(request):
-    return render(request, 'detail.html')
-
-def user_home(request):
-    return render(request, 'user_home.html')
 
 def mypage(request):
     return render(request, 'mypage.html')
+
+def user_home(request):
+    return render(request, 'user_home.html')
 
 def search(request):
     videos = []
