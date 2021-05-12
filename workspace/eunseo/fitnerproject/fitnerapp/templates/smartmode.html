@@ -217,7 +217,7 @@
             <div style="margin-top: 80px; margin-left: 6px;">
                 <!-- Videos -->
                 <div class="videoContent">
-                    <div class="left_arrow_button" onclick="location.href='/videoplayer?cmd='+'{{ url }}';">
+                    <div class="left_arrow_button" onclick="location.href='/videoplayer?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';">
                         <i class="fas fa-arrow-left"></i>
                         <label style="font-weight: bold;">스마트 운동모드 나가기</label>
                     </div> 
@@ -401,6 +401,14 @@
                                 strategy: 'weightedDistanceMatching'
                                 //strategy: 'cosineDistanceMatching'
                             };
+
+                            for (var i = 0; i < pose1.keypoints.length; i++) {
+                                if (pose1.keypoints[i].score<0.2){
+                                    pose1.keypoints[i].score=0
+                                    console.log(i,pose1.keypoints[i].score)
+                                }
+                            }
+
                             var options = Object.assign({}, defaultOptions, overridenOptions);
                             var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
                             var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];

@@ -39,6 +39,7 @@ def smartmode(request):
     if request.method=='GET':
         url=request.GET
         video = pafy.new(url['cmd'])
+        channel_id=url['channel']
         best = video.getbest(preftype="mp4")
 
 
@@ -72,7 +73,8 @@ def smartmode(request):
                 'title':snippet['title'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount':statistics['viewCount'],
-                'tags':tags_rand[0]
+                'tags':tags_rand[0],
+                'channelId':channel_id,
              }
     
     return render(request, 'smartmode.html',data)
@@ -136,6 +138,7 @@ def videoplayer(request):
                 'channelTitle':channelTitle,
                 'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
                 'channelSubscriber':channel_result['statistics']['subscriberCount'],
+                'channelId':channel_id,
              }
 
     return render(request, 'videoplayer.html', data)
@@ -187,7 +190,7 @@ def search(request):
 
         results = r.json()['items']
 
-        
+
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
