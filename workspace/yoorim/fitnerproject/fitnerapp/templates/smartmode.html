@@ -93,11 +93,11 @@
             .videoInfo { margin-left: 140px; }
             .ai_fitner {
                 position: absolute;
-                width: 248px;
+                width: 200px;
                 height: 44px;
                 border-radius: 30px;
                 background-color: #8ad3c0;
-                margin: 20px 140px 0px 792px;
+                margin: 20px 140px 0px 1020px;
                 border: none;
             }
             /* Modal Screen */
@@ -605,17 +605,17 @@
                         </script>
                     <div class="videoInfo">
                         <div>
-                            <button class="ai_fitner" style="cursor: pointer;">
-                                <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 16%;"> 운동 끝내기 </p>
+                            <button class="ai_fitner" style="cursor: pointer;" id="myBtn">
+                                <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 10%;"> 운동 끝내기 </p>
                             </button>
-                            <button id="myBtn"
+                            <!-- <button id="myBtn"
                             style="cursor: pointer; position: absolute; width: 170px; height: 44px; border-radius: 30px; background-color: #6c5ce7; margin: 20px 140px 0px 1050px; border: none;">
                                 <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 0;"> 랭킹 등록 </p>
-                            </button>                            
+                            </button>                             -->
                         </div>
-                        <p style="width: 330px; font-size: 13px; color: #8ad3c0; margin: 0;"> #cardioworkout #층간소음없는유산소 #전신유산소운동 </p>
-                        <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴 </p>
-                        <p style="width: 170px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 1.5만회 · 1개월 전 </p>
+                        <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
+                        <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
+                        <p style="width: 300px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} 회 · 날짜 {{publishedAt}} </p>
                     </div>
                 </div>   
             </div>

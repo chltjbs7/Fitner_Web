@@ -332,7 +332,16 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p style="font-size: 14px; line-height: 1; color: #9b90ee; margin: 259px 0 0 320px;">3월 28일 일요일</p>
+                <!-- <p style="font-size: 14px; line-height: 1; color: #9b90ee; margin: 259px 0 0 320px;">2021년 5월 13일</p> -->
+                <form>
+                    <div style="margin: 250px 0 0 300px;">
+                        <input type='date' id='currentDate'
+                        style="outline: none; border: none; font-weight: bold; color: #6c5ce7; font-size: 14px;"/>
+                    </div>
+                </form>
+                <script>
+                    document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
+                </script>
                 <div class="right_arrow_button">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
@@ -350,13 +359,15 @@
                         labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
                         datasets: [
                         { label: '# time',
-                            data: [0, 0, 0, 91, 0, 0],
+                            data: [10, 56, 25, 91, 5, 78],
                             backgroundColor :[
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',],
-                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
+                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0'],
                             borderWidth: 1,
                         }
                         ]
