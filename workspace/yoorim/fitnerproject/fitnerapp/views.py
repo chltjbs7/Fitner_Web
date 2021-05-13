@@ -63,7 +63,7 @@ def smartmode(request):
             '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
         except:
             tags_rand=['']
-            
+        global data
         data={ 'video_address': best.url,
                 'url':url['cmd'],
                 'title':snippet['title'],
@@ -72,7 +72,7 @@ def smartmode(request):
                 'tags':tags_rand[0],
                 'channelId':channel_id,
              }
-
+             
     if request.method == "POST":
         username = request.POST.get('username',None)   #딕셔너리형태
         userphone = request.POST.get('userphone',None)

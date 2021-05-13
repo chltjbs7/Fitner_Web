@@ -261,20 +261,23 @@
                 <!-- Videos -->
                 <div class="videoContent">
                     <div class="video">
-                        <video id="youtube_video"  controls name='media' width="1058px" height="603px">
+                        <video id="youtube_video"  controls name='media' width="1058px" height="595.125px">
                             <source src={{video_address}} type="video/mp4">
                         </video>
                     </div>
                     
                     <div class="videoInfo">
-                    <div class="listButton" id="myBtn">
-                        <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
-                        <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
-                    </div>
-                    <div class="ai_fitner">
-                        <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
-                        style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
-                    </div>
+                        <div style="margin-left: 15px;">
+                            <div class="listButton" id="myBtn">
+                                <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
+                                <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
+                            </div>
+                            <div class="ai_fitner">
+                                <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
+                                style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
+                            </div>                            
+                        </div>
+
 
                     <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
                     <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
