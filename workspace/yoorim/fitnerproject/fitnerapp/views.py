@@ -55,13 +55,15 @@ def smartmode(request):
         statistics=result['statistics']
         pre_publishedAt=snippet['publishedAt']
         publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
-        
-        tags=snippet["tags"]
-        tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
-           '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
-           '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
-           '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
-           
+        try:
+            tags=snippet["tags"]
+            tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
+            '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
+        except:
+            tags_rand=['']
+            
         data={ 'video_address': best.url,
                 'url':url['cmd'],
                 'title':snippet['title'],
@@ -172,7 +174,10 @@ def search(request):
         }
 
         r = requests.get(search_url, params=search_params)
-
+        result = r.json()['items'][0]
+        snippet=result['snippet']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
         results = r.json()['items']
 
         video_ids = []
@@ -199,7 +204,8 @@ def search(request):
                 #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
-                'publishedAt' : result['snippet']['publishedAt'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
+                'publishedAt':publishedAt_result.group(0),
                 'viewCount' : result['statistics']['viewCount'],
                 'channel_id':result['snippet']['channelId']
             }
