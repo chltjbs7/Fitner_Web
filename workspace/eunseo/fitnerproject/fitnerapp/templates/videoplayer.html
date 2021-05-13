@@ -4,6 +4,7 @@
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -70,6 +71,7 @@
             #tab2 {
                 margin-left: 58px;;
             }
+            #tab3 { margin-left: 50px; }
             /* Videos */
             .video {
                 margin: 20px 140px 14px 140px;
@@ -79,7 +81,7 @@
             Button { background: none; border: none; }
             .listButton {
                 position: absolute;
-                margin: 16px 20px 0px 660px;
+                margin: 11px 20px 0px 660px;
                 text-align: center;
             }
             .ai_fitner {
@@ -88,20 +90,20 @@
                 height: 44px;
                 border-radius: 30px;
                 background-color: #8ad3c0;
-                margin: 20px 140px 0px 792px;
+                margin: 15px 140px 0px 792px;
+                cursor: pointer;
             }
             .line {
-                width: 1040px;
+                width: 1058px;
                 height: 0;
                 margin: 20px 0px 20px 0px;
                 border: solid 1px #e8e8e8;
             }
-            .youtuber_img, #youtuber_img {
+            .youtuber_img {
                 width: 48px;
                 height: 48px;
                 border-radius: 50%;
                 background-color: #aaaaaa;
-                float: left;
             }
             /* Modal Screen */
             /* The Modal (background) */
@@ -155,7 +157,7 @@
             }
             .graph_bgr {
                 margin-left: 140px;
-                width: 78.8%;
+                width: 1058px;
                 height: 304px;
                 border-radius: 20px;
                 background-color: #fbfbfb;
@@ -173,7 +175,7 @@
                 margin-right: 90px;
             }
             .ratio {
-                width: 739px;
+                width: 720px;
                 height: 28px;
                 border-radius: 20px;
                 border: solid 2px #8ad3c0;
@@ -199,7 +201,7 @@
     <body style="overflow-x:hidden; overflow-y:auto;">
         <!-- Header -->
         <div class="header">
-            <a href="{% url 'home' %}">
+            <a href="{% url 'user_home' %}">
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
@@ -215,7 +217,7 @@
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
                     <button class="dropdown-button">
-                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
+                        <a href="{% url 'user_home' %}" style="text-decoration: none; color: black;">홈</a>
                     </button>
                 </div>  
                 <div class="dropdown">
@@ -241,38 +243,52 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
-                </div>               
+                    <button onclick="location.href='/mypage';" class="dropdown-button">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                        <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
+                    </button>
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
+                </div>              
             </div>
-            <div style="margin-top: 80px; margin-left: 110px;">
+            <div style="margin-top: 80px; margin-left: 95px;">
                 <!-- Videos -->
                 <div class="videoContent">
                     <div class="video">
-                        <video id="youtube_video"  controls name='media' width="1040px" height="585px">
+                        <video id="youtube_video"  controls name='media' width="1058px" height="595.125px">
                             <source src={{video_address}} type="video/mp4">
                         </video>
                     </div>
-
+                    
                     <div class="videoInfo">
-                    <div class="listButton" id="myBtn">
-                        <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
-                        <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
-                    </div>
-                    <div class="ai_fitner">
-                        <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
-                        style="cursor: pointer; width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
-                    </div>
+                        <div style="margin-left: 15px;">
+                            <div class="listButton" id="myBtn">
+                                <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
+                                <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
+                            </div>
+                            <div class="ai_fitner">
+                                <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
+                                style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
+                            </div>                            
+                        </div>
 
-                    <p style="width: 330px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
+
+                    <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
                     <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
-                    <p style="width: 170px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} · {{publishedAt}} </p>
+                    <p style="width: 300px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} 회 · 날짜 {{publishedAt}} </p>
 
                     <hr class="line">
                     <div class="youtuber_img">
-                        <img src='{{ channelImage }}' id='youtuber_img' />
-                        <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 16px 0px 0px 995px; position: absolute;"> 구독 </p>
+                        <img src='{{ channelImage }}' id='youtuber_img' width="48px" height="48px" style="border-radius: 50px; position: absolute;" />
+                        <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 14px 0px 0px 995px; position: absolute;"> 구독 </p>
                         <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
-                        <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 {{ channelSubscriber }} 명 </p>
+                        <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 {{ channelSubscriber }}명 </p>
                     </div>
                     <hr class="line">   
                     </div>
@@ -280,62 +296,23 @@
                 <!-- Ranking -->
                 <div class="graph">
                     <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
-                    <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 12px 33px; " class="graph_title"> 순위 </p>
-                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 412px 12px 0px; " class="graph_title"> 아이디 </p>
+                    <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 12px 30px; " class="graph_title"> 순위 </p>
+                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 10px 0px; " class="graph_title"> 이름 </p>
                     <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 10px; " class="graph_title"> 유사도 비율 </p>
                 </div>
 
                 <div class="graph_bgr">
+                    {% for ranking in rankings %}
                     <div class="rank">
-                    <div id="list" style="background-color: #6c5ce7">
-                        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 1 </p>
+                        <div id="list" style="background-color: #6c5ce7">
+                            <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "></p>
+                        </div>
+                        <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> {{ranking.username}} </p>
+                        <div class="ratio">
+                            <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                        </div>
                     </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> abc123 </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #9b90ee">
-                        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 2 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitneraiai </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #c8bffc">
-                        <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "> 3 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> fitfit </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #ffffff">
-                        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 4 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> qqoopp </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
-                    <div class="rank">
-                    <div id="list" style="background-color: #ffffff">
-                        <p style=" font-size: 16px; color: #8a8a8a; font-weight: bold;  text-align: center; margin:4px; "> 5 </p>
-                    </div>
-                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> zzxx333 </p>
-                    <div class="ratio">
-                        <p style=" font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> 100% </p>
-                    </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
                 <!-- Fit Videos -->
                 <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 40px 0 15px 140px;"> 맞춤동영상 </p>

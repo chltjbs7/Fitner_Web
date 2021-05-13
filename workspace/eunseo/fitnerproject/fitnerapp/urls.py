@@ -15,7 +15,7 @@ urlpatterns = [
     path('month/', fitnerapp.views.month, name='month'),
 
     path('videoplayer/', fitnerapp.views.videoplayer, name='videoplayer'),
-    path('ytbchannel/', fitnerapp.views.ytbChannel, name='ytbchannel'),
+    path('ytbchannel/', fitnerapp.views.ytbchannel, name='ytbchannel'),
 
     path('login/', fitnerapp.views.login, name='login'),
     path('signup/', fitnerapp.views.signup, name='signup'),

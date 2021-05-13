@@ -64,6 +64,7 @@
             #tab2 {
                 margin-left: 58px;;
             }
+            #tab3 { margin-left: 50px; }
             .tap::before {
                 content: '';
                 position: absolute;
@@ -197,7 +198,7 @@
     <body style="overflow-x:hidden; overflow-y:auto;">
         <!-- Header -->
         <div class="header">
-            <a href="{% url 'home' %}">
+            <a href="{% url 'user_home' %}">
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
@@ -213,7 +214,7 @@
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
                     <button class="dropdown-button">
-                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
+                        <a href="{% url 'user_home' %}" style="text-decoration: none; color: black;">홈</a>
                     </button>
                 </div>  
                 <div class="dropdown">
@@ -239,8 +240,19 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
-                </div>               
+                    <button onclick="location.href='/mypage';" class="dropdown-button">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                        <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
+                    </button>
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
+                </div>             
             </div>
             <!--Banner-->
             <div class="banner">
