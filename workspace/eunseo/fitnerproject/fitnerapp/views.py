@@ -159,7 +159,6 @@ def user_home(request):
 
 def search(request):
     videos = []
-
     if request.method == 'POST':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'

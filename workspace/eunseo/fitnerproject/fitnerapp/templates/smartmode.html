@@ -194,14 +194,21 @@
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
-            <div class="search">
-                <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
-            </div>
-            <div onclick="location.href='/search';" class="search_button">
-                <button type='submit' style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form method="POST" action="{% url 'search' %}">
+                <div>
+                    {% csrf_token %}
+                    <div class="search">
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+                    </div>
+                    <div onclick="location.href='/search';" class="search_button">
+                        <button type='submit' name='submit' value='search'
+                        style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>                
+                </div>
+                </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
@@ -635,7 +642,7 @@
                         <p style="font-weight: bold; margin-top: -1px;">최종 유사도 결과</p>
                         <p style="font-size: 18px; font-weight: 550; margin: 33px 0 0 36px;">바른 자세에 가까워지고 있어요!</p>
                         <p style="font-size: 16px; margin: 23px 0 0 125px;">평균 유사도</p>
-                        <p id=avg_similarity style="font-size: 50px; font-weight: bold; margin: 3px 0 0 125px;">63%</p>
+                        <p id=avg_similarity style="font-size: 50px; font-weight: bold; margin: 3px 0 0 125px;">0%</p>
                         <img src="../static/ranking_image.png" width="125px" height="135px" style="margin: -100px 0 0 214px; float: left;">
                         <form method = "POST" action = ".">
                             {% csrf_token %}

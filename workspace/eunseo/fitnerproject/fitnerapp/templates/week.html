@@ -200,14 +200,21 @@
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
-            <div class="search">
-                <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
-            </div>
-            <div onclick="location.href='/search';" class="search_button">
-                <button type='submit' style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form method="POST" action="{% url 'search' %}">
+                <div>
+                    {% csrf_token %}
+                    <div class="search">
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+                    </div>
+                    <div onclick="location.href='/search';" class="search_button">
+                        <button type='submit' name='submit' value='search'
+                        style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>                
+                </div>
+                </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
