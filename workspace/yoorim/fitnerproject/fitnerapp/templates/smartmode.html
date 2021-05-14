@@ -399,11 +399,14 @@
                                         })
                                         setTimeout(similarity_loop, 1000);
                                         //console.log(youtube_video.currentTime);
-                                        } 
+                                        }
                                     })();
                                 })
                             function input(){
                                 document.getElementById("similarity").value = avg_similarity;
+                                document.getElementById("high").value = high_similarity;
+                                document.getElementById("low").value = low_similarity;
+                                document.getElementById("average").value = avg_similarity;
                             }
 
                             function get_message() {
@@ -667,7 +670,6 @@
                                 id="userphone" 
                                 placeholder="">
                             </div>
-                            <!-- <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">유사도</p>-->
                             <div class="userInput">
                                 <input type="hidden" 
                                 class="userInput"
@@ -676,6 +678,18 @@
                                 placeholder=""
                                 value="">
                             </div>
+                            <!--통계 데이터 값-->
+                            <input type="hidden" class="userInput" name = "videoId" id="videoId" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high" id="high" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low" id="low" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "average" id="average" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_img_route" id="high_img_route" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_img_route" id="low_img_route" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_start_section" id="high_start_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_end_section" id="high_end_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_start_section" id="low_start_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_end_section" id="low_end_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "total_time" id="total_time" placeholder="" value="">
                         </div>
                         <button class="submit" type="submit" onclick='input()'>등록하기</button>
                         </form>
