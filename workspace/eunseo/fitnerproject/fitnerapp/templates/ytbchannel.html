@@ -97,7 +97,7 @@
                         </button>
                     </div>                
                 </div>
-                </form>
+            </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
@@ -144,11 +144,11 @@
             </div>
         </div>
             <!--YouTuber Profile-->
-            <img src="../static/hipeuddeume.jpg" width="70px" height="70px"
+            <img src="{{channelImage}}" width="70px" height="70px"
             style="border-radius: 50px; margin: 100px 0 0 220px;">
             <div style="margin-left: 317px;">
-                <p style="float: left; position: absolute; margin-top: -60px; font-size: 18px; font-weight: bold;">힙으뜸</p>
-                <p style="float: left; position: absolute; margin-top: -35px; font-size: 13px; color: #8a8a8a;">구독자 256만명</p>                
+                <p style="float: left; position: absolute; margin-top: -60px; font-size: 18px; font-weight: bold;">{{ channelTitle }}</p>
+                <p style="float: left; position: absolute; margin-top: -35px; font-size: 13px; color: #8a8a8a;">구독자 {{channelSubscriber}}명</p>                
             </div>
 
             <div style="margin: -48px 0 0 1210px;">
@@ -157,15 +157,34 @@
             <!--Video List-->
             <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 74px 0 14px 220px;">동영상 목록 (최신순)</p>
             <div style="float: left; position: absolute; margin-top: -15px;">
-                <div>
-                    <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></div>
-                        <div style="margin-left: 220px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 260px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 260px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                <!-- <div>
+                    {% for video in videos %}
+                    <div class="main_content" style="float: left;">
+                        <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';" src="{{ video.thumbnail }}" width="264px" height="148px"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></img>
+                        
+                        <div class="videoInfo">
+                            <p style="margin-left: 260px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">{{ video.title }}</p>
+                            <p style="font-size: 13px; color: #aaaaaa; margin: 0; ">조회수 {{ video.viewCount }} 회 · 날짜 {{ video.publishedAt }}</p>
+                            <img src='{{ channelImage }}' class="youtuber_img"></img>
+                            <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
+                        </div>
                     </div>
+                    {% endfor %}
+                </div> -->
+
+
+                <div>
+                    {% for video in videos %}
                     <div style="float: left;">
+                        <img onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ channelId }}';" src="{{ video.thumbnail }}"
+                        style="cursor: pointer; width: 248px; height: 139px; margin: 20px 0 0 24px;"></img>
+                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
+                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">{{ video.title }}</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    </div>
+                    {% endfor %}
+                    <!-- <div style="float: left;">
                         <div onclick="location.href='/videoplayer';"
                         style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
                         <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
@@ -276,7 +295,7 @@
                         <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
                         <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         <div id="footer"></div>
     <body>
