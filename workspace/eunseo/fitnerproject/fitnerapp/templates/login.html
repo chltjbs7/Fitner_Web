@@ -59,9 +59,7 @@
 </head>
 <body>
     <div style="margin-left: 100px;">
-      <a href="{% url 'home' %}">
-        <img src="../static/logo.png" alt="이미지가 없습니다." class='logoimage' width="198px" height="71px">
-      </a>
+      <img src="../static/logo.png" alt="이미지가 없습니다." class='logoimage' width="198px" height="71px">
         {% block contents %}
         <form method = "POST">
           {% csrf_token %}

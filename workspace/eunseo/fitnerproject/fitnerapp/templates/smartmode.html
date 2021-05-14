@@ -65,12 +65,17 @@
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
             #tab1 { margin-right: 10px; }
             #tab2 { margin-left: 58px;; }
+            #tab3 { margin-left: 50px; }
             /* Videos */
             .left_arrow_button { margin: 20px 0 0 137px; }
             .fa-arrow-left { color: #000000; cursor: pointer; margin-right: 5px; }
-            .video { margin: 20px 0px 0px 140px; float: left; }
+            .video { margin: 20px 0px 0px 100px; float: left; }
             .camera { display: inline-block; margin: 20px 0px 0px 0px; }
-
+            #webcam_canvas, #skeleton_canvas{
+                transform: rotateY(180deg);
+                -webkit-transform:rotateY(180deg); /* Safari and Chrome */         
+                -moz-transform:rotateY(180deg); /* Firefox */     
+            }
             .progress {
                 flex: 10;
                 position: relative;
@@ -84,30 +89,22 @@
                 cursor: ew-resize;
                 margin: 0px 0px 20px 140px;
             }
-
             .progress__filled {
                 height: 28px;
                 background-color: #9b90ee;
                 border-top-right-radius: 20px;
                 border-bottom-right-radius: 20px;
             }
-
-
             .videoInfo { margin-left: 140px; }
             .ai_fitner {
                 position: absolute;
-                width: 248px;
+                width: 200px;
                 height: 44px;
                 border-radius: 30px;
                 background-color: #8ad3c0;
-                margin: 20px 140px 0px 792px;
+                margin: 20px 140px 0px 1020px;
                 border: none;
             }
-            #webcam_canvas, #skeleton_canvas{
-                transform: rotateY(180deg);
-                -webkit-transform:rotateY(180deg); /* Safari and Chrome */         
-                -moz-transform:rotateY(180deg); /* Firefox */     
-            } 
             /* Modal Screen */
             /* The Modal (background) */
             .modal {
@@ -127,12 +124,12 @@
             .modal-content {
                 background-color: #ffffff;
                 margin: auto;
-                margin-top: 115px;
+                margin-top: 0px;
                 padding: 20px;
                 border-radius: 20px;
                 border: solid 1px #707070;
-                width: 302px;
-                height: 284px;
+                width: 350px;
+                height: 500px;
             }
             /* The Close Button */
             .close {
@@ -160,7 +157,31 @@
                 outline: none;
                 padding: 0px 0px 0px 20px;
             }
-
+            .submit {
+                cursor: pointer;
+                margin: 20px 0 0 50px;
+                width: 224px;
+                height: 54px;
+                border-radius: 20px;
+                background-color: #8ad3c0;
+                font-size: 14px;
+                color: white;
+                font-weight: bold;
+                outline: none;
+                border: none;
+            }
+            .enrollment {
+                width: 234px;
+                height: 54px;
+                background-color: #8ad3c0;
+                color: white;
+                font-size: 16px;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                margin: 38px 0 0 48px;
+                cursor: pointer;
+            }
             /* footer */
             #footer { width: 100%; height: 150px; }
         </style>  
@@ -169,23 +190,30 @@
     <body style="overflow-x:hidden; overflow-y:auto;">
         <!-- Header -->
         <div class="header">
-            <a href="{% url 'home' %}">
+            <a href="{% url 'user_home' %}">
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
-            <div class="search">
-                <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
-            </div>
-            <div onclick="location.href='/search';" class="search_button">
-                <button type='submit' style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form method="POST" action="{% url 'search' %}">
+                <div>
+                    {% csrf_token %}
+                    <div class="search">
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+                    </div>
+                    <div onclick="location.href='/search';" class="search_button">
+                        <button type='submit' name='submit' value='search'
+                        style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>                
+                </div>
+                </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
                     <button class="dropdown-button">
-                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
+                        <a href="{% url 'user_home' %}" style="text-decoration: none; color: black;">홈</a>
                     </button>
                 </div>  
                 <div class="dropdown">
@@ -211,413 +239,423 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button onclick="location.href='/login';" class="dropdown-button">로그인</button>
+                    <button onclick="location.href='/mypage';" class="dropdown-button">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                        <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
+                    </button>
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
                 </div>               
             </div>
             <div style="margin-top: 80px; margin-left: 6px;">
-                <!-- Videos -->
-                <div class="videoContent">
-                    <div class="left_arrow_button" onclick="location.href='/videoplayer?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';">
-                        <i class="fas fa-arrow-left"></i>
-                        <label style="font-weight: bold;">스마트 운동모드 나가기</label>
-                    </div> 
-                    <!--====================================================youtube video=========================================-->
-                    <figure>
-                    <div class="video"> 
-                        <video id="youtube_video" controls name='media' width="752px" height="423px" crossorigin="anonymous" style="margin-top: 7px;">
-                            <source src={{video_address}} type="video/mp4">
-                        </video>
-                    </div>
-                    <!--====================================================camera=========================================-->
-                    <div class="camera">
-                        <p id='pose' style="position: absolute; margin: 22px 20px 0px 330px; font-size: 28px; font-weight: bold; color: #6c5ce7; z-index: 2;">Perfect!</p>
-                       
-
-
-                        <video id="webcam" width="465px" height="423px" autoplay style="display:none;"></video>
-                            <div style="position: relative;">
-                                <canvas id="webcam_canvas" width="465px" height="423px" style="position: absolute; margin-top: 7px;" ></canvas>
-                                <canvas id="skeleton_canvas" width="465px" height="423px" style="position: absolute;" ></canvas>
-                            </div>
-                            <script>
-                                var webcam_canvas = document.getElementById('webcam_canvas');
-                                var context = webcam_canvas.getContext('2d');
-                                var webcam_video = document.getElementById('webcam');
-                                let poses_youtube = [];
-                                let poses_webcam=[];
-
-                                var youtube_video  = document.getElementById('youtube_video');
-                                youtube_video.setAttribute('crossOrigin','Anonymous')
-
-                                var skeleton_canvas = document.getElementById('skeleton_canvas');
-                                var context_skeleton = skeleton_canvas.getContext('2d');
-
-                                if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                                    webcam_video.srcObject = stream;
-                                    webcam_video.play();
-                                });
-                                }
-                                //youtube posenet----------------------------------------------------
-                               
-
-                                // const poseNet_youtube = ml5.poseNet(youtube_video, 'single',modelReady_youtube);
-                                // poseNet_youtube.on("pose", gotPoses_youtube);
-
-                                // function gotPoses_youtube(results) {
-                                // poses_youtube = results;
-                                // }
-
-                                // function modelReady_youtube() {
-                                // console.log("model ready");
-                                // poseNet_youtube.singlePose(youtube_video);
-                                // }
-
-                                //webcam posenet----------------------------------------------------
-                                const poseNet_webcam = ml5.poseNet(webcam_video,'single', modelReady_webcam);
-                                poseNet_webcam.on("pose", gotPoses_webcam);
-                                //setTimeout(gotPoses_webcam,1000);
-                                function gotPoses_webcam(results) {
-                                  poses_webcam = results;
-                                  
-                                }
-
-                                function modelReady_webcam() {
-                                  console.log("model ready");
-                                  poseNet_webcam.singlePose(webcam_video);
-                                }
-                                //drawing--------------------------------------------------------------------
-                                function drawKeypoints() {
-                                for (let i = 0; i < poses_webcam.length; i += 1) {
-                                    for (let j = 0; j < poses_webcam[i].pose.keypoints.length; j += 1) {
-                                    let keypoint = poses_webcam[i].pose.keypoints[j];
-                                    // Only draw an ellipse is the pose probability is bigger than 0.2
-                                    if (keypoint.score > 0.2) {
-                                        context_skeleton.beginPath();
-                                        context_skeleton.arc(keypoint.position.x, keypoint.position.y, 3, 0, 2 * Math.PI);
-                                        context_skeleton.strokeStyle="#8ad3c0";
-                                        context_skeleton.fill();
-                                        context_skeleton.stroke();
-                                        //context.translate((imageObj.width+x)+x, 0);
-                                        //context.scale(-1, 1);
+                <div style="margin-top: 80px; margin-left: 6px;">
+                    <!-- Videos -->
+                    <div class="videoContent">
+                        <div class="left_arrow_button" onclick="location.href='/videoplayer?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';">
+                            <i class="fas fa-arrow-left"></i>
+                            <label style="font-weight: bold;">스마트 운동모드 나가기</label>
+                        </div> 
+                        <!--====================================================youtube video=========================================-->
+                        <figure>
+                        <div class="video"> 
+                            <video id="youtube_video" controls name='media' width="752px" height="423px" crossorigin="anonymous" style="margin-top: 7px;">
+                                <source src={{video_address}} type="video/mp4">
+                            </video>
+                        </div>
+                        <!--====================================================camera=========================================-->
+                        <div class="camera">
+                            <p id="pose" style="position: absolute; margin: 22px 20px 0px 400px; font-size: 30px; font-weight: bold; color: #6c5ce7; z-index: 2;"></p>
+                           
+                            <video id="webcam" width="466px" height="423px" autoplay style="display:none;"></video>
+                                <div style="position: relative;">
+                                    <canvas id="webcam_canvas" width="466px" height="423px" style="position: absolute; margin-top: 7px;" ></canvas>
+                                    <canvas id="skeleton_canvas" width="466px" height="423px" style="position: absolute;" ></canvas>
+                                </div>
+                                <script>
+                                    var webcam_canvas = document.getElementById('webcam_canvas');
+                                    var context = webcam_canvas.getContext('2d');
+                                    var webcam_video = document.getElementById('webcam');
+                                    let poses_youtube = [];
+                                    let poses_webcam=[];
+    
+                                    var youtube_video  = document.getElementById('youtube_video');
+                                    youtube_video.setAttribute('crossOrigin','Anonymous')
+    
+                                    var skeleton_canvas = document.getElementById('skeleton_canvas');
+                                    var context_skeleton = skeleton_canvas.getContext('2d');
+    
+                                    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                                        webcam_video.srcObject = stream;
+                                        webcam_video.play();
+                                    });
                                     }
+                                    //youtube posenet----------------------------------------------------
+                                   
+    
+                                    // const poseNet_youtube = ml5.poseNet(youtube_video, 'single',modelReady_youtube);
+                                    // poseNet_youtube.on("pose", gotPoses_youtube);
+    
+                                    // function gotPoses_youtube(results) {
+                                    // poses_youtube = results;
+                                    // }
+    
+                                    // function modelReady_youtube() {
+                                    // console.log("model ready");
+                                    // poseNet_youtube.singlePose(youtube_video);
+                                    // }
+    
+                                    //webcam posenet----------------------------------------------------
+                                    const poseNet_webcam = ml5.poseNet(webcam_video,'single', modelReady_webcam);
+                                    poseNet_webcam.on("pose", gotPoses_webcam);
+                                    //setTimeout(gotPoses_webcam,1000);
+                                    function gotPoses_webcam(results) {
+                                      poses_webcam = results;
+                                      
                                     }
-                                }
-                                }
-                                // A function to draw the skeletons
-                                function drawSkeleton() {
-                                // Loop through all the skeletons detected
-                                for (let i = 0; i < poses_webcam.length; i += 1) {
-                                    // For every skeleton, loop through all body connections
-                                    for (let j = 0; j < poses_webcam[i].skeleton.length; j += 1) {
-                                    let partA = poses_webcam[i].skeleton[j][0];
-                                    let partB = poses_webcam[i].skeleton[j][1];
-                                    
-                                        context_skeleton.beginPath();
-                                        context_skeleton.moveTo(partA.position.x, partA.position.y);
-                                        context_skeleton.lineTo(partB.position.x, partB.position.y);
-                                        context_skeleton.strokeStyle="#6c5ce7";
-                                        context_skeleton.lineWidth = 8;
-                                        context_skeleton.lineCap = 'round';
-                                        context_skeleton.stroke();
-                                    
+    
+                                    function modelReady_webcam() {
+                                      console.log("model ready");
+                                      poseNet_webcam.singlePose(webcam_video);
                                     }
-                                }
-                                }
-
-                                
-
-                                function drawCameraIntoCanvas() {
-                                    context.drawImage(webcam_video, 0, 0, 465, 423);
-                                    window.requestAnimationFrame(drawCameraIntoCanvas);
-                                    }
-                                drawCameraIntoCanvas()
-
-                                function drawSkeletonIntoCanvas() {
-                                    context_skeleton.clearRect(0, 0, 465, 423)
-                                    drawSkeleton();
-                                    drawKeypoints(); 
-                                    window.requestAnimationFrame(drawSkeletonIntoCanvas);
-                                }
-                                drawSkeletonIntoCanvas()
-
-                                
-                    //==========================================similarity========호출=======================================================================
-                                var cnt=0
-                                var avg_similarity=0
-                                var total_similarity=0
-                                var high_similarity=0
-                                var low_similarity=0
-
-                                youtube_video.addEventListener('play', function() {
-                                var $this = this; //cache
-                                (function similarity_loop() {
-                                    if (!$this.paused && !$this.ended) {
-                                    posenet.load().then(function loop(net) {
-                                    return Promise.all([
-                                        net.estimateSinglePose(youtube_video),
-                                        net.estimateSinglePose(webcam_video)
-                                    ])
-                                    }).then(function(poses){
-                                        //console.log('poses',poses)
-                                        var weightedDistance = poseSimilarity(poses[1], poses[0]);
-                                        weightedDistance=Math.round(weightedDistance);
-                                        document.getElementById("pose").innerHTML = weightedDistance;
-                                        cnt+=1;
-                                        total_similarity+=weightedDistance;
-                                        avg_similarity=total_similarity/cnt
-                                        high_similarity=Math.max(high_similarity,weightedDistance)
-                                        low_similarity=Math.min(low_similarity,weightedDistance)
-
-                                        
-                                    })
-                                    setTimeout(similarity_loop, 1000);
-                                    //console.log(youtube_video.currentTime);
-                                    } 
-                                })();
-                            })
-                                
-
-
-                        //==========================================similarity=================================================================================
-                        function poseSimilarity(pose1, pose2) {
-                            // check inputted poses
-                            if (!pose1 || !pose1.keypoints ||
-                                !pose2 || !pose2.keypoints) {
-                                throw new Error('[Bad pose parameters] Please check your pose objects again.');
-                            }
-                            if (pose1.keypoints.length === 0 || pose2.keypoints.length === 0) {
-                                throw new Error('[Bad pose parameters] Found pose object(s) with empty keypoint.');
-                            }
-                            if (pose1.keypoints.length !== pose2.keypoints.length) {
-                                throw new Error('[Bad pose parameters] The keypoint lengths of the two pose objects are not the same.');
-                            }
-                            // merge options
-                            var defaultOptions = {
-                                strategy: 'weightedDistanceMatching'
-                                //strategy: 'cosineDistanceMatching'
-                            };
-                            var overridenOptions = {
-                                strategy: 'weightedDistanceMatching'
-                                //strategy: 'cosineDistanceMatching'
-                            };
-
-                            for (var i = 0; i < pose1.keypoints.length; i++) {
-                                if (pose1.keypoints[i].score<0.2){
-                                    pose1.keypoints[i].score=0
-                                    console.log(i,pose1.keypoints[i].score)
-                                }
-                            }
-
-                            var options = Object.assign({}, defaultOptions, overridenOptions);
-                            var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
-                            var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];
-
-
-
-                            var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
-                            var percent=50 * (2 - wdm);
-                            return percent;
-
-                                    
-                        }
-
-                        function vectorizeAndNormalize(pose, options) {
-                            var _a = convertPoseToVectors(pose, options.customWeight), vectorPoseXY = _a[0], vecotPoseTransform = _a[1], vectorPoseConfidences = _a[2];
-                            vectorPoseXY = scaleAndTranslate(vectorPoseXY, vecotPoseTransform);
-                            vectorPoseXY = L2Normalization(vectorPoseXY);
-                            return [
-                                vectorPoseXY,
-                                vectorPoseConfidences
-                            ];
-                        }
-
-
-                        function convertPoseToVectors(pose, weightOption) {
-                            var vectorPoseXY = [];
-                            var translateX = Number.POSITIVE_INFINITY;
-                            var translateY = Number.POSITIVE_INFINITY;
-                            var scaler = Number.NEGATIVE_INFINITY;
-                            var vectorScoresSum = 0;
-                            var vectorScores = [];
-
-                            
-
-                            // get weightOption if exists
-                            var mode, scores;
-                            if (weightOption) {
-                                mode = weightOption.mode;
-                                if (!mode || typeof mode !== 'string')
-                                    throw new TypeError("[Bad customWeight option] A mode must be specified and should be either 'multiply', 'replace' or 'add'.");
-                                scores = weightOption.scores;
-                                if (typeof scores !== 'object' && !Array.isArray(scores))
-                                    throw new TypeError("[Bad customWeight option] scores must be Object or Number[].\n      Please refer the document https://github.com/freshsomebody/posenet-similarity to set it correctly.");
-                            }
-                            pose.keypoints.forEach(function (point, index) {
-                                var x = point.position.x;
-                                var y = point.position.y;
-                                vectorPoseXY.push(x, y);
-                                translateX = Math.min(translateX, x);
-                                translateY = Math.min(translateY, y);
-                                scaler = Math.max(scaler, Math.max(x, y));
-                                var score = point.score;
-                                // modify original score according to the weightOption
-                                if (mode && scores) {
-                                    var scoreModifier = false;
-                                    // try to get scores from the weightOption
-                                    if (scores[point.part] || scores[point.part] === 0)
-                                        scoreModifier = scores[point.part];
-                                    if (scores[index] || scores[index] === 0)
-                                        scoreModifier = scores[index];
-                                    // manipulate the original score
-                                    if ((scoreModifier || scoreModifier === 0) && typeof scoreModifier === 'number') {
-                                        switch (mode) {
-                                            case 'multiply':
-                                                score *= scoreModifier;
-                                                break;
-                                            case 'replace':
-                                                score = scoreModifier;
-                                                break;
-                                            case 'add':
-                                                score += scoreModifier;
-                                                break;
-                                            default:
-                                                throw new Error("[Bad customWeight option] A mode must be specified and should be either 'multiply', 'replace' or 'add'");
+                                    //drawing--------------------------------------------------------------------
+                                    function drawKeypoints() {
+                                    for (let i = 0; i < poses_webcam.length; i += 1) {
+                                        for (let j = 0; j < poses_webcam[i].pose.keypoints.length; j += 1) {
+                                        let keypoint = poses_webcam[i].pose.keypoints[j];
+                                        // Only draw an ellipse is the pose probability is bigger than 0.2
+                                        if (keypoint.score > 0.2) {
+                                            context.beginPath();
+                                            context.arc(keypoint.position.x, keypoint.position.y, 3, 0, 2 * Math.PI);
+                                            context.strokeStyle="#8ad3c0";
+                                            context.fill();
+                                            context.stroke();
+                                            //context.translate((imageObj.width+x)+x, 0);
+                                            //context.scale(-1, 1);
+                                        }
                                         }
                                     }
+                                    }
+                                    // A function to draw the skeletons
+                                    function drawSkeleton() {
+                                    // Loop through all the skeletons detected
+                                    for (let i = 0; i < poses_webcam.length; i += 1) {
+                                        // For every skeleton, loop through all body connections
+                                        for (let j = 0; j < poses_webcam[i].skeleton.length; j += 1) {
+                                        let partA = poses_webcam[i].skeleton[j][0];
+                                        let partB = poses_webcam[i].skeleton[j][1];
+                                        
+                                            context.beginPath();
+                                            context.moveTo(partA.position.x, partA.position.y);
+                                            context.lineTo(partB.position.x, partB.position.y);
+                                            context.strokeStyle="#6c5ce7";
+                                            context.lineWidth = 8;
+                                            context.lineCap = 'round';
+                                            context.stroke();
+                                        
+                                        }
+                                    }
+                                    }
+    
+                                    
+    
+                                    function drawCameraIntoCanvas() {
+                                        context.drawImage(webcam_video, 0, 0, 466, 423);
+                                        window.requestAnimationFrame(drawCameraIntoCanvas);
+                                        drawSkeleton();
+                                        drawKeypoints(); 
+                                        }
+                                    drawCameraIntoCanvas()
+    
+                                    // function drawSkeletonIntoCanvas() {
+                                    //     context_skeleton.clearRect(0, 0, 466, 423)
+                                        
+                                    //     window.requestAnimationFrame(drawSkeletonIntoCanvas);
+                                    // }
+                                    // drawSkeletonIntoCanvas()
+    
+                                    
+                        //==========================================similarity========호출=======================================================================
+                                    var cnt=0
+                                    var avg_similarity=0
+                                    var total_similarity=0
+                                    var high_similarity=0
+                                    var low_similarity=0
+    
+                                    youtube_video.addEventListener('play', function() {
+                                    var $this = this; //cache
+                                    (function similarity_loop() {
+                                        if (!$this.paused && !$this.ended) {
+                                        posenet.load().then(function loop(net) {
+                                        return Promise.all([
+                                            net.estimateSinglePose(youtube_video),
+                                            net.estimateSinglePose(webcam_video)
+                                        ])
+                                        }).then(function(poses){
+                                            //console.log('poses',poses)
+                                            var weightedDistance = poseSimilarity(poses[1], poses[0]);
+                                            weightedDistance=Math.round(weightedDistance);
+                                            document.getElementById("pose").innerHTML = weightedDistance;
+                                            cnt+=1;
+                                            total_similarity+=weightedDistance;
+                                            avg_similarity=total_similarity/cnt
+                                            high_similarity=Math.max(high_similarity,weightedDistance)
+                                            low_similarity=Math.min(low_similarity,weightedDistance)
+                                            
+                                            document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity);
+                                            
+                                        })
+                                        setTimeout(similarity_loop, 1000);
+                                        //console.log(youtube_video.currentTime);
+                                        } 
+                                    })();
+                                })
+                                    
+    
+    
+                            //==========================================similarity=================================================================================
+                            function poseSimilarity(pose1, pose2) {
+                                // check inputted poses
+                                if (!pose1 || !pose1.keypoints ||
+                                    !pose2 || !pose2.keypoints) {
+                                    throw new Error('[Bad pose parameters] Please check your pose objects again.');
                                 }
-                                vectorScoresSum += score;
-                                vectorScores.push(score);
-                            });
-                            vectorScores.push(vectorScoresSum);
-                            return [
-                                vectorPoseXY,
-                                [translateX / scaler, translateY / scaler, scaler],
-                                vectorScores
-                            ];
-                        }
-
-
-                        function scaleAndTranslate(vectorPoseXY, transformValues) {
-                            var transX = transformValues[0], transY = transformValues[1], scaler = transformValues[2];
-                            return vectorPoseXY.map(function (position, index) {
-                                return (index % 2 === 0 ?
-                                    position / scaler - transX :
-                                    position / scaler - transY);
-                            });
-                        }
-
-                        function L2Normalization(vectorPoseXY) {
-                            var absVectorPoseXY = 0;
-                            vectorPoseXY.forEach(function (position) {
-                                absVectorPoseXY += Math.pow(position, 2);
-                            });
-                            absVectorPoseXY = Math.sqrt(absVectorPoseXY);
-                            return vectorPoseXY.map(function (position) {
-                                return position / absVectorPoseXY;
-                            });
-                        }
-
-
-                        function weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorConfidences) {
-                            console.log('실행되면 안됨')
-                            var summation1 = 1 / vectorConfidences[vectorConfidences.length - 1];
-                            var summation2 = 0;
-                            for (var i = 0; i < vectorPose1XY.length; i++) {
-                                var confIndex = Math.floor(i / 2);
-                                summation2 += vectorConfidences[confIndex] * Math.abs(vectorPose1XY[i] - vectorPose2XY[i]);
+                                if (pose1.keypoints.length === 0 || pose2.keypoints.length === 0) {
+                                    throw new Error('[Bad pose parameters] Found pose object(s) with empty keypoint.');
+                                }
+                                if (pose1.keypoints.length !== pose2.keypoints.length) {
+                                    throw new Error('[Bad pose parameters] The keypoint lengths of the two pose objects are not the same.');
+                                }
+                                // merge options
+                                var defaultOptions = {
+                                    strategy: 'weightedDistanceMatching'
+                                    //strategy: 'cosineDistanceMatching'
+                                };
+                                var overridenOptions = {
+                                    strategy: 'weightedDistanceMatching'
+                                    //strategy: 'cosineDistanceMatching'
+                                };
+                                var options = Object.assign({}, defaultOptions, overridenOptions);
+                                var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
+                                var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];
+    
+    
+    
+                                var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
+                                var percent=50 * (2 - wdm);
+                                return percent;
+    
+                                        
                             }
-                            return summation1 * summation2;
-                        }
-                        //==========================================similarity=============cosine====================================================================
-                        function cosineSimilarity(vectorPose1XY, vectorPose2XY) {
-                            var v1DotV2 = 0;
-                            var absV1 = 0;
-                            var absV2 = 0;
-                            vectorPose1XY.forEach(function (v1, index) {
-                                var v2 = vectorPose2XY[index];
-                                v1DotV2 += v1 * v2;
-                                absV1 += v1 * v1;
-                                absV2 += v2 * v2;
-                            });
-                            absV1 = Math.sqrt(absV1);
-                            absV2 = Math.sqrt(absV2);
-                            return v1DotV2 / (absV1 * absV2);
-                        }
-                        function cosineDistanceMatching(vectorPose1XY, vectorPose2XY) {
-                        //console.log('실행되야됨')
-                            var cosSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
-                            return Math.sqrt(2 * (1 - cosSimilarity));
-                        }
-                    </script>
-                    </div>
-                </div>
-                
-                <div style="display: inline-block;">
-                    
-                        <div class="player">
-                            <div class="progress">
-                            <div class="progress__filled"></div>
+    
+                            function vectorizeAndNormalize(pose, options) {
+                                var _a = convertPoseToVectors(pose, options.customWeight), vectorPoseXY = _a[0], vecotPoseTransform = _a[1], vectorPoseConfidences = _a[2];
+                                vectorPoseXY = scaleAndTranslate(vectorPoseXY, vecotPoseTransform);
+                                vectorPoseXY = L2Normalization(vectorPoseXY);
+                                return [
+                                    vectorPoseXY,
+                                    vectorPoseConfidences
+                                ];
+                            }
+    
+    
+                            function convertPoseToVectors(pose, weightOption) {
+                                var vectorPoseXY = [];
+                                var translateX = Number.POSITIVE_INFINITY;
+                                var translateY = Number.POSITIVE_INFINITY;
+                                var scaler = Number.NEGATIVE_INFINITY;
+                                var vectorScoresSum = 0;
+                                var vectorScores = [];
+    
+                                
+    
+                                // get weightOption if exists
+                                var mode, scores;
+                                if (weightOption) {
+                                    mode = weightOption.mode;
+                                    if (!mode || typeof mode !== 'string')
+                                        throw new TypeError("[Bad customWeight option] A mode must be specified and should be either 'multiply', 'replace' or 'add'.");
+                                    scores = weightOption.scores;
+                                    if (typeof scores !== 'object' && !Array.isArray(scores))
+                                        throw new TypeError("[Bad customWeight option] scores must be Object or Number[].\n      Please refer the document https://github.com/freshsomebody/posenet-similarity to set it correctly.");
+                                }
+                                pose.keypoints.forEach(function (point, index) {
+                                    var x = point.position.x;
+                                    var y = point.position.y;
+                                    vectorPoseXY.push(x, y);
+                                    translateX = Math.min(translateX, x);
+                                    translateY = Math.min(translateY, y);
+                                    scaler = Math.max(scaler, Math.max(x, y));
+                                    var score = point.score;
+                                    // modify original score according to the weightOption
+                                    if (mode && scores) {
+                                        var scoreModifier = false;
+                                        // try to get scores from the weightOption
+                                        if (scores[point.part] || scores[point.part] === 0)
+                                            scoreModifier = scores[point.part];
+                                        if (scores[index] || scores[index] === 0)
+                                            scoreModifier = scores[index];
+                                        // manipulate the original score
+                                        if ((scoreModifier || scoreModifier === 0) && typeof scoreModifier === 'number') {
+                                            switch (mode) {
+                                                case 'multiply':
+                                                    score *= scoreModifier;
+                                                    break;
+                                                case 'replace':
+                                                    score = scoreModifier;
+                                                    break;
+                                                case 'add':
+                                                    score += scoreModifier;
+                                                    break;
+                                                default:
+                                                    throw new Error("[Bad customWeight option] A mode must be specified and should be either 'multiply', 'replace' or 'add'");
+                                            }
+                                        }
+                                    }
+                                    vectorScoresSum += score;
+                                    vectorScores.push(score);
+                                });
+                                vectorScores.push(vectorScoresSum);
+                                return [
+                                    vectorPoseXY,
+                                    [translateX / scaler, translateY / scaler, scaler],
+                                    vectorScores
+                                ];
+                            }
+    
+    
+                            function scaleAndTranslate(vectorPoseXY, transformValues) {
+                                var transX = transformValues[0], transY = transformValues[1], scaler = transformValues[2];
+                                return vectorPoseXY.map(function (position, index) {
+                                    return (index % 2 === 0 ?
+                                        position / scaler - transX :
+                                        position / scaler - transY);
+                                });
+                            }
+    
+                            function L2Normalization(vectorPoseXY) {
+                                var absVectorPoseXY = 0;
+                                vectorPoseXY.forEach(function (position) {
+                                    absVectorPoseXY += Math.pow(position, 2);
+                                });
+                                absVectorPoseXY = Math.sqrt(absVectorPoseXY);
+                                return vectorPoseXY.map(function (position) {
+                                    return position / absVectorPoseXY;
+                                });
+                            }
+    
+    
+                            function weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorConfidences) {
+                                console.log('실행되면 안됨')
+                                var summation1 = 1 / vectorConfidences[vectorConfidences.length - 1];
+                                var summation2 = 0;
+                                for (var i = 0; i < vectorPose1XY.length; i++) {
+                                    var confIndex = Math.floor(i / 2);
+                                    summation2 += vectorConfidences[confIndex] * Math.abs(vectorPose1XY[i] - vectorPose2XY[i]);
+                                }
+                                return summation1 * summation2;
+                            }
+                            //==========================================similarity=============cosine====================================================================
+                            function cosineSimilarity(vectorPose1XY, vectorPose2XY) {
+                                var v1DotV2 = 0;
+                                var absV1 = 0;
+                                var absV2 = 0;
+                                vectorPose1XY.forEach(function (v1, index) {
+                                    var v2 = vectorPose2XY[index];
+                                    v1DotV2 += v1 * v2;
+                                    absV1 += v1 * v1;
+                                    absV2 += v2 * v2;
+                                });
+                                absV1 = Math.sqrt(absV1);
+                                absV2 = Math.sqrt(absV2);
+                                return v1DotV2 / (absV1 * absV2);
+                            }
+                            function cosineDistanceMatching(vectorPose1XY, vectorPose2XY) {
+                            //console.log('실행되야됨')
+                                var cosSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
+                                return Math.sqrt(2 * (1 - cosSimilarity));
+                            }
+                        </script>
                         </div>
-                    </figure>
-                    <div class="Bar"> 
-                        <div class="playBar"></div>
                     </div>
-                    <script>
-                        const player = document.querySelector('.player');
-                        const progress = player.querySelector('.progress');
-                        const progressBar = player.querySelector('.progress__filled');
-                        function handleProgress() {
-                        const percent = (youtube_video.currentTime / youtube_video.duration) * 100;
-                        progressBar.style.flexBasis = `${percent}%`;
-                        }
-                        function scrub(e) {
-                        const scrubTime = (e.offsetX / progress.offsetWidth) * youtube_video.duration;
-                        youtube_video.currentTime = scrubTime;
-                        }
-                        /* Hook up the event listeners */
-                        youtube_video.addEventListener('timeupdate', handleProgress);
-                        let mousedown = false;
-                        progress.addEventListener('click', scrub);
-                        progress.addEventListener('mousemove', e => {
-                        mousedown && scrub(e);
-                        });
-                        progress.addEventListener('mousedown', () => mousedown = true);
-                        progress.addEventListener('mouseup', () => mousedown = false);
-                    </script>
-
+                    
+                    <div style="display: inline-block;">
+                        
+                            <div class="player">
+                                <div class="progress">
+                                <div class="progress__filled"></div>
+                            </div>
+                        </figure>
+                        <div class="Bar"> 
+                            <div class="playBar"></div>
+                        </div>
+                        <script>
+                            const player = document.querySelector('.player');
+                            const progress = player.querySelector('.progress');
+                            const progressBar = player.querySelector('.progress__filled');
+                            function handleProgress() {
+                            const percent = (youtube_video.currentTime / youtube_video.duration) * 100;
+                            progressBar.style.flexBasis = `${percent}%`;
+                            }
+                            function scrub(e) {
+                            const scrubTime = (e.offsetX / progress.offsetWidth) * youtube_video.duration;
+                            youtube_video.currentTime = scrubTime;
+                            }
+                            /* Hook up the event listeners */
+                            youtube_video.addEventListener('timeupdate', handleProgress);
+                            let mousedown = false;
+                            progress.addEventListener('click', scrub);
+                            progress.addEventListener('mousemove', e => {
+                            mousedown && scrub(e);
+                            });
+                            progress.addEventListener('mousedown', () => mousedown = true);
+                            progress.addEventListener('mouseup', () => mousedown = false);
+                        </script>
                     <div class="videoInfo">
-                        <button class="ai_fitner" style="cursor: pointer;">
-                            <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 16%;"> 유사도 측정 시작 </p>
-                        </button>
-                        <button id="myBtn"
-                        style="cursor: pointer; position: absolute; width: 170px; height: 44px; border-radius: 30px; background-color: #6c5ce7; margin: 20px 140px 0px 1050px; border: none;">
-                            <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 0;"> 랭킹 등록 </p>
-                        </button>
-                        <p style="width: 330px; font-size: 13px; color: #8ad3c0; margin: 0;"> #cardioworkout #층간소음없는유산소 #전신유산소운동 </p>
+                        <div>
+                            <button class="ai_fitner" style="cursor: pointer;" id="myBtn">
+                                <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 10%;"> 운동 끝내기 </p>
+                            </button>
+                            <!-- <button id="myBtn"
+                            style="cursor: pointer; position: absolute; width: 170px; height: 44px; border-radius: 30px; background-color: #6c5ce7; margin: 20px 140px 0px 1050px; border: none;">
+                                <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 0;"> 랭킹 등록 </p>
+                            </button>                             -->
+                        </div>
+                        <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
                         <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
-                        <p style="width: 170px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} · {{publishedAt}} </p>
+                        <p style="width: 300px; font-size: 14px; color: #8a8a8a; margin: 10px 0 0 0;"> 조회수 {{viewCount}} 회 · 날짜 {{publishedAt}} </p>
                     </div>
                 </div>   
             </div>
             <div id="footer"></div>
             <!-- The Modal -->
             <div id="myModal" class="modal">
-                <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <div>
-                        <p style="font-weight: bold; margin-top: -1px;">랭킹 등록</p>
-                        <div style="float: left;">
-                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 22px 0 0 25px;">이름</p>
+                    <div style="margin-left: 10px;">
+                        <p style="font-weight: bold; margin-top: -1px;">최종 유사도 결과</p>
+                        <p style="font-size: 18px; font-weight: 550; margin: 33px 0 0 36px;">바른 자세에 가까워지고 있어요!</p>
+                        <p style="font-size: 16px; margin: 23px 0 0 125px;">평균 유사도</p>
+                        <p id=avg_similarity style="font-size: 50px; font-weight: bold; margin: 3px 0 0 125px;">0%</p>
+                        <img src="../static/ranking_image.png" width="125px" height="135px" style="margin: -100px 0 0 214px; float: left;">
+                        <form method = "POST" action = ".">
+                            {% csrf_token %}
+                        <div style="float: left; margin-left: 15px; margin-top: -8px;">
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
                             <div class="userInput">
-                                <input type="text" 
+                                <input type="text"
                                 class="form-control"
                                 name = "username"
                                 id="username" 
                                 placeholder="">                                
                             </div>
-                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 22px 0 0 25px;">전화번호</p>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">전화번호</p>
                             <div class="userInput">
                                 <input type="text" 
                                 class="form-control"
@@ -625,34 +663,54 @@
                                 id="userphone" 
                                 placeholder="">
                             </div>
+                            <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">유사도</p>
+                            <div class="userInput">
+                                <input type="text" 
+                                class="form-control"
+                                name = "similarity"
+                                id="similarity" 
+                                placeholder="">
+                            </div>
                         </div>
-                        <div style="cursor: pointer; padding-top: 5px; margin: 200px 0 0 35px; width: 224px; height: 54px; border-radius: 20px; background-color: #8ad3c0;">
-                            <p style="font-size: 14px; color: white; font-weight: bold; margin: 15px 0 0 80px">등록하기</p>
+                        <div>
+                            <button class="submit" type="submit">등록하기</button>
                         </div>
+                        </form>
+                    </div>
                     </div>
                 </div>
+            </div>
                 <script>
                     // Get the modal
-                    var modal = document.getElementById("myModal");
+                    var modal = document.getElementById("myModal"); // 랭킹 등록 모달창
+
                     // Get the button that opens the modal
-                    var btn = document.getElementById("myBtn");
+                    var btn = document.getElementById("myBtn"); // 랭킹 등록 모달창
+
                     // Get the <span> element that closes the modal
                     var span = document.getElementsByClassName("close")[0];
                     // When the user clicks the button, open the modal 
-                    btn.onclick = function() {
-                    modal.style.display = "block";
+
+                    btn.onclick = smart_end;
+                    function smart_end() {
+                        youtube_video.pause();
+                        modal.style.display = "block";
                     }
+                    youtube_video.onended=smart_end;
                     // When the user clicks on <span> (x), close the modal
                     span.onclick = function() {
-                    modal.style.display = "none";
+                        modal.style.display = "none";
                     }
                     // When the user clicks anywhere outside of the modal, close it
+
+
+                    
                     window.onclick = function(event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
-                    }
+                        }
                     }
                 </script>
         </div>
-    </body>
+    <body>
 </html>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,13 +49,15 @@
                 text-decoration: none;
                 text-align: center;
                 display: block;
+                font-size: 16px;
             }
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
             #tab0 { margin-left: 778px; }
             #tab1 { margin-right: 10px; }
-            #tab2 { margin-left: 58px;; }
+            #tab2 { margin-left: 58px; }
+            #tab3 { margin-left: 50px; }
             /* Top Title */
             #top_title {
                 margin: 192px 0 0 130px;
@@ -156,7 +159,15 @@
                         <i class="fas fa-user-circle fa-lg"></i>
                         <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
                     </button>
-                </div>               
+                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                            <a href="#" >Fitner님</a>
+                            <a href="#" >프로필 수정</a>
+                            <a href="{% url 'mypage' %}">마이페이지</a>
+                            <a href="{% url 'home' %}"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            >로그아웃</a>
+                        </div>
+                </div>
             </div>
             <div style="margin-left: 90px;">
                 <!-- Logo -->
@@ -165,14 +176,21 @@
                 </div>
                 
                 <!-- Search Bar -->
-                <div class="search">
-                    <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 336px; height: 54px; border: 0px; padding-left: 20px; font-size: 16px; border-radius: 50px; background-color: #f5f5f5;">
-                </div>
-                <div class="search_button">
-                    <button onclick="location.href='/search';" type='submit' style="width: 72px; height: 54px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                <form method="POST" action="{% url 'search' %}">
+                    <div>
+                        {% csrf_token %}
+                        <div class="search">
+                            <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                            style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+                        </div>
+                        <div onclick="location.href='/search';" class="search_button">
+                            <button type='submit' name='submit' value='search'
+                            style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>                
+                    </div>
+                    </form>
                 <!-- Top Title -->
                 <div>
                     <div style="width: 10px; height: 10px; position: absolute; margin-left: 505px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>
@@ -197,7 +215,7 @@
                     <div style="margin-left: 60px;">
                         <div onclick="location.href='/ytbchannel';"
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                                    margin: 461px 0 0 140px;">
+                        margin: 461px 0 0 140px; outline: none;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
                             <img src="../static/hipeuddeume.jpg" width=74px height=74px style="border-radius: 50px">
                             </div>
@@ -208,7 +226,7 @@
                         </div>
                         <!-- 2th YouTuber -->
                         <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                                    margin: 461px 0 0 355px;">
+                                    margin: 461px 0 0 355px; outline: none;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
                                 <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                             </div>
@@ -219,7 +237,7 @@
                         </div>
                         <!-- 3th YouTuber -->
                         <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                                    margin: 461px 0 0 570px;">
+                                    margin: 461px 0 0 570px; outline: none;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
                                 <img src="../static/leejieun.jpg" width=74px height=74px style="border-radius: 50px">
                             </div>
@@ -230,7 +248,7 @@
                         </div>
                         <!-- 4th YouTuber -->
                         <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                                    margin: 461px 0 0 785px;">
+                                    margin: 461px 0 0 785px; outline: none;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
                                 <img src="../static/ballettherafit.jpg" width=74px height=74px style="border-radius: 50px">
                             </div>
@@ -241,7 +259,7 @@
                         </div>
                         <!-- 5th YouTuber -->
                         <div style="position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
-                                    margin: 461px 0 0 1000px;">
+                                    margin: 461px 0 0 1000px; outline: none;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
                                 <img src="../static/pliates.jpg" width=74px height=74px style="border-radius: 50px">
                             </div>
