@@ -131,7 +131,7 @@ def videoplayer(request):
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
-        print(channel_r.json())
+        #print(channel_r.json())
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
         rankings_values=list(rankings.values())
@@ -142,7 +142,7 @@ def videoplayer(request):
             rankings_values[i]["id"]=num
             num+=1
         
-        print(rankings_values)
+        #print(rankings_values)
         data={ 'video_address': best.url,
                 'url':url['cmd'],
                 'rankings':rankings_values,
@@ -165,6 +165,7 @@ def ytbchannel(request):
         channel_id=data['channelId']
         channel_url='https://youtube.googleapis.com/youtube/v3/channels'
         playlist_url='https://www.googleapis.com/youtube/v3/playlistItems'
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
 
         channel_params={
             'key' : settings.YOUTUBE_DATA_API_KEY,
@@ -183,8 +184,27 @@ def ytbchannel(request):
             'maxResults':16
         }
 
+    
         playlist_r=requests.get(playlist_url, params=playlist_params)
         playlist_results=playlist_r.json()['items']
+
+        video_ids = []
+        for result in playlist_results:
+            video_ids.append(result['contentDetails']['videoId'])
+
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'statistics',
+            'id' : ','.join(video_ids),
+            'maxResults' : 1
+        }
+
+        video_r = requests.get(video_url, params=video_params)
+
+        video_results = video_r.json()['items']
+
+
 
         for result in playlist_results:
             pre_publishedAt=result["snippet"]['publishedAt']
@@ -197,21 +217,26 @@ def ytbchannel(request):
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
                 # 'publishedAt' : result['snippet']['publishedAt'],
-
-
                 'publishedAt':publishedAt_result.group(0),
-                #'viewCount' : result['statistics']['viewCount'],
                 #'channel_id':result['snippet']['channelId']
+                
             }
 
             videos.append(video_data)
+
+        viewCounts=[]
+        for result in video_results:
+            viewCounts.append(result['statistics']['viewCount'])
+
+        for i in range(0,len(viewCounts)):
+            videos[i]["viewCount"]=viewCounts[i]
 
         context={
                 'channelTitle':channel_result['snippet']['title'],
                 'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
                 'channelSubscriber':channel_result['statistics']['subscriberCount'],
                 'channelId':channel_id,
-                'videos':videos
+                'videos':videos,
              }
 
 
@@ -276,7 +301,6 @@ def search(request):
             }
 
             videos.append(video_data)
-    print(result['snippet']['channelId'])
     context = {
         'videos' : videos,
     }
