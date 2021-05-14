@@ -20,7 +20,7 @@ from django.views.decorators.http import condition
 def home(request):
     return render(request, 'home.html')
 
-def day(request):
+def day(request):    
     return render(request, 'day.html')
 
 def week(request):

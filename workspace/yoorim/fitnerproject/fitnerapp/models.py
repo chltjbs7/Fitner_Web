@@ -26,8 +26,8 @@ class Ranking(models.Model):
     class Meta:
         db_table = 'ranking'
 
-class Statistics(models.Model):
-    num = models.CharField(max_length=10,verbose_name = '순서')
+class Data(models.Model):
+    videoId = models.CharField(max_length=10,verbose_name = '영상 Id')
     high = models.CharField(max_length=10,verbose_name = '최고 유사도')
     low = models.CharField(max_length=10,verbose_name = '최저 유사도')
     average = models.CharField(max_length=10,verbose_name = '평균 유사도')
@@ -37,10 +37,11 @@ class Statistics(models.Model):
     high_end_section = models.CharField(max_length=64,verbose_name = '최고 유사도 영상 끝 구간')
     low_start_section = models.CharField(max_length=64,verbose_name = '최저 유사도 영상 시작 구간')
     low_end_section = models.CharField(max_length=64,verbose_name = '최저 유사도 영상 끝 구간')
+    total_time = models.CharField(max_length=64,verbose_name = '운동시간')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
 
     def __str__(self):
-        return self.num
+        return self.videoId
  
     class Meta:
-        db_table = 'statistics'
+        db_table = 'data'

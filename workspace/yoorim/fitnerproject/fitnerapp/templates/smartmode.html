@@ -405,6 +405,20 @@
                             function input(){
                                 document.getElementById("similarity").value = avg_similarity;
                             }
+
+                            function get_message() {
+                                similarity = Math.round(avg_similarity)
+
+                                if (similarity > 70) {
+                                    document.getElementById("message").innerHTML = "아주 정확해요! 완벽에 가까운 자세인걸요?"
+                                }
+                                else if (70 >= similarity && similarity > 40) {
+                                    document.getElementById("message").innerHTML = "바른 자세에 가까워지고 있어요!"
+                                }
+                                else {
+                                    document.getElementById("message").innerHTML = "조금 더 자세에 주의를 기울여주세요!"
+                                }
+                            }
     
                             //==========================================similarity=================================================================================
                             function poseSimilarity(pose1, pose2) {
@@ -606,7 +620,7 @@
                         </script>
                     <div class="videoInfo">
                         <div>
-                            <button class="ai_fitner" style="cursor: pointer;" id="myBtn">
+                            <button class="ai_fitner" style="cursor: pointer;" id="myBtn" onclick='get_message()'>
                                 <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 10%;"> 운동 끝내기 </p>
                             </button>
                             <!-- <button id="myBtn"
