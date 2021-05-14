@@ -374,9 +374,16 @@
                                     var total_similarity=0
                                     var high_similarity=0
                                     var low_similarity=0
-    
+                                    var ex_time=0
+                                    
+                                    function count_time(){
+                                        ex_time+=1
+                                    }
+
                                     youtube_video.addEventListener('play', function() {
                                     var $this = this; //cache
+                                    
+                                    
                                     (function similarity_loop() {
                                         if (!$this.paused && !$this.ended) {
                                         posenet.load().then(function loop(net) {
@@ -398,6 +405,8 @@
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
                                         setTimeout(similarity_loop, 1000);
+                                        setTimeout(count_time, 1000);
+                                        console.log(ex_time)
                                         //console.log(youtube_video.currentTime);
                                         } 
                                     })();
