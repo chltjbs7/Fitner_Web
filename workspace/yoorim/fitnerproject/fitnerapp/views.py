@@ -70,7 +70,6 @@ def wholebody(request):
         r = requests.get(video_url, params=video_params)
 
         results = r.json()['items']
-
         
         for result in results:
             video_data = {
