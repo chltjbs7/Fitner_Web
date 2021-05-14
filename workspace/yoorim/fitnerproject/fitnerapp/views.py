@@ -91,7 +91,7 @@ def videoplayer(request):
         video = pafy.new(url['cmd'])
         channel_id=url['channel']
 
-        rankings = Ranking.objects.all().order_by('-similarity')
+        rankings = Ranking.objects.all().order_by('-similarity')[:5]
 
         best = video.getbest(preftype="mp4")
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
@@ -159,7 +159,6 @@ def user_home(request):
 
 def search(request):
     videos = []
-
     if request.method == 'POST':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'

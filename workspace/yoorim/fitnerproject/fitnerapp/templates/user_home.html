@@ -174,17 +174,22 @@
                 <div style="float: left; position: absolute;">
                     <img src="../static/logo.png" width="160px" height="57px" style="margin: 115px 0 0 130px; float: left;">
                 </div>
-                
-                <!-- Search Bar -->
-                <div class="search">
-                    <input type="text" placeholder="어떤 운동을 하고 싶나요?"
-                    style="width: 336px; height: 54px; border: 0px; padding: 3px 0 0 20px; font-size: 16px; border-radius: 50px; background-color: #f5f5f5;">
-                </div>
-                <div class="search_button">
-                    <button onclick="location.href='/search';" type='submit' style="width: 72px; height: 54px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                <!--Search Bar-->
+                <form method="POST" action="{% url 'search' %}">
+                    <div>
+                        {% csrf_token %}
+                        <div class="search">
+                            <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                            style="width: 336px; height: 54px; border: 0px; padding: 3px 0 0 20px; font-size: 16px; border-radius: 50px; background-color: #f5f5f5;">
+                        </div>
+                        <div onclick="location.href='/search';" class="search_button">
+                            <button type='submit' name='submit' value='search'
+                            style="width: 72px; height: 54px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>                
+                    </div>
+                </form>
                 <!-- Top Title -->
                 <div>
                     <div style="width: 10px; height: 10px; position: absolute; margin-left: 505px; margin-top: 182px; border-radius: 10px; background-color: #71d5bf;"></div>

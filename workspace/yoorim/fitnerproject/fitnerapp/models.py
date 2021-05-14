@@ -26,19 +26,21 @@ class Ranking(models.Model):
     class Meta:
         db_table = 'ranking'
 
-# class Statistics(models.Model):
-#     num = models.CharField(max_length=256,verbose_name = '순서')
-#     high = models.CharField(max_length=10,verbose_name = '최고 유사도')
-#     low = models.CharField(max_length=10,verbose_name = '최저 유사도')
-#     average = models.CharField(max_length=10,verbose_name = '평균 유사도')
-#     image1 = models.CharField(max_length=256,verbose_name = '이미지 파일 경로1')
-#     image2 = models.CharField(max_length=256,verbose_name = '이미지 파일 경로2')
-#     high_section = models.CharField(max_length=64,verbose_name = '최고 유사도 영상 구간')
-#     low_section = models.CharField(max_length=64,verbose_name = '최저 유사도 영상 구간')
-#     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간') 
+class Statistics(models.Model):
+    num = models.CharField(max_length=10,verbose_name = '순서')
+    high = models.CharField(max_length=10,verbose_name = '최고 유사도')
+    low = models.CharField(max_length=10,verbose_name = '최저 유사도')
+    average = models.CharField(max_length=10,verbose_name = '평균 유사도')
+    high_img_route = models.CharField(max_length=256,verbose_name = '최고 유사도 이미지 경로')
+    low_img_route = models.CharField(max_length=256,verbose_name = '최저 유사도 이미지 경로')
+    high_start_section = models.CharField(max_length=64,verbose_name = '최고 유사도 영상 시작 구간')
+    high_end_section = models.CharField(max_length=64,verbose_name = '최고 유사도 영상 끝 구간')
+    low_start_section = models.CharField(max_length=64,verbose_name = '최저 유사도 영상 시작 구간')
+    low_end_section = models.CharField(max_length=64,verbose_name = '최저 유사도 영상 끝 구간')
+    registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
 
-#     def __str__(self):
-#         return self.num
+    def __str__(self):
+        return self.num
  
-#     class Meta:
-#         db_table = 'statistics'
+    class Meta:
+        db_table = 'statistics'

@@ -106,9 +106,9 @@
             .detail_tap { margin-right: 80px; }
             /* Graph */
             .left_arrow_button { margin: 254px 0 0 370px; }
-            .fa-arrow-left { color: #adadad; padding-top: 3px;}
-            .right_arrow_button { margin: 254px 0 0 310px; }
-            .fa-arrow-right { color: #adadad; padding-top: 3px;}
+            .fa-arrow-left { color: #adadad; padding-top: 3px; cursor: pointer; }
+            .right_arrow_button { margin: 254px 0 0 243px; }
+            .fa-arrow-right { color: #adadad; padding-top: 3px; cursor: pointer; }
             #graph_container { width: 800px; height: 400px; margin-top: 500px; margin-left: 355px; }
             /* Thumnail */
             .box {
@@ -200,14 +200,21 @@
                 <img src="../static/logo.png" width="106px" height="38px" style="margin: 11px 0 0 138px; float: left;">
             </a>
             <!-- Search Bar -->
-            <div class="search">
-                <input type="text" placeholder="어떤 운동을 하고 싶나요?" style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
-            </div>
-            <div onclick="location.href='/search';" class="search_button">
-                <button type='submit' style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form method="POST" action="{% url 'search' %}">
+                <div>
+                    {% csrf_token %}
+                    <div class="search">
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
+                    </div>
+                    <div onclick="location.href='/search';" class="search_button">
+                        <button type='submit' name='submit' value='search'
+                        style="width: 54px; height: 40px; border-radius: 50px; background-color: #6c5ce7; border: 0px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>                
+                </div>
+            </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
@@ -261,8 +268,8 @@
             <div class="second_container">
                 <ul>
                   <li class="detail_tap"><a href="{% url 'day' %}"><b>일</b></a></li>
-                  <li class="detail_tap"><a href="#"><b>주</b></a></li>
-                  <li class="detail_tap"><a href="#"><b>월</b></a></li>
+                  <li class="detail_tap"><a href="{% url 'week' %}"><b>주</b></a></li>
+                  <li class="detail_tap"><a href="{% url 'month' %}"><b>월</b></a></li>
                 </ul>
               </div>
             <!--Exercise Feedback-->
@@ -297,7 +304,27 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p style="font-size: 14px; line-height: 1; color: #9b90ee; margin: 259px 0 0 320px;">3월 28일 일요일</p>
+                <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;"></p>
+                <script>
+                    Date.prototype.getWeek = function(start)
+                    {
+                            //Calcing the starting point
+                        start = start || 0;
+                        var today = new Date(this.setHours(0, 0, 0, 0));
+                        var day = today.getDay() - start;
+                        var date = today.getDate() - day;
+
+                            // Grabbing Start/End Dates
+                        var StartDate = new Date(today.setDate(date));
+                        var EndDate = new Date(today.setDate(date + 6));
+                        return [StartDate, EndDate];
+                    }
+
+                    // test code
+                    var Dates = new Date().getWeek();
+
+                    document.getElementById('currentWeek').innerHTML = (Dates[0].toLocaleDateString() + ' ~ '+ Dates[1].toLocaleDateString());
+                </script>
                 <div class="right_arrow_button">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
