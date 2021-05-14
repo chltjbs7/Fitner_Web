@@ -23,9 +23,10 @@ def home(request):
     return render(request, 'home.html')
 
 def day(request):
+    datas = Data.objects.all()
+    context = {'datas':datas}
 
-
-    return render(request, 'day.html')
+    return render(request, 'day.html', context)
 
 def week(request):
     return render(request, 'week.html')
