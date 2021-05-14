@@ -219,7 +219,7 @@
                         </button>
                     </div>                
                 </div>
-                </form>
+            </form>
             <!-- Drop Down Menu -->
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
@@ -303,16 +303,16 @@
                 <!-- Ranking -->
                 <div class="graph">
                     <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
-                    <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 12px 30px; " class="graph_title"> 순위 </p>
-                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 10px 0px; " class="graph_title"> 이름 </p>
-                    <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 10px; " class="graph_title"> 유사도 비율 </p>
+                    <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 0 30px; " class="graph_title"> 순위 </p>
+                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -8px; " class="graph_title"> 이름 </p>
+                    <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 0 0 10px; " class="graph_title"> 유사도 비율 </p>
                 </div>
 
                 <div class="graph_bgr">
                     {% for ranking in rankings %}
                     <div class="rank">
                         <div id="list" style="background-color: #6c5ce7">
-                            <p style=" font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px; "></p>
+                            <p id="rank" style="font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px;">{{ranking.id}}</p>
                         </div>
                         <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> {{ranking.username}} </p>
                         <div class="ratio">

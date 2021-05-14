@@ -20,7 +20,7 @@ from django.views.decorators.http import condition
 def home(request):
     return render(request, 'home.html')
 
-def day(request):
+def day(request):    
     return render(request, 'day.html')
 
 def week(request):
@@ -131,11 +131,21 @@ def videoplayer(request):
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
+        print(channel_r.json())
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
+        rankings_values=list(rankings.values())
+
+        
+        num=1
+        for i in range(0,len(rankings_values)):
+            rankings_values[i]["id"]=num
+            num+=1
+        
+        print(rankings_values)
         data={ 'video_address': best.url,
                 'url':url['cmd'],
-                'rankings':rankings,
+                'rankings':rankings_values,
                 'title':snippet['title'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount':statistics['viewCount'],
@@ -149,7 +159,63 @@ def videoplayer(request):
     return render(request, 'videoplayer.html', data)
 
 def ytbchannel(request):
-    return render(request, 'ytbchannel.html')
+    videos = []
+    if request.method == "GET":
+        data=request.GET
+        channel_id=data['channelId']
+        channel_url='https://youtube.googleapis.com/youtube/v3/channels'
+        playlist_url='https://www.googleapis.com/youtube/v3/playlistItems'
+
+        channel_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"statistics,snippet,contentDetails",
+            'id':channel_id
+        }
+
+        channel_r=requests.get(channel_url, params=channel_params)
+        channel_result=channel_r.json()['items'][0]
+        #print(channel_r.json())
+        playlist_id=channel_result["contentDetails"]["relatedPlaylists"]["uploads"]
+        playlist_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"snippet,contentDetails",
+            'playlistId':playlist_id,
+            'maxResults':16
+        }
+
+        playlist_r=requests.get(playlist_url, params=playlist_params)
+        playlist_results=playlist_r.json()['items']
+
+        for result in playlist_results:
+            pre_publishedAt=result["snippet"]['publishedAt']
+            publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+            video_data = {
+                'title' : result['snippet']['title'],
+                'id' : result['contentDetails']["videoId"],
+                'url' : 'https://www.youtube.com/watch?v='+result['contentDetails']["videoId"],
+                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
+                'thumbnail' : result['snippet']['thumbnails']['high']['url'],
+                'channelTitle' : result['snippet']['channelTitle'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
+
+
+                'publishedAt':publishedAt_result.group(0),
+                #'viewCount' : result['statistics']['viewCount'],
+                #'channel_id':result['snippet']['channelId']
+            }
+
+            videos.append(video_data)
+
+        context={
+                'channelTitle':channel_result['snippet']['title'],
+                'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
+                'channelSubscriber':channel_result['statistics']['subscriberCount'],
+                'channelId':channel_id,
+                'videos':videos
+             }
+
+
+    return render(request, 'ytbchannel.html',context)
 
 def mypage(request):
     return render(request, 'mypage.html')
@@ -210,6 +276,7 @@ def search(request):
             }
 
             videos.append(video_data)
+    print(result['snippet']['channelId'])
     context = {
         'videos' : videos,
     }
