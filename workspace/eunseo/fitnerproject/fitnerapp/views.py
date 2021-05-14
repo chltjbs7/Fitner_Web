@@ -30,7 +30,63 @@ def month(request):
     return render(request, 'month.html')
 
 def wholebody(request):
-    return render(request, 'wholebody.html')
+    videos=[]
+    if request.method=='GET':
+        search_url = 'https://youtube.googleapis.com/youtube/v3/search'
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+
+        search_params = {
+            'part' : 'snippet',
+            'q' : request.GET['part']+'운동',
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'maxResults' : 1,
+            'type' : 'video',
+            'videoLicense' : 'creativeCommon'
+        }
+
+        r = requests.get(search_url, params=search_params)
+        result = r.json()['items'][0]
+        snippet=result['snippet']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+        results = r.json()['items']
+
+        video_ids = []
+        for result in results:
+            video_ids.append(result['id']['videoId'])
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet,contentDetails,statistics',
+            'id' : ','.join(video_ids),
+            'maxResults' : 1
+        }
+
+        r = requests.get(video_url, params=video_params)
+
+        results = r.json()['items']
+
+        
+        for result in results:
+            video_data = {
+                'title' : result['snippet']['title'],
+                'id' : result['id'],
+                'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
+                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
+                'thumbnail' : result['snippet']['thumbnails']['high']['url'],
+                'channelTitle' : result['snippet']['channelTitle'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount' : result['statistics']['viewCount'],
+                'channel_id':result['snippet']['channelId']
+            }
+
+            videos.append(video_data)
+    context = {
+        'videos' : videos,
+    }
+        
+    return render(request, 'wholebody.html',context)
 
 def smartmode(request):
     if request.method=='GET':
