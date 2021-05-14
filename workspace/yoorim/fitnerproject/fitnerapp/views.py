@@ -14,13 +14,17 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Ranking
 from django.views.decorators.http import condition
+from .models import Data
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
-def day(request):    
+def day(request):
+
+
     return render(request, 'day.html')
 
 def week(request):
@@ -40,6 +44,7 @@ def smartmode(request):
         best = video.getbest(preftype="mp4")
 
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
+        global video_id
         video_id=re_result.group(1)
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
 
@@ -63,8 +68,8 @@ def smartmode(request):
             '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
         except:
             tags_rand=['']
-        global data
-        data={ 'video_address': best.url,
+        global v_data
+        v_data={'video_address': best.url,
                 'url':url['cmd'],
                 'title':snippet['title'],
                 'publishedAt':publishedAt_result.group(0),
@@ -81,8 +86,29 @@ def smartmode(request):
             ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
             ranking.save()
             #return redirect('smartmode')
+
+    if request.method == "POST":
+        videoId = video_id   #딕셔너리형태
+        high = request.POST.get('high',None)
+        low = request.POST.get('low',None)
+        average = request.POST.get('average',None)
+        high_img_route = "../static/result_high/"
+        low_img_route = "../static/result_low/"
+        high_start_section = request.POST.get('high_start_section',None)
+        high_end_section = request.POST.get('high_end_section',None)
+        low_start_section = request.POST.get('low_start_section',None)
+        low_end_section = request.POST.get('low_end_section',None)
+        total_time = request.POST.get('total_time',None)
+
+        data = Data(
+                videoId=videoId, high=high, low=low,
+                average=average, high_img_route=high_img_route, low_img_route=low_img_route,
+                high_start_section=high_start_section, high_end_section=high_end_section, low_start_section=low_start_section,
+                low_end_section=low_end_section, total_time=total_time
+        )
+        data.save()
     
-    return render(request, 'smartmode.html', data)
+    return render(request, 'smartmode.html', v_data)
 
 @csrf_exempt
 def videoplayer(request):
@@ -149,7 +175,63 @@ def videoplayer(request):
     return render(request, 'videoplayer.html', data)
 
 def ytbchannel(request):
-    return render(request, 'ytbchannel.html')
+    videos = []
+    if request.method == "GET":
+        data=request.GET
+        channel_id=data['channelId']
+        channel_url='https://youtube.googleapis.com/youtube/v3/channels'
+        playlist_url='https://www.googleapis.com/youtube/v3/playlistItems'
+
+        channel_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"statistics,snippet,contentDetails",
+            'id':channel_id
+        }
+
+        channel_r=requests.get(channel_url, params=channel_params)
+        channel_result=channel_r.json()['items'][0]
+        #print(channel_r.json())
+        playlist_id=channel_result["contentDetails"]["relatedPlaylists"]["uploads"]
+        playlist_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"snippet,contentDetails",
+            'playlistId':playlist_id,
+            'maxResults':16
+        }
+
+        playlist_r=requests.get(playlist_url, params=playlist_params)
+        playlist_results=playlist_r.json()['items']
+
+        for result in playlist_results:
+            pre_publishedAt=result["snippet"]['publishedAt']
+            publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+            video_data = {
+                'title' : result['snippet']['title'],
+                'id' : result['contentDetails']["videoId"],
+                'url' : 'https://www.youtube.com/watch?v='+result['contentDetails']["videoId"],
+                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
+                'thumbnail' : result['snippet']['thumbnails']['high']['url'],
+                'channelTitle' : result['snippet']['channelTitle'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
+
+
+                'publishedAt':publishedAt_result.group(0),
+                #'viewCount' : result['statistics']['viewCount'],
+                #'channel_id':result['snippet']['channelId']
+            }
+
+            videos.append(video_data)
+
+        context={
+                'channelTitle':channel_result['snippet']['title'],
+                'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
+                'channelSubscriber':channel_result['statistics']['subscriberCount'],
+                'channelId':channel_id,
+                'videos':videos
+             }
+
+
+    return render(request, 'ytbchannel.html',context)
 
 def mypage(request):
     return render(request, 'mypage.html')

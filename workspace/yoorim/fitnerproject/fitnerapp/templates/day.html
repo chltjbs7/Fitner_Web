@@ -3,6 +3,7 @@
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -15,20 +16,9 @@
                 margin: 0;
             }
             /* Search Bar */
-            .search {
-                float: left;
-                margin: 10px 0 0 70px;
-                }
-            .search_button {
-                float: left;
-                margin: 10px 0 0 16px;
-                }
-            .fa-search {
-                left: 26px;
-                top: 17px;
-                color: white;
-                font-size: 17px;
-                }
+            .search { float: left; margin: 10px 0 0 70px; }
+            .search_button { float: left; margin: 10px 0 0 16px; }
+            .fa-search { left: 26px; top: 17px; color: white; font-size: 17px; }
             /*Drop Down Menu*/
             .dropdown-button {
                 background-color: transparent !important;
@@ -38,10 +28,7 @@
                 margin: 10px 0 0 85px;
                 font-weight: bold;
             }
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
+            .dropdown { position: relative; display: inline-block; }
             .dropdown-content {
                 background-color: #f5f5f5;
                 display: none;
@@ -63,12 +50,8 @@
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
-            #tab1 {
-                margin-right: 10px;
-            }
-            #tab2 {
-                margin-left: 58px;;
-            }
+            #tab1 { margin-right: 10px; }
+            #tab2 { margin-left: 58px; }
             /* Banner */
             .banner {
                 width: 100%;
@@ -121,7 +104,6 @@
                 -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
                 transition: transform 0.4s cubic-bezier(1, 0, 0, 1)
             }
-
             .tap:hover::before {
                 -webkit-transform-origin: left top;
                 -ms-transform-origin: left top;
@@ -130,20 +112,15 @@
                 -ms-transform: scale(1, 1);
                 transform: scale(1, 1)
             }
-
-            #tap1::before {
-                left: 65px;
-            }
-            #tap2::before {
-                left: 160px;
-            }
+            #tap1::before { left: 65px; }
+            #tap2::before { left: 160px; }
             #tab3 { margin-left: 50px; }
             /* Graph */
             .left_arrow_button { margin: 254px 0 0 370px; }
             .fa-arrow-left { color: #adadad; padding-top: 3px; cursor: pointer; }
             .right_arrow_button { margin: 254px 0 0 285px; }
             .fa-arrow-right { color: #adadad; padding-top: 3px; cursor: pointer; }
-            #graph_container { width: 800px; height: 400px; margin-top: 500px; margin-left: 355px; }
+            #graph_container { width: 810px; height: 455px; margin-top: 500px; margin-left: 355px; }
             /* Thumnail */
             .box {
                 width: 248px;
@@ -178,7 +155,6 @@
             }
             #modal_subtitle_1 { margin-top: 50px; margin-left: 91px; }
             #modal_subtitle_2 { margin-top: 50px; margin-left: 335px; }
-
             /* The Modal (background) */
             .modal {
                 display: none; /* Hidden by default */
@@ -306,7 +282,7 @@
                     <li class="detail_tap"><a href="{% url 'week' %}" class="tap" id="tap1"><b>주</b></a></li>
                     <li class="detail_tap"><a href="{% url 'month' %}" class="tap" id="tap2"><b>월</b></a></li>
                 </ul>
-              </div>
+            </div>
             <!--Exercise Feedback-->
             <div style="float: left;">
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
@@ -335,7 +311,8 @@
             <!--Graph Button-->
             <div style="position: absolute; display: flex; margin-top: 200px;">
                 <div class="left_arrow_button">
-                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                    <button class="prev"
+                    style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
@@ -357,7 +334,8 @@
                         week[today.getDay()] + "요일"
                 </script>
                 <div class="right_arrow_button">
-                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                    <button class="next"
+                    style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
