@@ -206,15 +206,15 @@
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
                     <div class="dropdown-content" id="tab1">
-                        <a href="{% url 'wholebody' %}">전신</a>
-                        <a href="#">목</a>
-                        <a href="#">어깨</a>
-                        <a href="#">팔</a>
-                        <a href="#">가슴</a>
-                        <a href="#">복근</a>    
-                        <a href="#">엉덩이</a>
-                        <a href="#">허벅지</a>
-                        <a href="#">다리</a>
+                        <a href='/wholebody?part=전신'>전신</a>
+                        <a href='/wholebody?part=목'>목</a>
+                        <a href='/wholebody?part=어깨'>어깨</a>
+                        <a href='/wholebody?part=팔'>팔</a>
+                        <a href='/wholebody?part=가슴'>가슴</a>
+                        <a href='/wholebody?part=복근'>복근</a>    
+                        <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                        <a href='/wholebody?part=허벅지'>허벅지</a>
+                        <a href='/wholebody?part=다리'>다리</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -369,22 +369,39 @@
     
                                     
                         //==========================================similarity========호출=======================================================================
-                                    var cnt=0
-                                    var avg_similarity=0
-                                    var total_similarity=0
-                                    var high_similarity=0
-                                    var low_similarity=0
+                                    var cnt=0;
+                                    var avg_similarity=0;
+                                    var total_similarity=0;
+                                    var high_similarity=0;
+                                    var low_similarity=100;
+                                    var ex_time=0;
+                                    var total_similarity_section=0;
+                                    var avg_similarity_section;
+                                    var high_time;
+                                    var low_time;
 
-                                    var ex_time=0
 
-                                    function count_time(){
-                                        ex_time+=1
+                                    function similarity_section(){
+                                        avg_similarity_section=total_similarity_section/3;
+
+                                        if(high_similarity<avg_similarity_section){
+                                            high_similarity=avg_similarity_section;
+                                            high_time=youtube_video.currentTime;
+                                        }
+                                        if(low_similarity>avg_similarity_section){
+                                            low_similarity=avg_similarity_section;
+                                            low_time=youtube_video.currentTime;
+                                        }
+
+                                        total_similarity_section=0
+                                        avg_similarity_section=0
                                     }
     
                                     youtube_video.addEventListener('play', function() {
                                     var $this = this; //cache
                                     
                                     (function similarity_loop() {
+                                        ex_time+=1
                                         if (!$this.paused && !$this.ended) {
                                         posenet.load().then(function loop(net) {
                                         return Promise.all([
@@ -398,25 +415,36 @@
                                             document.getElementById("pose").innerHTML = weightedDistance;
                                             cnt+=1;
                                             total_similarity+=weightedDistance;
-                                            avg_similarity=total_similarity/cnt
-                                            high_similarity=Math.max(high_similarity,weightedDistance)
-                                            low_similarity=Math.min(low_similarity,weightedDistance)
+                                            avg_similarity=total_similarity/cnt;
+                                            total_similarity_section+=weightedDistance;
+                                            if(cnt%3==0){
+                                                similarity_section();
+                                            }
                                             
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
                                         setTimeout(similarity_loop, 1000);
-                                        setTimeout(count_time, 1000);
-                                        console.log(ex_time)
-                                        //console.log(youtube_video.currentTime);
                                         }
                                     })();
                                 })
+                            function secondsToHms(d) {
+                                d = Number(d);
+                                var h = Math.floor(d / 3600);
+                                var m = Math.floor(d % 3600 / 60);
+                                var s = Math.floor(d % 3600 % 60);
+
+                                var hDisplay = h > 0 ? h + (h == 1 ? " 시간 " : " 시간 ") : "";
+                                var mDisplay = m > 0 ? m + (m == 1 ? " 분 " : " 분 ") : "";
+                                var sDisplay = s > 0 ? s + (s == 1 ? " 초" : " 초") : "";
+                                return hDisplay + mDisplay + sDisplay; 
+                            }
+
                             function input(){
                                 document.getElementById("similarity").value = avg_similarity;
                                 document.getElementById("high").value = high_similarity;
                                 document.getElementById("low").value = low_similarity;
                                 document.getElementById("average").value = avg_similarity;
-                                document.getElementById("total_time").value = ex_time;
+                                document.getElementById("total_time").value = secondsToHms(ex_time);
                             }
 
                             function get_message() {
@@ -566,7 +594,7 @@
     
     
                             function weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorConfidences) {
-                                console.log('실행되면 안됨')
+                                //console.log('실행되면 안됨')
                                 var summation1 = 1 / vectorConfidences[vectorConfidences.length - 1];
                                 var summation2 = 0;
                                 for (var i = 0; i < vectorPose1XY.length; i++) {

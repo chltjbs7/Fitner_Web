@@ -17,7 +17,7 @@ class User(models.Model): #장고에서 제공하는 models.Model를 상속받�
 class Ranking(models.Model):
     username = models.CharField(max_length=10,verbose_name = '이름')
     userphone = models.CharField(max_length=11,verbose_name = '전화번호')
-    similarity = models.CharField(max_length=10,verbose_name = '유사도')
+    similarity = models.IntegerField(max_length=256,verbose_name = '유사도')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간') 
 
     def __str__(self):

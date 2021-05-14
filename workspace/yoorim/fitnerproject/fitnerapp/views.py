@@ -35,7 +35,63 @@ def month(request):
     return render(request, 'month.html')
 
 def wholebody(request):
-    return render(request, 'wholebody.html')
+    videos=[]
+    if request.method=='GET':
+        search_url = 'https://youtube.googleapis.com/youtube/v3/search'
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+
+        search_params = {
+            'part' : 'snippet',
+            'q' : request.GET['part']+'운동',
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'maxResults' : 1,
+            'type' : 'video',
+            'videoLicense' : 'creativeCommon'
+        }
+
+        r = requests.get(search_url, params=search_params)
+        result = r.json()['items'][0]
+        snippet=result['snippet']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+        results = r.json()['items']
+
+        video_ids = []
+        for result in results:
+            video_ids.append(result['id']['videoId'])
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet,contentDetails,statistics',
+            'id' : ','.join(video_ids),
+            'maxResults' : 1
+        }
+
+        r = requests.get(video_url, params=video_params)
+
+        results = r.json()['items']
+
+        
+        for result in results:
+            video_data = {
+                'title' : result['snippet']['title'],
+                'id' : result['id'],
+                'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
+                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
+                'thumbnail' : result['snippet']['thumbnails']['high']['url'],
+                'channelTitle' : result['snippet']['channelTitle'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount' : result['statistics']['viewCount'],
+                'channel_id':result['snippet']['channelId']
+            }
+
+            videos.append(video_data)
+    context = {
+        'videos' : videos,
+    }
+        
+    return render(request, 'wholebody.html',context)
 
 def smartmode(request):
     if request.method=='GET':
@@ -158,11 +214,21 @@ def videoplayer(request):
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
+        #print(channel_r.json())
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
+        rankings_values=list(rankings.values())
+
+        
+        num=1
+        for i in range(0,len(rankings_values)):
+            rankings_values[i]["id"]=num
+            num+=1
+        
+        #print(rankings_values)
         data={ 'video_address': best.url,
                 'url':url['cmd'],
-                'rankings':rankings,
+                'rankings':rankings_values,
                 'title':snippet['title'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount':statistics['viewCount'],
@@ -182,6 +248,7 @@ def ytbchannel(request):
         channel_id=data['channelId']
         channel_url='https://youtube.googleapis.com/youtube/v3/channels'
         playlist_url='https://www.googleapis.com/youtube/v3/playlistItems'
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
 
         channel_params={
             'key' : settings.YOUTUBE_DATA_API_KEY,
@@ -200,8 +267,27 @@ def ytbchannel(request):
             'maxResults':16
         }
 
+    
         playlist_r=requests.get(playlist_url, params=playlist_params)
         playlist_results=playlist_r.json()['items']
+
+        video_ids = []
+        for result in playlist_results:
+            video_ids.append(result['contentDetails']['videoId'])
+
+
+        video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'statistics',
+            'id' : ','.join(video_ids),
+            'maxResults' : 1
+        }
+
+        video_r = requests.get(video_url, params=video_params)
+
+        video_results = video_r.json()['items']
+
+
 
         for result in playlist_results:
             pre_publishedAt=result["snippet"]['publishedAt']
@@ -214,21 +300,26 @@ def ytbchannel(request):
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
                 # 'publishedAt' : result['snippet']['publishedAt'],
-
-
                 'publishedAt':publishedAt_result.group(0),
-                #'viewCount' : result['statistics']['viewCount'],
                 #'channel_id':result['snippet']['channelId']
+                
             }
 
             videos.append(video_data)
+
+        viewCounts=[]
+        for result in video_results:
+            viewCounts.append(result['statistics']['viewCount'])
+
+        for i in range(0,len(viewCounts)):
+            videos[i]["viewCount"]=viewCounts[i]
 
         context={
                 'channelTitle':channel_result['snippet']['title'],
                 'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
                 'channelSubscriber':channel_result['statistics']['subscriberCount'],
                 'channelId':channel_id,
-                'videos':videos
+                'videos':videos,
              }
 
 

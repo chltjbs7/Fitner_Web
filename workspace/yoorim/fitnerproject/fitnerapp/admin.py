@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin) :
 admin.site.register(User, UserAdmin) #site에 등록
 
 class RankingAdmin(admin.ModelAdmin):
-    list_display = ('username', 'userphone', 'similarity')
+    list_display = ('username', 'userphone', 'similarity', 'registered_dttm')
  
 admin.site.register(Ranking, RankingAdmin)
 
