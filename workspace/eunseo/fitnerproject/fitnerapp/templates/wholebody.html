@@ -143,6 +143,7 @@
             }
             li { float: left; margin-right: 85px; }
             li a {
+            cursor: pointer;
               padding: 18px 0 18px 0;
               display: inline-block;
               text-decoration: none;
@@ -226,17 +227,17 @@
                 </div>  
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
-                    <div class="dropdown-content" id="tab1">
-                        <a href="{% url 'wholebody' %}">전신</a>
-                        <a href="#">목</a>
-                        <a href="#">어깨</a>
-                        <a href="#">팔</a>
-                        <a href="#">가슴</a>
-                        <a href="#">복근</a>    
-                        <a href="#">엉덩이</a>
-                        <a href="#">허벅지</a>
-                        <a href="#">다리</a>
-                    </div>
+                        <div class="dropdown-content" id="tab1">
+                            <a href='/wholebody?part=전신'>전신</a>
+                            <a href='/wholebody?part=목'>목</a>
+                            <a href='/wholebody?part=어깨'>어깨</a>
+                            <a href='/wholebody?part=팔'>팔</a>
+                            <a href='/wholebody?part=가슴'>가슴</a>
+                            <a href='/wholebody?part=복근'>복근</a>    
+                            <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                            <a href='/wholebody?part=허벅지'>허벅지</a>
+                            <a href='/wholebody?part=다리'>다리</a>
+                        </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
@@ -269,55 +270,34 @@
             <!--Sub Menu-->
             <div class="second_container">
               <ul>
-                <li class="detail_tap"><a href="#" class="tap"><b>전신</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect1"><b>목</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect2"><b>어깨</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect3"><b>팔</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect4"><b>가슴</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect5"><b>복근</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect6"><b>엉덩이</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect7"><b>허벅지</b></a></li>
-                <li class="detail_tap"><a href="#" class="tap" id="effect8"><b>다리</b></a></li>
+                <li class="detail_tap"><a onclick="location.href='/wholebody?part=전신';" class="tap"><b>전신</b></a></li>
+                <li onclick="location.href='/wholebody?part=목';" class="detail_tap"><a onclick="location.href='/wholebody?part=목';" class="tap" id="effect1"><b>목</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=어깨' class="tap" id="effect2"><b>어깨</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=팔' class="tap" id="effect3"><b>팔</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=가슴' class="tap" id="effect4"><b>가슴</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=복근' class="tap" id="effect5"><b>복근</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=엉덩이' class="tap" id="effect6"><b>엉덩이</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=허벅지' class="tap" id="effect7"><b>허벅지</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=다리' class="tap" id="effect8"><b>다리</b></a></li>
               </ul>
             </div>
-            <div class="main_content">
-              <div class="video" onclick="location.href='/videoplayer';" style="cursor: pointer;"> </div>
-              <div class="videoInfo">
-                <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                <div class="youtuber_img"></div>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
-              </div>
+
+            <div>
+                {% for video in videos %}
+                <div class="main_content">
+                    <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';" src="{{ video.thumbnail }}" width="264px" height="148px"
+                    style="cursor: pointer; float: left; object-fit: cover;"></img>
+                    
+                    <div class="videoInfo">
+                        <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;">{{ video.title }}</p>
+                        <p style="font-size: 13px; color: #aaaaaa; margin: 0; ">조회수 {{ video.viewCount }} 회 · 날짜 {{ video.publishedAt }}</p>
+                        <img src='{{ channelImage }}' class="youtuber_img"></img>
+                        <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-          
-            <div class="main_content">
-              <div class="video"> </div>
-              <div class="videoInfo">
-                <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> (층간소음X) 역대급 홈트레이닝 루틴 공개!!!! 급찐급빠 매운맛ver. 살찐자, 확찐자 다 들어오세요ㅋㅋㅋ </p>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                <div class="youtuber_img"></div>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 발레테라핏 </p>
-              </div>
-            </div>
-          
-            <div class="main_content">
-              <div class="video"> </div>
-              <div class="videoInfo">
-                <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                <div class="youtuber_img"></div>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
-              </div>
-            </div>
-          
-            <div class="main_content">
-              <div class="video"> </div>
-              <div class="videoInfo">
-                <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;"> 살이 너무 빠지는 죽음의 타바타 운동 (no 층간소음) / Beautiful tabata workout </p>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin: 0;"> 조회수 1.5만회 · 1개월 전 </p>
-                <div class="youtuber_img"></div>
-                <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px"> 힙으뜸 </p>
-              </div>
+            
             </div>
             <div id="footer"></div>
         </div>
