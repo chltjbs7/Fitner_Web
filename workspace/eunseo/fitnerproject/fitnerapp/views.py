@@ -2,7 +2,7 @@ import requests
 import pafy
 import re
 import random
-
+import traceback
 from isodate import parse_duration
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -43,8 +43,11 @@ def wholebody(request):
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
-
-        r = requests.get(search_url, params=search_params)
+        try:
+            r = requests.get(search_url, params=search_params)
+            print(r)
+        except Exception as e:
+            traceback.print_exc()
         result = r.json()['items'][0]
         snippet=result['snippet']
         pre_publishedAt=snippet['publishedAt']

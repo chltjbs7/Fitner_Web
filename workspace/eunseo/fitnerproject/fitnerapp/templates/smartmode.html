@@ -11,6 +11,9 @@
         <!-- p5  -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+        <!-- fileSaver-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -377,9 +380,22 @@
                                     var ex_time=0;
                                     var total_similarity_section=0;
                                     var avg_similarity_section;
+                                    var high_image;
+                                    var low_image;
                                     var high_time;
                                     var low_time;
 
+                                    function downloadCanvas(imgOption,image){  
+                                        // create temporary link  
+                                        var tmpLink = document.createElement( 'a' );  
+                                        tmpLink.download = "fitnerapp/static/"+imgOption +'.png'; // set the name of the download file 
+                                        tmpLink.href = image;  
+                                    
+                                        // temporarily add link to body and initiate the download  
+                                        document.body.appendChild( tmpLink );  
+                                        tmpLink.click();  
+                                        document.body.removeChild( tmpLink );  
+                                    }
 
                                     function similarity_section(){
                                         avg_similarity_section=total_similarity_section/3;
@@ -387,10 +403,13 @@
                                         if(high_similarity<avg_similarity_section){
                                             high_similarity=avg_similarity_section;
                                             high_time=youtube_video.currentTime;
+                                            high_image = webcam_canvas.toDataURL();
                                         }
+
                                         if(low_similarity>avg_similarity_section){
                                             low_similarity=avg_similarity_section;
                                             low_time=youtube_video.currentTime;
+                                            low_image = webcam_canvas.toDataURL();
                                         }
 
                                         total_similarity_section=0
@@ -456,6 +475,7 @@
                                 if (pose1.keypoints.length !== pose2.keypoints.length) {
                                     throw new Error('[Bad pose parameters] The keypoint lengths of the two pose objects are not the same.');
                                 }
+
                                 // merge options
                                 var defaultOptions = {
                                     strategy: 'weightedDistanceMatching'
@@ -465,14 +485,18 @@
                                     strategy: 'weightedDistanceMatching'
                                     //strategy: 'cosineDistanceMatching'
                                 };
+                                
+                                for(var i=0; i<=pose1.keypoints.length;i++){
+                                    pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
+                                }
                                 var options = Object.assign({}, defaultOptions, overridenOptions);
                                 var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
                                 var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];
-    
-    
-    
-                                var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
-                                var percent=50 * (2 - wdm);
+                                var cdm= cosineDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
+                                const squareRoot2 = Math.sqrt(2)
+                                const percent = (100 / squareRoot2) * (squareRoot2 - cdm)
+                                // var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
+                                // var percent=50 * (2 - wdm);
                                 return percent;
     
                                         
@@ -720,6 +744,9 @@
                     function smart_end() {
                         youtube_video.pause();
                         modal.style.display = "block";
+                        downloadCanvas('high',high_image);
+                        downloadCanvas('low',low_image);
+                        
                     }
                     youtube_video.onended=smart_end;
                     // When the user clicks on <span> (x), close the modal
