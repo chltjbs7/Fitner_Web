@@ -15,16 +15,50 @@ from django.contrib import auth
 from .models import Ranking
 from django.views.decorators.http import condition
 from .models import Data
-from django.core.paginator import Paginator
+from django.db.models import Sum
+from django.db.models import Count
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
+def allViewRecord(request):
+    return render(request, 'allViewRecord.html')
+
+def playlist(request):
+    return render(request, 'playlist.html')
+
 def day(request):
-    datas = Data.objects.all()
-    context = {'datas':datas}
+    # 총 운동 시간
+    time_sum = Data.objects.aggregate(Sum('total_time'))
+    t_values = time_sum.values()
+
+    for i in t_values:
+        t_values = i
+        #print(i)
+
+    hours = t_values // 3600
+    t_values = t_values - hours*3600
+    mu = t_values // 60
+    ss = t_values - mu*60
+    #print(hours, '시간', mu, '분', ss, '초')
+
+    # 운동한 영상
+    video = Data.objects.annotate(Count('videoId'))
+    v_values = list(video.values_list('videoId'))
+    video_cnt = len(v_values)
+    #print(video_cnt)
+
+    # 그래프(운동 시간으로 나타냄)
+    #t_day = Data.objects.values('total_time')
+
+    context = {
+        'hours': hours,
+        'mu': mu,
+        'ss': ss,
+        'video_cnt': video_cnt,    
+    }
 
     return render(request, 'day.html', context)
 
@@ -124,6 +158,7 @@ def smartmode(request):
             '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
         except:
             tags_rand=['']
+
         global v_data
         v_data={'video_address': best.url,
                 'url':url['cmd'],
@@ -132,16 +167,7 @@ def smartmode(request):
                 'viewCount':statistics['viewCount'],
                 'tags':tags_rand[0],
                 'channelId':channel_id,
-             }
-             
-    if request.method == "POST":
-        username = request.POST.get('username',None)   #딕셔너리형태
-        userphone = request.POST.get('userphone',None)
-        similarity = request.POST.get('similarity',None)
-        if username and userphone :
-            ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
-            ranking.save()
-            #return redirect('smartmode')
+            }
 
     if request.method == "POST":
         videoId = video_id   #딕셔너리형태
@@ -157,13 +183,21 @@ def smartmode(request):
         total_time = request.POST.get('total_time',None)
 
         data = Data(
-                videoId=videoId, high=high, low=low,
-                average=average, high_img_route=high_img_route, low_img_route=low_img_route,
-                high_start_section=high_start_section, high_end_section=high_end_section, low_start_section=low_start_section,
-                low_end_section=low_end_section, total_time=total_time
+                videoId=videoId, high=high, low=low, average=average, high_img_route=high_img_route,
+                low_img_route=low_img_route, high_start_section=high_start_section, high_end_section=high_end_section,
+                low_start_section=low_start_section, low_end_section=low_end_section, total_time=total_time
         )
         data.save()
     
+    if request.method == "POST":
+        username = request.POST.get('username',None)   #딕셔너리형태
+        userphone = request.POST.get('userphone',None)
+        similarity = request.POST.get('similarity',None)
+        if username and userphone :
+            ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
+            ranking.save()
+            #return redirect('smartmode')
+
     return render(request, 'smartmode.html', v_data)
 
 @csrf_exempt
@@ -172,9 +206,6 @@ def videoplayer(request):
         url=request.GET
         video = pafy.new(url['cmd'])
         channel_id=url['channel']
-
-        rankings = Ranking.objects.all().order_by('-similarity')[:5]
-
         best = video.getbest(preftype="mp4")
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
         video_id=re_result.group(1)
@@ -216,9 +247,11 @@ def videoplayer(request):
         #print(channel_r.json())
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
-        rankings_values=list(rankings.values())
 
-        
+        rankings = Ranking.objects.values_list('similarity').order_by('-similarity')[:5]
+        #print(rankings)
+
+        rankings_values=list(rankings.values())
         num=1
         for i in range(0,len(rankings_values)):
             rankings_values[i]["id"]=num

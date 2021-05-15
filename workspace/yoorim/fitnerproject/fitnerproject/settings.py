@@ -122,7 +122,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
-YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4'
+#YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
+YOUTUBE_DATA_API_KEY = 'AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50' #피트너 API
 
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'fitneraapp','static')

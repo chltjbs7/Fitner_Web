@@ -209,7 +209,7 @@
                 <div>
                     {% csrf_token %}
                     <div class="search">
-                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?" autocomplete="off"
                         style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
                     </div>
                     <div onclick="location.href='/search';" class="search_button">
@@ -279,9 +279,8 @@
                                 <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
                                 <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
                             </div>
-                            <div class="ai_fitner">
-                                <p onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';  "
-                                style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
+                            <div class="ai_fitner" onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';">
+                                <p style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
                             </div>                            
                         </div>
 
