@@ -175,9 +175,10 @@
                     src="{{ video.thumbnail }}"
                     style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
                     <span class="video_title">{{ video.title }}</span>
-                    <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                    <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{ video.channelTitle }}</span>
                 </div>
                 {% endfor %}
+            </div>
         <div id="footer"></div>
     <body>
 </html>

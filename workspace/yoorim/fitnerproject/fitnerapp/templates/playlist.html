@@ -77,58 +77,44 @@
         margin-left: 58px;;
     }
   /* 타이틀 */
-
   #title {
-    width: 70px;
-    display: inline-block;
-    margin: 40px 0 14px 140px;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1;
-    letter-spacing: normal;
-    text-align: left;
-    color: #000000;
-  }
-
-  #edit {
-    border: none;
-    background-color: #ffffff;
-    margin-left: 944px;
-    font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 2;
-    letter-spacing: normal;
-    text-align: left;
-    color: #8a8a8a;
-  }
-
-  /* 재생목록 */
-
-  .addList {
-    margin-left: 140px;
-    float: left;
-    width: 248px;
-    height: 139px;
-    border-radius: 5px;
-    background-color: #8ad3c0;
-    border: none;
-  }
-
-  .Listblock {
-    display: inline-block;
-    margin-left: 24px;
-  }
-
-  .miniList {
-    width: 248px;
-    height: 139px;
-    background-color: #e8e8e8;
-    border-radius: 5px;
-    text-align: center;
-  }
-
+        display: inline-block;
+        margin: 110px 0 14px 145px;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000000;
+    }
+    #edit {
+        margin-left: 1050px;
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 2;
+        letter-spacing: normal;
+        text-align: left;
+        color: #8a8a8a;
+    }
+    .box {
+        width: 248px;
+        height: 139px;
+        border-radius: 5px;
+        float: left;
+    }
+    .video_title{
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        max-height: 42px;
+        width: 248px;
+        font-size: 14px;
+        line-height: 1.43;
+        color: #0a0a0a;
+    }
   /* 푸터 */
 
   .footer {
@@ -205,32 +191,11 @@
     </div>
     <!-- 재생목록 -->
     <div>
-        <div style="float:left; margin: 30px;">
-            <p id="title">재생 목록</p>
-            <button id="edit">편집</button>
+        <p id="title">재생 목록</p>
+        <a id="edit">편집</a>
 
-            <div>
-                <button class="addList">
-                    <img src="../static/create_new_folder-24px.png" width="32px" height="32px">
-                    <p style="font-size: 16px; line-height: 1.75; letter-spacing: normal; color: #ffffff; margin: 0px">새 재생목록 만들기</p>
-                </button>
-                </div>
-            
-                <div class="Listblock">
-                <div class="miniList"> <img src="../static/Fitner logo_grey.png" width="106px" height="38px" style="margin-top: 50px; "> </div>
-                <p style="width: 248px; font-size: 16px; color: #000000; margin: 0;"> 전신운동 루틴</p>
-                <p style="width: 248px; font-size: 12px; color: #8a8a8a; margin-top: 0"> 동영상 0개 </p>
-                </div>
-                <div class="Listblock">
-                <div class="miniList"></div>
-                <p style="width: 248px; font-size: 16px; color: #000000; margin: 0;"> 30일 홈트레이닝 루틴</p>
-                <p style="width: 248px; font-size: 12px; color: #8a8a8a; margin-top: 0"> 동영상 5개 </p>
-                </div>
-                <div class="Listblock">
-                <div class="miniList"></div>
-                <p style="width: 248px; font-size: 16px; color: #000000; margin: 0;"> 하루 10분 운동</p>
-                <p style="width: 248px; font-size: 12px; color: #8a8a8a; margin-top: 0"> 동영상 3개 </p>
-            </div>  
+    </div>
+
     </div>
 
 
