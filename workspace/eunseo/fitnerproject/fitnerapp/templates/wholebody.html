@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -143,7 +144,6 @@
             }
             li { float: left; margin-right: 85px; }
             li a {
-            cursor: pointer;
               padding: 18px 0 18px 0;
               display: inline-block;
               text-decoration: none;
@@ -156,25 +156,36 @@
               text-align: center;
               margin: 0px 0px 0px 290px
             }
-            .detail_tap { margin-right: 80px; }
+            .detail_tap { margin-right: 80px; cursor: pointer; }
             /*Videos*/
             .main_content {
                 margin: 30px 228px 0px 330px;
                 display: inline-block;
             }
 
-            .video {
+            /* .video {
                 width: 264px;
                 height: 149px;
                 background-color: #aaaaaa;
                 float: left;
-            }
+            } */
 
             .videoInfo {
                 float: left;
                 margin-left: 14px;
             }
-
+            .video_title{
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                max-height: 42px;
+                margin: 0;
+                width: 585px;
+                font-size: 16px;
+                line-height: 1.43;
+                color: #000000;
+            }
             .youtuber_img {
                 width: 32px;
                 height: 32px;
@@ -227,17 +238,17 @@
                 </div>  
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
-                        <div class="dropdown-content" id="tab1">
-                            <a href='/wholebody?part=전신'>전신</a>
-                            <a href='/wholebody?part=목'>목</a>
-                            <a href='/wholebody?part=어깨'>어깨</a>
-                            <a href='/wholebody?part=팔'>팔</a>
-                            <a href='/wholebody?part=가슴'>가슴</a>
-                            <a href='/wholebody?part=복근'>복근</a>    
-                            <a href='/wholebody?part=엉덩이'>엉덩이</a>
-                            <a href='/wholebody?part=허벅지'>허벅지</a>
-                            <a href='/wholebody?part=다리'>다리</a>
-                        </div>
+                    <div class="dropdown-content" id="tab1">
+                        <a href='/wholebody?part=전신'>전신</a>
+                        <a href='/wholebody?part=목'>목</a>
+                        <a href='/wholebody?part=어깨'>어깨</a>
+                        <a href='/wholebody?part=팔'>팔</a>
+                        <a href='/wholebody?part=가슴'>가슴</a>
+                        <a href='/wholebody?part=복근'>복근</a>    
+                        <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                        <a href='/wholebody?part=허벅지'>허벅지</a>
+                        <a href='/wholebody?part=다리'>다리</a>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
@@ -267,11 +278,10 @@
                 <p style="font-size: 18px; color: #ffffff; text-align: center;">오늘은 어떤 운동을 해볼까요?</p>
                 <p style="font-size: 20px; color: #ffffff; text-align: center; margin-top: -13px; font-weight: bold;">Fitner 운동 목록</p>
             </div>
-            <!--Sub Menu-->
-            <div class="second_container">
-              <ul>
-                <li class="detail_tap"><a onclick="location.href='/wholebody?part=전신';" class="tap"><b>전신</b></a></li>
-                <li onclick="location.href='/wholebody?part=목';" class="detail_tap"><a onclick="location.href='/wholebody?part=목';" class="tap" id="effect1"><b>목</b></a></li>
+            <!--Sub Menu--> 
+            <ul style="margin-left: 290px;">
+                <li class="detail_tap"><a href='/wholebody?part=전신' class="tap"><b>전신</b></a></li>
+                <li class="detail_tap"><a href='/wholebody?part=목' class="tap" id="effect1"><b>목</b></a></li>
                 <li class="detail_tap"><a href='/wholebody?part=어깨' class="tap" id="effect2"><b>어깨</b></a></li>
                 <li class="detail_tap"><a href='/wholebody?part=팔' class="tap" id="effect3"><b>팔</b></a></li>
                 <li class="detail_tap"><a href='/wholebody?part=가슴' class="tap" id="effect4"><b>가슴</b></a></li>
@@ -279,25 +289,22 @@
                 <li class="detail_tap"><a href='/wholebody?part=엉덩이' class="tap" id="effect6"><b>엉덩이</b></a></li>
                 <li class="detail_tap"><a href='/wholebody?part=허벅지' class="tap" id="effect7"><b>허벅지</b></a></li>
                 <li class="detail_tap"><a href='/wholebody?part=다리' class="tap" id="effect8"><b>다리</b></a></li>
-              </ul>
-            </div>
-
+            </ul>
+            <!--Video-->
             <div>
                 {% for video in videos %}
                 <div class="main_content">
-                    <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';" src="{{ video.thumbnail }}" width="264px" height="148px"
-                    style="cursor: pointer; float: left; object-fit: cover;"></img>
+                    <img class="video" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';"
+                    src="{{ video.thumbnail }}" width="264px" height="148px" style="cursor: pointer; float: left; object-fit: cover;"></img>
                     
                     <div class="videoInfo">
-                        <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;">{{ video.title }}</p>
+                        <p class="video_title">{{ video.title }}</p>
                         <p style="font-size: 13px; color: #aaaaaa; margin: 0; ">조회수 {{ video.viewCount }} 회 · 날짜 {{ video.publishedAt }}</p>
                         <img src='{{ channelImage }}' class="youtuber_img"></img>
-                        <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
+                        <p style="font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
-            
             </div>
             <div id="footer"></div>
         </div>
