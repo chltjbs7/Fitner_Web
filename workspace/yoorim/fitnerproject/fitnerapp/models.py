@@ -33,11 +33,11 @@ class Data(models.Model):
     average = models.FloatField(max_length=10,verbose_name = '평균 유사도')
     high_img_route = models.CharField(max_length=256,verbose_name = '최고 유사도 이미지 경로')
     low_img_route = models.CharField(max_length=256,verbose_name = '최저 유사도 이미지 경로')
-    high_start_section = models.IntegerField(max_length=64,verbose_name = '최고 유사도 영상 시작 구간')
-    high_end_section = models.IntegerField(max_length=64,verbose_name = '최고 유사도 영상 끝 구간')
-    low_start_section = models.IntegerField(max_length=64,verbose_name = '최저 유사도 영상 시작 구간')
-    low_end_section = models.IntegerField(max_length=64,verbose_name = '최저 유사도 영상 끝 구간')
-    total_time = models.IntegerField(max_length=64,verbose_name = '운동시간')
+    high_start_section = models.IntegerField(verbose_name = '최고 유사도 영상 시작 구간')
+    high_end_section = models.IntegerField(verbose_name = '최고 유사도 영상 끝 구간')
+    low_start_section = models.IntegerField(verbose_name = '최저 유사도 영상 시작 구간')
+    low_end_section = models.IntegerField(verbose_name = '최저 유사도 영상 끝 구간')
+    total_time = models.IntegerField(verbose_name = '운동시간')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
 
     def __str__(self):

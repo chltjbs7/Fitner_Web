@@ -305,7 +305,7 @@
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
                             <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
                 </div>
@@ -350,7 +350,7 @@
                     var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                        labels: ["오전 12시", "3시" , "6시" ,"9시", "오후 12시", "3시" ,"6시", "9시"],
                         datasets: [
                         { label: '# time',
                             data: [ ],

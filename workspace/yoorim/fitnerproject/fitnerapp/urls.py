@@ -24,6 +24,7 @@ urlpatterns = [
     path('mypage/', fitnerapp.views.mypage, name='mypage'),
     path('playlist/', fitnerapp.views.playlist, name='playlist'),
     path('allViewRecord/', fitnerapp.views.allViewRecord, name='allViewRecord'),
+    path('subYtbchn/', fitnerapp.views.subYtbchn, name='subYtbchn'),
 
     path('search/', fitnerapp.views.search, name='search'),
     path('smartmode/', fitnerapp.views.smartmode, name='smartmode'),

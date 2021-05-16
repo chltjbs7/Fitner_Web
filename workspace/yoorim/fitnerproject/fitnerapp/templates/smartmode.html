@@ -369,7 +369,7 @@
     
                                     
                         //==========================================similarity========호출=======================================================================
-                        var cnt=0;
+                                    var cnt=0;
                                     var avg_similarity=0;
                                     var total_similarity=0;
                                     var high_similarity=0;
@@ -385,7 +385,7 @@
                                     function downloadCanvas(imgOption,image){  
                                         // create temporary link  
                                         var tmpLink = document.createElement( 'a' );  
-                                        tmpLink.download = "fitnerapp/static/"+imgOption +'.png'; // set the name of the download file 
+                                        tmpLink.download =imgOption +'.png'; // set the name of the download file 
                                         tmpLink.href = image;  
                                     
                                         // temporarily add link to body and initiate the download  
@@ -400,12 +400,14 @@
                                         if(high_similarity<avg_similarity_section){
                                             high_similarity=avg_similarity_section;
                                             high_time=youtube_video.currentTime;
+                                            high_time=Math.round(high_time)
                                             high_image = webcam_canvas.toDataURL();
                                         }
 
                                         if(low_similarity>avg_similarity_section){
                                             low_similarity=avg_similarity_section;
                                             low_time=youtube_video.currentTime;
+                                            low_time=Math.round(low_time)
                                             low_image = webcam_canvas.toDataURL();
                                         }
 
@@ -658,7 +660,6 @@
                     </div>
                 </div>   
             </div>
-            <div id="footer"></div>
             <!-- The Modal -->
             <div id="myModal" class="modal">
                 <div class="modal-content">
@@ -674,7 +675,7 @@
 
                         <form method = "POST" action = ".">
                         {% csrf_token %}
-                        <div style="float: left; margin-left: 25px; margin-top: -8px;">
+                        <div style="float: left; margin-left: 35px; margin-top: -8px;">
                             <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
                             <div class="userInput">
                                 <input type="text"
@@ -705,7 +706,7 @@
                             <input type="hidden" class="userInput" name = "videoId" id="videoId" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "high" id="high" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "low" id="low" placeholder="" value="">
-                            <input type="hidden" class="userInput" name = "average" id="average" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "average" id="average" placeholder="" value="">     
                             <input type="hidden" class="userInput" name = "high_img_route" id="high_img_route" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "low_img_route" id="low_img_route" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "high_start_section" id="high_start_section" placeholder="" value="">
@@ -736,6 +737,26 @@
                         modal.style.display = "block";
                         downloadCanvas('high',high_image);
                         downloadCanvas('low',low_image);
+
+                        document.getElementById("high").value= high_similarity;
+                        document.getElementById("low").value= low_similarity;
+                        document.getElementById("average").value= avg_similarity;
+                        
+                        h_s_time = high_time - 3;
+                        h_e_time = high_time;
+                        l_s_time = low_time - 3;
+                        l_e_time = low_time;
+
+                        if (3 > high_time >= 0 && 3 > low_time >= 0) {
+                            h_s_time = 0;
+                            l_s_time = 0;
+                        }
+
+                        document.getElementById("high_start_section").value= h_s_time;
+                        document.getElementById("high_end_section").value= h_e_time;
+                        document.getElementById("low_start_section").value= l_s_time;
+                        document.getElementById("low_end_section").value= l_e_time;
+                        document.getElementById("total_time").value= ex_time;
 
                         similarity = Math.round(avg_similarity);
 
