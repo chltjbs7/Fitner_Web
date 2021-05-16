@@ -2,7 +2,8 @@ import requests
 import pafy
 import re
 import random
-import traceback
+from datetime import datetime, timedelta
+
 from isodate import parse_duration
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -14,14 +15,96 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Ranking
 from django.views.decorators.http import condition
+from .models import Data
+from django.db.models import Sum
+from django.db.models import Count
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
-def day(request):    
-    return render(request, 'day.html')
+def allViewRecord(request):
+    return render(request, 'allViewRecord.html')
+
+def playlist(request):
+    return render(request, 'playlist.html')
+
+def day(request):
+    # 총 운동 시간
+    #time_sum = Data.objects.aggregate(Sum('total_time'))
+    time_filter=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).aggregate(Sum('total_time'))
+    
+    #t_values = time_sum.values()
+    t_values=time_filter.values()
+
+    for i in t_values:
+        t_values = i
+
+    t_value_sec=t_values
+
+    hours = t_values // 3600
+    t_values = t_values - hours*3600
+    mu = t_values // 60
+    ss = t_values - mu*60
+    #print(hours, '시간', mu, '분', ss, '초')
+
+    # 운동한 영상
+    #video = Data.objects.annotate(Count('videoId'))
+    video = Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).annotate(Count('videoId'))
+    v_values = list(video.values_list('videoId'))
+    video_cnt = len(v_values)
+    #print(video_cnt)
+
+    # 전날 대비 운동량
+    yesterday_filter=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()- timedelta(1)).isoformat()).aggregate(Sum('total_time'))
+    yesterday_values=yesterday_filter.values()
+
+    for i in yesterday_values:
+        yesterday_values = i
+
+    if yesterday_values==None:
+        yesterday_values=0
+
+    gap_time=t_value_sec-yesterday_values
+    gap_time_signed=gap_time
+
+
+    gap_time=abs(gap_time)
+    hours_gap = gap_time // 3600
+    gap_time = gap_time - hours*3600
+    mu_gap = gap_time // 60
+    ss_gap = gap_time - mu*60
+
+    if hours_gap==0 and mu_gap==0:
+        if gap_time_signed <0:
+            gap_time='-'+str(gap_time)+'초'
+        else:
+            gap_time='+'+str(gap_time)+'초'
+    elif hours_gap==0 and mu_gap!=0:
+        if gap_time_signed <0:
+            gap_time='-'+str(mu_gap)+'분'
+        else:
+            gap_time='+'+str(mu_gap)+'분'
+    elif hours_gap!=0:
+        if gap_time_signed <0:
+            gap_time='-'+str(hours_gap)+'시간'
+        else:
+            gap_time='+'+str(hours_gap)+'시간'
+
+
+    # 그래프(운동 시간으로 나타냄)
+    #t_day = Data.objects.values('total_time')
+
+    context = {
+        'hours': hours,
+        'mu': mu,
+        'ss': ss,
+        'video_cnt': video_cnt,
+        'gap_time':gap_time,
+    }
+
+    return render(request, 'day.html', context)
 
 def week(request):
     return render(request, 'week.html')
@@ -43,11 +126,8 @@ def wholebody(request):
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
-        try:
-            r = requests.get(search_url, params=search_params)
-            print(r)
-        except Exception as e:
-            traceback.print_exc()
+
+        r = requests.get(search_url, params=search_params)
         result = r.json()['items'][0]
         snippet=result['snippet']
         pre_publishedAt=snippet['publishedAt']
@@ -68,7 +148,6 @@ def wholebody(request):
         r = requests.get(video_url, params=video_params)
 
         results = r.json()['items']
-
         
         for result in results:
             video_data = {
@@ -99,6 +178,7 @@ def smartmode(request):
         best = video.getbest(preftype="mp4")
 
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
+        global video_id
         video_id=re_result.group(1)
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
 
@@ -122,16 +202,38 @@ def smartmode(request):
             '#'+tags[round(random.randrange(len(tags)/4*3,len(tags)))]]
         except:
             tags_rand=['']
-        global data
-        data={ 'video_address': best.url,
+
+        global v_data
+        v_data={'video_address': best.url,
+                'video_id':video_id,
                 'url':url['cmd'],
                 'title':snippet['title'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount':statistics['viewCount'],
                 'tags':tags_rand[0],
                 'channelId':channel_id,
-             }
-             
+            }
+
+    if request.method == "POST":
+        videoId = video_id   #딕셔너리형태
+        high = request.POST.get('high',None)
+        low = request.POST.get('low',None)
+        average = request.POST.get('average',None)
+        high_img_route = "C:/Users/은서/Downloads/high.png"
+        low_img_route = "C:/Users/은서/Downloads/low.png"
+        high_start_section = request.POST.get('high_start_section',None)
+        high_end_section = request.POST.get('high_end_section',None)
+        low_start_section = request.POST.get('low_start_section',None)
+        low_end_section = request.POST.get('low_end_section',None)
+        total_time = request.POST.get('total_time',None)
+
+        data = Data(
+                videoId=videoId, high=high, low=low, average=average, high_img_route=high_img_route,
+                low_img_route=low_img_route, high_start_section=high_start_section, high_end_section=high_end_section,
+                low_start_section=low_start_section, low_end_section=low_end_section, total_time=total_time
+        )
+        data.save()
+    
     if request.method == "POST":
         username = request.POST.get('username',None)   #딕셔너리형태
         userphone = request.POST.get('userphone',None)
@@ -140,24 +242,28 @@ def smartmode(request):
             ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
             ranking.save()
             #return redirect('smartmode')
-    
-    return render(request, 'smartmode.html', data)
+
+    return render(request, 'smartmode.html', v_data)
 
 @csrf_exempt
 def videoplayer(request):
+    videos=[]
     if request.method=='GET':
         url=request.GET
         video = pafy.new(url['cmd'])
         channel_id=url['channel']
 
-        rankings = Ranking.objects.all().order_by('-similarity')
+        rankings = Ranking.objects.all().order_by('-similarity')[:5]
 
         best = video.getbest(preftype="mp4")
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
         video_id=re_result.group(1)
+
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
         channel_url='https://youtube.googleapis.com/youtube/v3/channels'
+        search_url='https://www.googleapis.com/youtube/v3/search'
 
+        #=============================================================video===============================
         video_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'part' : 'snippet, statistics',
@@ -180,7 +286,7 @@ def videoplayer(request):
         except:
             tags_rand=['']
 
-
+        #=============================================================channel===============================
         channelTitle=snippet["channelTitle"]
 
         channel_params={
@@ -195,12 +301,44 @@ def videoplayer(request):
         #print(channel_result['snippet']['thumbnails']['default']['url'])
         rankings_values=list(rankings.values())
 
+        #=============================================================search===============================
+        search_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet',
+            'type':'video',
+            'relatedToVideoId' : video_id,
+            'maxResults':10,
+            'videoLicense' : 'creativeCommon'
+        }
+        search_r=requests.get(search_url, params=search_params)
+        search_results=search_r.json()['items']
+
+        video_ids = []
+        for result in search_results:
+            video_ids.append(result['id']['videoId'])
         
+        for result in search_results:
+            #print(result)
+            #print(videos)
+            try:
+                video_data = {
+                    'title' : result['snippet']['title'],
+                    'id' : result['id'],
+                    'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
+                    'thumbnail' : result['snippet']['thumbnails']['high']['url'],
+                    'channelTitle' : result['snippet']['channelTitle'],
+                    'channel_id':result['snippet']['channelId']
+                }
+                videos.append(video_data)
+            except KeyError :
+                pass
+
+        #=================================================================================================
         num=1
         for i in range(0,len(rankings_values)):
             rankings_values[i]["id"]=num
             num+=1
-        
+
         #print(rankings_values)
         data={ 'video_address': best.url,
                 'url':url['cmd'],
@@ -213,6 +351,7 @@ def videoplayer(request):
                 'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
                 'channelSubscriber':channel_result['statistics']['subscriberCount'],
                 'channelId':channel_id,
+                'videos':videos[:8],
              }
 
     return render(request, 'videoplayer.html', data)

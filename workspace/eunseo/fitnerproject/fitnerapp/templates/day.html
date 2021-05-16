@@ -3,6 +3,7 @@
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -15,20 +16,9 @@
                 margin: 0;
             }
             /* Search Bar */
-            .search {
-                float: left;
-                margin: 10px 0 0 70px;
-                }
-            .search_button {
-                float: left;
-                margin: 10px 0 0 16px;
-                }
-            .fa-search {
-                left: 26px;
-                top: 17px;
-                color: white;
-                font-size: 17px;
-                }
+            .search { float: left; margin: 10px 0 0 70px; }
+            .search_button { float: left; margin: 10px 0 0 16px; }
+            .fa-search { left: 26px; top: 17px; color: white; font-size: 17px; }
             /*Drop Down Menu*/
             .dropdown-button {
                 background-color: transparent !important;
@@ -38,10 +28,7 @@
                 margin: 10px 0 0 85px;
                 font-weight: bold;
             }
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
+            .dropdown { position: relative; display: inline-block; }
             .dropdown-content {
                 background-color: #f5f5f5;
                 display: none;
@@ -63,12 +50,8 @@
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
-            #tab1 {
-                margin-right: 10px;
-            }
-            #tab2 {
-                margin-left: 58px;;
-            }
+            #tab1 { margin-right: 10px; }
+            #tab2 { margin-left: 58px; }
             /* Banner */
             .banner {
                 width: 100%;
@@ -121,7 +104,6 @@
                 -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
                 transition: transform 0.4s cubic-bezier(1, 0, 0, 1)
             }
-
             .tap:hover::before {
                 -webkit-transform-origin: left top;
                 -ms-transform-origin: left top;
@@ -130,20 +112,15 @@
                 -ms-transform: scale(1, 1);
                 transform: scale(1, 1)
             }
-
-            #tap1::before {
-                left: 65px;
-            }
-            #tap2::before {
-                left: 160px;
-            }
+            #tap1::before { left: 65px; }
+            #tap2::before { left: 160px; }
             #tab3 { margin-left: 50px; }
             /* Graph */
             .left_arrow_button { margin: 254px 0 0 370px; }
             .fa-arrow-left { color: #adadad; padding-top: 3px; cursor: pointer; }
             .right_arrow_button { margin: 254px 0 0 285px; }
             .fa-arrow-right { color: #adadad; padding-top: 3px; cursor: pointer; }
-            #graph_container { width: 800px; height: 400px; margin-top: 500px; margin-left: 355px; }
+            #graph_container { width: 810px; height: 455px; margin-top: 500px; margin-left: 355px; }
             /* Thumnail */
             .box {
                 width: 248px;
@@ -178,7 +155,6 @@
             }
             #modal_subtitle_1 { margin-top: 50px; margin-left: 91px; }
             #modal_subtitle_2 { margin-top: 50px; margin-left: 335px; }
-
             /* The Modal (background) */
             .modal {
                 display: none; /* Hidden by default */
@@ -239,7 +215,7 @@
                 <div>
                     {% csrf_token %}
                     <div class="search">
-                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?" autocomplete="off"
                         style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
                     </div>
                     <div onclick="location.href='/search';" class="search_button">
@@ -259,17 +235,17 @@
                 </div>  
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
-                        <div class="dropdown-content" id="tab1">
-                            <a href='/wholebody?part=전신'>전신</a>
-                            <a href='/wholebody?part=목'>목</a>
-                            <a href='/wholebody?part=어깨'>어깨</a>
-                            <a href='/wholebody?part=팔'>팔</a>
-                            <a href='/wholebody?part=가슴'>가슴</a>
-                            <a href='/wholebody?part=복근'>복근</a>    
-                            <a href='/wholebody?part=엉덩이'>엉덩이</a>
-                            <a href='/wholebody?part=허벅지'>허벅지</a>
-                            <a href='/wholebody?part=다리'>다리</a>
-                        </div>
+                    <div class="dropdown-content" id="tab1">
+                        <a href='/wholebody?part=전신'>전신</a>
+                        <a href='/wholebody?part=목'>목</a>
+                        <a href='/wholebody?part=어깨'>어깨</a>
+                        <a href='/wholebody?part=팔'>팔</a>
+                        <a href='/wholebody?part=가슴'>가슴</a>
+                        <a href='/wholebody?part=복근'>복근</a>    
+                        <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                        <a href='/wholebody?part=허벅지'>허벅지</a>
+                        <a href='/wholebody?part=다리'>다리</a>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
@@ -306,28 +282,30 @@
                     <li class="detail_tap"><a href="{% url 'week' %}" class="tap" id="tap1"><b>주</b></a></li>
                     <li class="detail_tap"><a href="{% url 'month' %}" class="tap" id="tap2"><b>월</b></a></li>
                 </ul>
-              </div>
+            </div>
             <!--Exercise Feedback-->
             <div style="float: left;">
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
                 <div style="display: flex;">
                     <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 410px;">
                         <img src="../static/clock.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                        <span style="position: absolute; margin: 18.8px 0 0 120px; font-size: 14px;">총 운동시간</span>
-                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">1시간 30분</span>
+                        <span style="position: absolute; margin: 18.8px 0 0 108px; font-size: 14px;">총 운동시간</span>
+                        <span id="time" style="position: absolute; margin: 40.2px 0 0 86px; font-size: 17px;">
+                            {{hours}}시간 {{mu}}분 {{ss}}초
+                        </span>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/play-button.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">완료한 영상</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">3개</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 90px; font-size: 14px;">오늘 운동한 영상</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 130px; font-size: 17px;">{{video_cnt}}개</span>
                         </div>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
                             <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
                 </div>
@@ -335,7 +313,8 @@
             <!--Graph Button-->
             <div style="position: absolute; display: flex; margin-top: 200px;">
                 <div class="left_arrow_button">
-                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                    <button class="prev"
+                    style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
@@ -357,7 +336,8 @@
                         week[today.getDay()] + "요일"
                 </script>
                 <div class="right_arrow_button">
-                    <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
+                    <button class="next"
+                    style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -370,18 +350,16 @@
                     var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                        labels: ["오전 12시", "3시" , "6시" ,"9시", "오후 12시", "3시" ,"6시", "9시"],
                         datasets: [
                         { label: '# time',
-                            data: [10, 56, 25, 91, 5, 78],
+                            data: [ ],
                             backgroundColor :[
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
-                                'rgba(138, 211, 192, 0.5)',
-                                'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',],
-                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0'],
+                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
                             borderWidth: 1,
                         }
                         ]

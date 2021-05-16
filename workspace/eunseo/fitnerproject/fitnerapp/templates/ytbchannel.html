@@ -99,7 +99,7 @@
                 <div>
                     {% csrf_token %}
                     <div class="search">
-                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?" autocomplete="off"
                         style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
                     </div>
                     <div onclick="location.href='/search';" class="search_button">
@@ -119,17 +119,17 @@
                 </div>  
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
-                        <div class="dropdown-content" id="tab1">
-                            <a href='/wholebody?part=전신'>전신</a>
-                            <a href='/wholebody?part=목'>목</a>
-                            <a href='/wholebody?part=어깨'>어깨</a>
-                            <a href='/wholebody?part=팔'>팔</a>
-                            <a href='/wholebody?part=가슴'>가슴</a>
-                            <a href='/wholebody?part=복근'>복근</a>    
-                            <a href='/wholebody?part=엉덩이'>엉덩이</a>
-                            <a href='/wholebody?part=허벅지'>허벅지</a>
-                            <a href='/wholebody?part=다리'>다리</a>
-                        </div>
+                    <div class="dropdown-content" id="tab1">
+                        <a href='/wholebody?part=전신'>전신</a>
+                        <a href='/wholebody?part=목'>목</a>
+                        <a href='/wholebody?part=어깨'>어깨</a>
+                        <a href='/wholebody?part=팔'>팔</a>
+                        <a href='/wholebody?part=가슴'>가슴</a>
+                        <a href='/wholebody?part=복근'>복근</a>    
+                        <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                        <a href='/wholebody?part=허벅지'>허벅지</a>
+                        <a href='/wholebody?part=다리'>다리</a>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
@@ -175,9 +175,10 @@
                     src="{{ video.thumbnail }}"
                     style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
                     <span class="video_title">{{ video.title }}</span>
-                    <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">조회수 {{video.viewCount}}명 · {{video.publishedAt}}</span>
+                    <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{ video.channelTitle }}</span>
                 </div>
                 {% endfor %}
+            </div>
         <div id="footer"></div>
     <body>
 </html>

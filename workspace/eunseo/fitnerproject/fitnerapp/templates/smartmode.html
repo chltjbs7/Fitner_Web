@@ -11,9 +11,6 @@
         <!-- p5  -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
-        <!-- fileSaver-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -188,7 +185,7 @@
                 <div>
                     {% csrf_token %}
                     <div class="search">
-                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?"
+                        <input type="text" name="search" placeholder="어떤 운동을 하고 싶나요?" autocomplete="off"
                         style="width: 287px; height: 40px; border: 0px; padding-left: 20px; font-size: 14px; border-radius: 50px; background-color: #f5f5f5;">
                     </div>
                     <div onclick="location.href='/search';" class="search_button">
@@ -208,17 +205,17 @@
                 </div>  
                 <div class="dropdown">
                     <button class="dropdown-button">카테고리</button>
-                        <div class="dropdown-content" id="tab1">
-                            <a href='/wholebody?part=전신'>전신</a>
-                            <a href='/wholebody?part=목'>목</a>
-                            <a href='/wholebody?part=어깨'>어깨</a>
-                            <a href='/wholebody?part=팔'>팔</a>
-                            <a href='/wholebody?part=가슴'>가슴</a>
-                            <a href='/wholebody?part=복근'>복근</a>    
-                            <a href='/wholebody?part=엉덩이'>엉덩이</a>
-                            <a href='/wholebody?part=허벅지'>허벅지</a>
-                            <a href='/wholebody?part=다리'>다리</a>
-                        </div>
+                    <div class="dropdown-content" id="tab1">
+                        <a href='/wholebody?part=전신'>전신</a>
+                        <a href='/wholebody?part=목'>목</a>
+                        <a href='/wholebody?part=어깨'>어깨</a>
+                        <a href='/wholebody?part=팔'>팔</a>
+                        <a href='/wholebody?part=가슴'>가슴</a>
+                        <a href='/wholebody?part=복근'>복근</a>    
+                        <a href='/wholebody?part=엉덩이'>엉덩이</a>
+                        <a href='/wholebody?part=허벅지'>허벅지</a>
+                        <a href='/wholebody?part=다리'>다리</a>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropdown-button">통계</button>
@@ -388,7 +385,7 @@
                                     function downloadCanvas(imgOption,image){  
                                         // create temporary link  
                                         var tmpLink = document.createElement( 'a' );  
-                                        tmpLink.download = "fitnerapp/static/"+imgOption +'.png'; // set the name of the download file 
+                                        tmpLink.download =imgOption +'.png'; // set the name of the download file 
                                         tmpLink.href = image;  
                                     
                                         // temporarily add link to body and initiate the download  
@@ -403,12 +400,14 @@
                                         if(high_similarity<avg_similarity_section){
                                             high_similarity=avg_similarity_section;
                                             high_time=youtube_video.currentTime;
+                                            high_time=Math.round(high_time)
                                             high_image = webcam_canvas.toDataURL();
                                         }
 
                                         if(low_similarity>avg_similarity_section){
                                             low_similarity=avg_similarity_section;
                                             low_time=youtube_video.currentTime;
+                                            low_time=Math.round(low_time)
                                             low_image = webcam_canvas.toDataURL();
                                         }
 
@@ -447,20 +446,6 @@
                             function input(){
                                 document.getElementById("similarity").value = avg_similarity;
                             }
-
-                            function get_message() {
-                                similarity = Math.round(avg_similarity)
-
-                                if (similarity > 70) {
-                                    document.getElementById("message").innerHTML = "아주 정확해요! 완벽에 가까운 자세인걸요?"
-                                }
-                                else if (70 >= similarity && similarity > 40) {
-                                    document.getElementById("message").innerHTML = "바른 자세에 가까워지고 있어요!"
-                                }
-                                else {
-                                    document.getElementById("message").innerHTML = "조금 더 자세에 주의를 기울여주세요!"
-                                }
-                            }
     
                             //==========================================similarity=================================================================================
                             function poseSimilarity(pose1, pose2) {
@@ -486,7 +471,7 @@
                                     //strategy: 'cosineDistanceMatching'
                                 };
                                 
-                                for(var i=0; i<=pose1.keypoints.length;i++){
+                                for(var i=0; i<pose1.keypoints.length;i++){
                                     pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
                                 }
                                 var options = Object.assign({}, defaultOptions, overridenOptions);
@@ -498,8 +483,7 @@
                                 // var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
                                 // var percent=50 * (2 - wdm);
                                 return percent;
-    
-                                        
+         
                             }
     
                             function vectorizeAndNormalize(pose, options) {
@@ -634,11 +618,10 @@
                     </div>
                     
                     <div style="display: inline-block;">
-                        
-                            <div class="player">
-                                <div class="progress">
-                                <div class="progress__filled"></div>
-                            </div>
+                        <div class="player">
+                            <div class="progress">
+                            <div class="progress__filled"></div>
+                        </div>
                         </figure>
                         <div class="Bar"> 
                             <div class="playBar"></div>
@@ -670,10 +653,6 @@
                             <button class="ai_fitner" style="cursor: pointer;" id="myBtn" onclick='get_message()'>
                                 <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 10%;"> 운동 끝내기 </p>
                             </button>
-                            <!-- <button id="myBtn"
-                            style="cursor: pointer; position: absolute; width: 170px; height: 44px; border-radius: 30px; background-color: #6c5ce7; margin: 20px 140px 0px 1050px; border: none;">
-                                <p style=" width: 160px; font-size: 18px; color: #ffffff; margin: 9px 20% 8px 0;"> 랭킹 등록 </p>
-                            </button> -->
                         </div>
                         <p style="width: 500px; font-size: 13px; color: #8ad3c0; margin: 0;"> {{ tags }} </p>
                         <p style="width: 570px; font-size: 18px; color: #000000; margin: 0;"> {{ title }} </p>
@@ -704,7 +683,8 @@
                                 class="form-control"
                                 name = "username"
                                 id="username" 
-                                placeholder="">                                
+                                placeholder=""
+                                autocomplete="off">                                
                             </div>
                             <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">전화번호</p>
                             <div class="userInput">
@@ -712,9 +692,9 @@
                                 class="form-control"
                                 name = "userphone"
                                 id="userphone" 
-                                placeholder="">
+                                placeholder=""
+                                autocomplete="off">
                             </div>
-                            <!-- <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">유사도</p>-->
                             <div class="userInput">
                                 <input type="hidden" 
                                 class="userInput"
@@ -723,6 +703,18 @@
                                 placeholder=""
                                 value="">
                             </div>
+                            <!--통계 데이터 값-->
+                            <input type="hidden" class="userInput" name = "videoId" id="videoId" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high" id="high" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low" id="low" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "average" id="average" placeholder="" value="">     
+                            <input type="hidden" class="userInput" name = "high_img_route" id="high_img_route" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_img_route" id="low_img_route" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_start_section" id="high_start_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_end_section" id="high_end_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_start_section" id="low_start_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_end_section" id="low_end_section" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "total_time" id="total_time" placeholder="" value="">
                         </div>
                         <button class="submit" type="submit" onclick='input()'>등록하기</button>
                         </form>
@@ -746,7 +738,27 @@
                         modal.style.display = "block";
                         downloadCanvas('high',high_image);
                         downloadCanvas('low',low_image);
-                        
+
+                        document.getElementById("high").value= high_similarity;
+                        document.getElementById("low").value= low_similarity;
+                        document.getElementById("average").value= avg_similarity;
+                        document.getElementById("high_start_section").value= high_time-3;
+                        document.getElementById("high_end_section").value= high_time;
+                        document.getElementById("low_start_section").value= low_time-3;
+                        document.getElementById("low_end_section").value= low_time;
+                        document.getElementById("total_time").value= ex_time;
+
+                        similarity = Math.round(avg_similarity);
+
+                        if (similarity > 70) {
+                            document.getElementById("message").innerHTML = "아주 정확해요! 완벽에 가까운 자세인걸요?";
+                        }
+                        else if (70 >= similarity && similarity > 40) {
+                            document.getElementById("message").innerHTML = "바른 자세에 가까워지고 있어요!";
+                        }
+                        else {
+                            document.getElementById("message").innerHTML = "조금 더 자세에 주의를 기울여주세요!";
+                        }
                     }
                     youtube_video.onended=smart_end;
                     // When the user clicks on <span> (x), close the modal
