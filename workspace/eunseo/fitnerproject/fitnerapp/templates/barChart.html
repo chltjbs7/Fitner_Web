@@ -1,0 +1,55 @@
+{% extends 'day.html' %}
+{% block content %}
+    <h1>bbbbbbbbbbbbbbbbbbbbbbbba</h1>
+  <div id="container" style="width: 75%;">
+    <canvas id="barChart" data-url="{% url 'barChart' %}"></canvas>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    $(function () {
+        
+      var $barChart = $("#barChart");
+      document.write($barChart.data("url"))
+      $.ajax({
+        url: $barChart.data("url"),
+        success: function (data) {
+
+          var ctx = $barChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: '시간',
+              datasets: [{
+                label: '분',
+                backgroundColor:[
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',
+                                'rgba(138, 211, 192, 0.5)',],
+                data: data.graph_data
+              }]          
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Population Bar Chart'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  </script>
+
+{% endblock %}

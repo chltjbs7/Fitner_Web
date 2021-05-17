@@ -303,25 +303,25 @@
             </div>
             <!--Exercise Feedback-->
             <div style="float: left;">
-                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">이번주의 운동피드백</p>
                 <div style="display: flex;">
                     <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 410px;">
                         <img src="../static/clock.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
                         <span style="position: absolute; margin: 18.8px 0 0 120px; font-size: 14px;">총 운동시간</span>
-                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">1시간 30분</span>
+                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{hours}}시간 {{mu}}분 {{ss}}초</span>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/play-button.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">완료한 영상</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">3개</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">이번주 완료한 영상</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">{{video_cnt}}개</span>
                         </div>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전 주 대비 운동량</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
                 </div>
@@ -341,7 +341,7 @@
                         start = start || 0;
                         var today = new Date(this.setHours(0, 0, 0, 0));
                         var day = today.getDay() - start;
-                        var date = today.getDate() - day;
+                        var date = today.getDate() - day+1;
 
                             // Grabbing Start/End Dates
                         var StartDate = new Date(today.setDate(date));
@@ -368,7 +368,7 @@
                     var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                        labels: ["월", "화" , "수" , "목", "금" , "토","일"],
                         datasets: [
                         { label: '# time',
                             data: [0, 0, 0, 91, 0, 0],

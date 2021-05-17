@@ -429,6 +429,9 @@
                                             //console.log('poses',poses)
                                             var weightedDistance = poseSimilarity(poses[1], poses[0]);
                                             weightedDistance=Math.round(weightedDistance);
+                                            if (weightedDistance==NaN){
+                                                weightedDistance=0;
+                                            }
                                             document.getElementById("pose").innerHTML = weightedDistance;
                                             cnt+=1;
                                             total_similarity+=weightedDistance;
@@ -474,6 +477,16 @@
                                 for(var i=0; i<pose1.keypoints.length;i++){
                                     pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
                                 }
+
+                                for(var i=0;i<pose1.keypoints.length;i++){
+                                    if(pose1.keypoints[i].score<0.2){
+                                        pose1.keypoints[i].position.x=0;
+                                        pose1.keypoints[i].position.y=0;
+                                       
+                                    }
+
+                                }
+                                console.log(pose1.keypoints)
                                 var options = Object.assign({}, defaultOptions, overridenOptions);
                                 var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
                                 var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];
