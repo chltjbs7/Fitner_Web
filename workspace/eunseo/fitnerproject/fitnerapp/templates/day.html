@@ -313,7 +313,7 @@
             <!--Graph Button-->
             <div style="position: absolute; display: flex; margin-top: 200px;">
                 <div class="left_arrow_button">
-                    <button class="prev"
+                    <button class="prev" id="yesterday" 
                     style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -333,7 +333,17 @@
                     document.getElementById('currentDay').innerHTML =
                         today.getMonth()+1 + "월 " +
                         today.getDate() + "일 " +
-                        week[today.getDay()] + "요일"
+                        week[today.getDay()] + "요일";
+
+                    yesterday=today;
+                    yesterday.setDate(today.getDate() - 1);
+                    yesterday=yesterday.getFullYear()+"-"+(yesterday.getMonth()+1)+"-"+yesterday.getDate();
+                    document.getElementById('yesterday').onclick="\"location.href=\'/day?yesterday="+yesterday+"\'\";"
+                    // .innerHTML="onclick=\"location.href=\'/day?yesterday="+yesterday+"\'\";"
+                    // function yesterday(){
+                    //     document.getElementById('yesterday').innerHTML="onclick=\"location.href=\'/day?yesterday="+yesterday+"\'\";"
+                    // }
+                    
                 </script>
                 <div class="right_arrow_button">
                     <button class="next"
@@ -343,39 +353,119 @@
                 </div>
             </div>
             <!--Graph-->
-            <div id="graph_container">
+            
+            <!-- <div id="graph_container">
                 <canvas id="myChart"></canvas>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
                 <script type="text/javascript">
-                    var ctx = document.getElementById("myChart");
-                    var myChart = new Chart(ctx, {
+                    endpoint='/day'
+                    $.ajax({
+    
+                    method : "GET",
+                    url    : endpoint,
+                    
+                    success: function(data){
+
+                    new Chart(document.getElementById("myChart"), {
                     type: 'bar',
-                    data: {
-                        labels: ["오전 12시", "3시" , "6시" ,"9시", "오후 12시", "3시" ,"6시", "9시"],
-                        datasets: [
-                        { label: '# time',
-                            data: [ ],
+                    datasets: { labels   : ["시간"],
+                            datasets : data
+                    },
+                    options : {
+                        scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true,
+                                        
+                                    }
+                                }]
+                            }
+                    } } ); },
+                    
+                    error: function(error_data){
+                        console.log("error")
+                        console.log(error_data) } } )
+
+                </script> -->
+                <div id="graph_container">
+                <canvas id="myChart"></canvas>
+                <script>
+                    console.log("{{graph_data| escapejs}}")
+                    console.log("{{graph_data.0| escapejs}}")
+                    let total_data_x=("{% for data in graph_data %}{{ data.x | escapejs }}{% endfor %}");
+                    let total_data_y=("{% for data in graph_data %}{{ data.y | escapejs }}{% endfor %}");
+
+
+                    var chartData={
+                        labels: ['0시','3시','6시','9시','12시','15시','18시','21시'],
+                        datasets: [{
+                            label: '평점',
                             backgroundColor :[
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',
                                 'rgba(138, 211, 192, 0.5)',],
                             borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
-                            borderWidth: 1,
-                        }
-                        ]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true,
-                                }
-                            }]
-                        }
-                    }
-                    });
+                            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+                            pointBorderColor: "#fff",
+                            data: [
+                            {% for data in graph_data %}
+                            {x:"{{data.x}}",y:"{{data.y}}"}
+                            {% if not forloop.last %},{% endif %}  
+                            {% endfor %}
+                            ]
+                        }]
+                    };
+                    // console.log(total_data_x);
+                    // console.log(total_data_y/60);
+                    // //const json = '{"result":true, "count":42}';
+                    
+                    // var ctx = document.getElementById("myChart");
+
+                    // var myChart = new Chart(ctx, {
+                    // type: 'bar',
+                    // datasets: {
+                    //     labels: ['0시','3시','6시','9시','12시','15시','18시','21시'],
+                    //     backgroundColor :[
+                    //             'rgba(138, 211, 192, 0.5)',
+                    //             'rgba(138, 211, 192, 0.5)',
+                    //             'rgba(138, 211, 192, 0.5)',
+                    //             'rgba(138, 211, 192, 0.5)',],
+                    //     borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
+                    //     borderWidth: 1,
+                    //     data: [
+                    //     {% for data in graph_data %}
+                    //     {x:{{data.x}},y:{{data.y}}}
+                    //     {% if not forloop.last %},{% endif %}  //마지막 loop의 마지막이 아닐경우 ,를 붙인다
+                    //     {% endfor %}
+                    //         // { label: '# time',
+                    //         // data: [{x:total_data_x,y:total_data_y/60}],
+                            
+                    //         // },
+                    //     ],
+                    // },
+                    // options: {
+                    //     scales: {
+                    //         yAxes: [{
+                    //             ticks: {
+                    //                 beginAtZero:true,
+                                    
+                    //             }
+                    //         }]
+                    //     }
+                    // }
+                    // });
+
+
+                    window.onload = function() {
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                        type: 'line',
+                        data: chartData
+                            });
+                    };
                 </script>
-            </div>
+                </div>
             <!--Action Similarity-->
             <div style="float: left; position: absolute;">
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
