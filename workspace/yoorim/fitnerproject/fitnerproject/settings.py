@@ -119,8 +119,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-
 #YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
 #YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
 YOUTUBE_DATA_API_KEY = 'AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50' #피트너 API
@@ -129,8 +127,11 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'fitneraapp','static')
 ] #static 파일들이 어디에 있는지를 쓰는곳
 
-STATIC_ROOT= os.path.join(BASE_DIR,'static')
-#static 파일들이 어디로 모일 것인지를 쓰는 곳
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') #개발자가 관리하는 파일들 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #사용자가 업로드한 파일 관리
 
 TIME_ZONE =  'Asia/Seoul'   # timezone1서울
 USE_I18N = True

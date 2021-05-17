@@ -282,8 +282,9 @@
                             <a href="#" >Fitner님</a>
                             <a href="#" >프로필 수정</a>
                             <a href="{% url 'mypage' %}">마이페이지</a>
+                            <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
                             >로그아웃</a>
                         </div>
                 </div>               
@@ -303,25 +304,25 @@
             </div>
             <!--Exercise Feedback-->
             <div style="float: left;">
-                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">이번주의 운동피드백</p>
                 <div style="display: flex;">
                     <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 410px;">
                         <img src="../static/clock.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                        <span style="position: absolute; margin: 18.8px 0 0 120px; font-size: 14px;">총 운동시간</span>
-                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">1시간 30분</span>
+                        <span style="position: absolute; margin: 18.8px 0 0 108px; font-size: 14px;">총 운동시간</span>
+                        <span style="position: absolute; margin: 40.2px 0 0 86px; font-size: 17px;">{{hours}}시간 {{mu}}분 {{ss}}초</span>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/play-button.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">완료한 영상</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">3개</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 80px; font-size: 14px;">이번 주 완료한 영상</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 130px; font-size: 17px;">{{video_cnt}}개</span>
                         </div>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 86px; font-size: 14px;">전 주 대비 운동량</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
                 </div>
@@ -341,7 +342,7 @@
                         start = start || 0;
                         var today = new Date(this.setHours(0, 0, 0, 0));
                         var day = today.getDay() - start;
-                        var date = today.getDate() - day;
+                        var date = today.getDate() - day+1;
 
                             // Grabbing Start/End Dates
                         var StartDate = new Date(today.setDate(date));
@@ -368,7 +369,7 @@
                     var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                        labels: ["월", "화" , "수" , "목", "금" , "토", "일"],
                         datasets: [
                         { label: '# time',
                             data: [0, 0, 0, 91, 0, 0],
@@ -455,9 +456,10 @@
                         </div>
                         <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
                         <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>                    
+                    </div>            
                 </div>
-
+            </div>
+            <div id="footer"></div>
             <!-- The Modal -->
             <div id="myModal" class="modal">
                 <!-- Modal content -->

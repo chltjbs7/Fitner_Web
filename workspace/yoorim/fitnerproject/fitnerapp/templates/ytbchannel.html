@@ -164,8 +164,9 @@
                             <a href="#" >Fitner님</a>
                             <a href="#" >프로필 수정</a>
                             <a href="{% url 'mypage' %}">마이페이지</a>
+                            <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
                             >로그아웃</a>
                         </div>
                 </div>             
@@ -188,7 +189,7 @@
                 <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 34px 0 14px 220px;">동영상 목록 (최신순)</p>
                 <div style="margin-top: -15px; margin-left: 195px;">
                     {% for video in videos %}
-                    <div style="float: left; height: 250px;">
+                    <div style="float: left; height: 230px;">
                         <img onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ channelId }}';"
                         src="{{ video.thumbnail }}"
                         style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>

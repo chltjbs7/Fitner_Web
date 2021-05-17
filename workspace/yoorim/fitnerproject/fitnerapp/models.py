@@ -17,7 +17,7 @@ class User(models.Model): #장고에서 제공하는 models.Model를 상속받�
 class Ranking(models.Model):
     username = models.CharField(max_length=10,verbose_name = '이름')
     userphone = models.CharField(max_length=11,verbose_name = '전화번호')
-    similarity = models.FloatField(max_length=256,verbose_name = '유사도')
+    similarity = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '유사도')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간') 
 
     def __str__(self):
@@ -28,16 +28,16 @@ class Ranking(models.Model):
 
 class Data(models.Model):
     videoId = models.CharField(max_length=10,verbose_name = '영상 Id')
-    high = models.FloatField(max_length=10,verbose_name = '최고 유사도')
-    low = models.FloatField(max_length=10,verbose_name = '최저 유사도')
-    average = models.FloatField(max_length=10,verbose_name = '평균 유사도')
+    high = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '최고 유사도')
+    low = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '최저 유사도')
+    average = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '평균 유사도')
     high_img_route = models.CharField(max_length=256,verbose_name = '최고 유사도 이미지 경로')
     low_img_route = models.CharField(max_length=256,verbose_name = '최저 유사도 이미지 경로')
     high_start_section = models.IntegerField(verbose_name = '최고 유사도 영상 시작 구간')
     high_end_section = models.IntegerField(verbose_name = '최고 유사도 영상 끝 구간')
     low_start_section = models.IntegerField(verbose_name = '최저 유사도 영상 시작 구간')
     low_end_section = models.IntegerField(verbose_name = '최저 유사도 영상 끝 구간')
-    total_time = models.IntegerField(verbose_name = '운동시간')
+    total_time = models.IntegerField(blank=False, null=False, default=0,verbose_name = '운동시간')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
 
     def __str__(self):
@@ -45,3 +45,24 @@ class Data(models.Model):
  
     class Meta:
         db_table = 'data'
+
+class Playlist(models.Model):
+    videoName = models.CharField(max_length=256,verbose_name = '재생목록 이름')
+    videoId = models.CharField(max_length=256,verbose_name = '영상 Id')
+    registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
+
+    def __str__(self):
+        return self.videoId
+ 
+    class Meta:
+        db_table = 'playlist'
+
+class Subscribe(models.Model):
+    channelId = models.CharField(max_length=256,verbose_name = '채널 Id')
+    registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간')
+
+    def __str__(self):
+        return self.channelId
+ 
+    class Meta:
+        db_table = 'subscribe'

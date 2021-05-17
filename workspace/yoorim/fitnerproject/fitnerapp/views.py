@@ -30,11 +30,51 @@ def allViewRecord(request):
 def playlist(request):
     return render(request, 'playlist.html')
 
+def barChart(request):
+    labels = []
+    data = []
+
+    # 그래프(운동 시간으로 나타냄)
+    #t_day = Data.objects.values('total_time')
+    today_data=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).all()
+    today_data_values=today_data.values()
+    graph_data={}
+    graph_data_list=[]
+    index=[0,]
+    for i in today_data_values:
+        a=datetime.time(i["registered_dttm"]).hour
+        start=0
+        end=3
+        for j in range(8):
+            if a>=start and a<end:
+                if str(start) not in graph_data:
+                    graph_data[str(start)]={"x": str(start)+"시", "y": i["total_time"]}
+                else:
+                    graph_data[str(start)]["y"]+=i["total_time"]
+                start+=3
+                end+=3
+    for i in graph_data.values():
+        graph_data_list.append(i)
+
+    
+    return render(request, 'barChart.html', {
+        'graph_data':graph_data_list
+    })
+
 def day(request):
+    if request.method=='GET':
+        r=request.GET
+        try:
+            yesterday = r['yesterday']
+            print(yesterday)
+        
+            now=yesterday
+        except:
+            now=datetime.now()
     # 총 운동 시간
     #time_sum = Data.objects.aggregate(Sum('total_time'))
-    time_filter=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).aggregate(Sum('total_time'))
-    
+    time_filter=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).aggregate(Sum('total_time'))
+    print(time_filter)
     #t_values = time_sum.values()
     t_values=time_filter.values()
 
@@ -51,13 +91,13 @@ def day(request):
 
     # 운동한 영상
     #video = Data.objects.annotate(Count('videoId'))
-    video = Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).annotate(Count('videoId'))
+    video = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).annotate(Count('videoId'))
     v_values = list(video.values_list('videoId'))
     video_cnt = len(v_values)
     #print(video_cnt)
 
     # 전날 대비 운동량
-    yesterday_filter=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()- timedelta(1)).isoformat()).aggregate(Sum('total_time'))
+    yesterday_filter=Data.objects.filter(registered_dttm__date=datetime.date(now- timedelta(1)).isoformat()).aggregate(Sum('total_time'))
     yesterday_values=yesterday_filter.values()
 
     for i in yesterday_values:
@@ -95,6 +135,35 @@ def day(request):
 
     # 그래프(운동 시간으로 나타냄)
     #t_day = Data.objects.values('total_time')
+    today_data=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).all()
+    today_data_values=today_data.values()
+    
+    graph_data={}
+    graph_data_list=[]
+    for i in today_data_values:
+        a=datetime.time(i["registered_dttm"]).hour
+        start=0
+        end=3
+        for j in range(8):
+            if a>=start and a<end:
+                if str(start) not in graph_data:
+                    graph_data[str(start)]={"x": str(start)+"시", "y": i["total_time"]}
+                else:
+                    graph_data[str(start)]["y"]+=i["total_time"]
+            start+=3
+            end+=3
+
+    for i in graph_data.values():
+        graph_data_list.append(i)
+
+    results = Data.objects.all().order_by('-registered_dttm')
+
+    result_values=list(results.values())
+    num=len(result_values)
+    print(num)
+    for i in range(num, 0):
+        result_values[i]["id"]=num
+        num-=1
 
     context = {
         'hours': hours,
@@ -102,12 +171,122 @@ def day(request):
         'ss': ss,
         'video_cnt': video_cnt,
         'gap_time':gap_time,
+        'graph_data':graph_data_list,
+        'results':result_values
     }
 
     return render(request, 'day.html', context)
 
+
 def week(request):
-    return render(request, 'week.html')
+    def AddDays(sourceDate, count): 
+            targetDate = sourceDate + timedelta(days = count) 
+            return targetDate 
+    def GetWeekFirstDate(sourceDate): 
+        temporaryDate =datetime(sourceDate.year, sourceDate.month, sourceDate.day) 
+        weekDayCount = temporaryDate.weekday() 
+        targetDate = AddDays(temporaryDate, -weekDayCount); 
+        return targetDate
+
+    start_date=GetWeekFirstDate(datetime.date(datetime.now()))
+
+    # 총 운동 시간
+    #time_sum = Data.objects.aggregate(Sum('total_time'))
+    time_filter=Data.objects.filter(registered_dttm__range=[datetime.date(start_date),datetime.date(start_date)+timedelta(6)]).aggregate(Sum('total_time'))
+
+    #t_values = time_sum.values()
+    t_values=time_filter.values()
+
+    for i in t_values:
+        t_values = i
+
+    t_value_sec=t_values
+
+    hours = t_values // 3600
+    t_values = t_values - hours*3600
+    mu = t_values // 60
+    ss = t_values - mu*60
+    #print(hours, '시간', mu, '분', ss, '초')
+
+    # 운동한 영상
+    #video = Data.objects.annotate(Count('videoId'))
+    video = Data.objects.filter(registered_dttm__range=[start_date,start_date+timedelta(6)]).annotate(Count('videoId'))
+    v_values = list(video.values_list('videoId'))
+    video_cnt = len(v_values)
+    #print(video_cnt)
+
+    # 전주 대비 운동량
+    lastWeek_start_date=GetWeekFirstDate(datetime.date(start_date-timedelta(1)))
+    lastWeek_filter=Data.objects.filter(registered_dttm__range=[lastWeek_start_date,datetime.date(start_date)+timedelta(6)]).aggregate(Sum('total_time'))
+    lastWeek_values=lastWeek_filter.values()
+
+    for i in lastWeek_values:
+        lastWeek_values = i
+
+    if lastWeek_values==None:
+        lastWeek_values=0
+
+    gap_time=t_value_sec-lastWeek_values
+    gap_time_signed=gap_time
+
+
+    gap_time=abs(gap_time)
+    hours_gap = gap_time // 3600
+    gap_time = gap_time - hours*3600
+    mu_gap = gap_time // 60
+    ss_gap = gap_time - mu*60
+
+    if hours_gap==0 and mu_gap==0:
+        if gap_time_signed <0:
+            gap_time='-'+str(gap_time)+'초'
+        else:
+            gap_time='+'+str(gap_time)+'초'
+    elif hours_gap==0 and mu_gap!=0:
+        if gap_time_signed <0:
+            gap_time='-'+str(mu_gap)+'분'
+        else:
+            gap_time='+'+str(mu_gap)+'분'
+    elif hours_gap!=0:
+        if gap_time_signed <0:
+            gap_time='-'+str(hours_gap)+'시간'
+        else:
+            gap_time='+'+str(hours_gap)+'시간'
+
+
+    # 그래프(운동 시간으로 나타냄)
+    #t_day = Data.objects.values('total_time')
+    today_data=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).all()
+    today_data_values=today_data.values()
+    graph_data={}
+    graph_data_list=[]
+    index=[0,]
+    for i in today_data_values:
+        a=datetime.time(i["registered_dttm"]).hour
+        start=0
+        end=3
+        for j in range(8):
+            if a>=start and a<end:
+                if str(start) not in graph_data:
+                    graph_data[str(start)]={"x": str(start)+"시", "y": i["total_time"]}
+                else:
+                    graph_data[str(start)]["y"]+=i["total_time"]
+                start+=3
+                end+=3
+    for i in graph_data.values():
+        graph_data_list.append(i)
+
+
+
+    context = {
+        'hours': hours,
+        'mu': mu,
+        'ss': ss,
+        'video_cnt': video_cnt,
+        'gap_time':gap_time,
+        'graph_data':graph_data_list,
+    }
+
+    return render(request, 'week.html',context)
 
 def month(request):
     return render(request, 'month.html')
@@ -222,8 +401,8 @@ def smartmode(request):
         high = request.POST.get('high',None)
         low = request.POST.get('low',None)
         average = request.POST.get('average',None)
-        high_img_route = "C:/Users/은서/Downloads/high.png"
-        low_img_route = "C:/Users/은서/Downloads/low.png"
+        high_img_route = "C:/Users/서유림/Download/high.png"
+        low_img_route = "C:/Users/서유림/Download/low.png"
         high_start_section = request.POST.get('high_start_section',None)
         high_end_section = request.POST.get('high_end_section',None)
         low_start_section = request.POST.get('low_start_section',None)
