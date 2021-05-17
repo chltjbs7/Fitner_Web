@@ -188,6 +188,7 @@
             .cVideoblock {
                 display: inline-block;
                 margin-right: 16px;
+                height: 210px;
             }
             .miniVideo {
                 width: 248px;
@@ -202,11 +203,11 @@
                 -webkit-line-clamp: 2;
                 overflow: hidden;
                 max-height: 42px;
+                margin-left: 25px;
                 width: 248px;
                 font-size: 14px;
                 line-height: 1.43;
                 color: #0a0a0a;
-                margin-top: -2px;
             }
             #footer {
                 float: left;
@@ -218,8 +219,7 @@
         </style>  
     </head>
 
-    <!--<body style="overflow-x:hidden; overflow-y:auto;">-->
-    <body>
+    <body style="overflow-x:hidden; overflow-y:auto;">
         <!-- Header -->
         <div class="header">
             <a href="{% url 'user_home' %}">
@@ -325,7 +325,7 @@
                 <div class="graph">
                     <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
                     <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 0 30px; " class="graph_title"> 순위 </p>
-                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -8px; " class="graph_title"> 이름 </p>
+                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -10px; " class="graph_title"> 이름 </p>
                     <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 0 0 10px; " class="graph_title"> 유사도 비율 </p>
                 </div>
                 <div class="graph_bgr">
@@ -346,8 +346,20 @@
 
                 <!-- Fit Videos -->
                 <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 40px 0 15px 140px;"> 맞춤동영상 </p>
-
-                <div style="margin-top: -15px;">
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: 115px;">
+                        {% for video in videos %}
+                        <div style="float: left; height: 230px;">
+                            <img onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ channelId }}';"
+                            src="{{ video.thumbnail }}"
+                            style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">{{ video.title }}</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{ video.channelTitle }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>                
+                </div>
+                <!-- <div style="margin-top: -15px;">
                     <div class="customizedVideo">
                         {% for video in videos %}
                         <div class="cVideoblock">
@@ -357,7 +369,7 @@
                         </div>
                         {% endfor %}
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="footer"></div>
             <!-- The Modal -->

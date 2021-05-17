@@ -2,8 +2,6 @@ import requests
 import pafy
 import re
 import random
-import os
-import shutil
 
 from datetime import datetime, timedelta
 from isodate import parse_duration
@@ -15,7 +13,7 @@ from django.contrib.auth.hashers import make_password, check_password #비밀번
 from .models import User
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import Ranking
+from .models import Rank
 from django.views.decorators.http import condition
 from .models import Data
 from django.db.models import Sum
@@ -432,7 +430,7 @@ def smartmode(request):
         userphone = request.POST.get('userphone',None)
         similarity = request.POST.get('similarity',None)
         if username and userphone :
-            ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
+            ranking = Rank(username=username, userphone=userphone, similarity=similarity)
             ranking.save()
             #return redirect('smartmode')
 
@@ -446,7 +444,7 @@ def videoplayer(request):
         video = pafy.new(url['cmd'])
         channel_id=url['channel']
 
-        rankings = Ranking.objects.all().order_by('-similarity')[:5]
+        rankings = Rank.objects.all().order_by('-similarity')[:5]
 
         best = video.getbest(preftype="mp4")
         re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])

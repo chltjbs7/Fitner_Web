@@ -14,17 +14,30 @@ class User(models.Model): #장고에서 제공하는 models.Model를 상속받�
     class Meta: #메타 클래스를 이용하여 테이블명 지정
         db_table = 'test_user'
 
-class Ranking(models.Model):
+# class Ranking(models.Model):
+#     username = models.CharField(max_length=10,verbose_name = '이름')
+#     userphone = models.CharField(max_length=11,verbose_name = '전화번호')
+#     similarity = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '유사도')
+#     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간') 
+
+#     def __str__(self):
+#         return self.username
+ 
+#     class Meta:
+#         db_table = 'ranking'
+
+class Rank(models.Model):
+    videoId = models.CharField(max_length=256,verbose_name = '영상 Id')
     username = models.CharField(max_length=10,verbose_name = '이름')
     userphone = models.CharField(max_length=11,verbose_name = '전화번호')
     similarity = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '유사도')
     registered_dttm = models.DateTimeField(auto_now_add=True,verbose_name='등록시간') 
 
     def __str__(self):
-        return self.username
+        return self.videoId
  
     class Meta:
-        db_table = 'ranking'
+        db_table = 'rank'
 
 class Data(models.Model):
     videoId = models.CharField(max_length=256,verbose_name = '영상 Id')
