@@ -2,8 +2,10 @@ import requests
 import pafy
 import re
 import random
-from datetime import datetime, timedelta
+import os
+import shutil
 
+from datetime import datetime, timedelta
 from isodate import parse_duration
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -156,8 +158,7 @@ def day(request):
     for i in graph_data.values():
         graph_data_list.append(i)
 
-    results = Data.objects.all().order_by('-registered_dttm')
-
+    results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('registered_dttm')
     result_values=list(results.values())
 
     num=1
@@ -275,7 +276,13 @@ def week(request):
     for i in graph_data.values():
         graph_data_list.append(i)
 
+    results = Data.objects.filter(registered_dttm__range=[datetime.date(start_date),datetime.date(start_date)+timedelta(6)]).order_by('registered_dttm')
+    result_values=list(results.values())
 
+    num=1
+    for i in range(0, len(result_values)):
+        result_values[i]["id"]=num
+        num+=1
 
     context = {
         'hours': hours,
@@ -284,6 +291,8 @@ def week(request):
         'video_cnt': video_cnt,
         'gap_time':gap_time,
         'graph_data':graph_data_list,
+        'results':result_values
+
     }
 
     return render(request, 'week.html',context)
@@ -401,8 +410,10 @@ def smartmode(request):
         high = request.POST.get('high',None)
         low = request.POST.get('low',None)
         average = request.POST.get('average',None)
-        high_img_route = "C:/Users/서유림/Download/high.png"
-        low_img_route = "C:/Users/서유림/Download/low.png"
+
+        high_img_route = "C:/Users/서유림/Documents/GitHub/Fitner_Web/workspace/yoorim/fitnerproject/fitnerapp/static/resulthigh.png"
+        low_img_route = "C:/Users/서유림/Documents/GitHub/Fitner_Web/workspace/yoorim/fitnerproject/fitnerapp/static/result/low.png"
+
         high_start_section = request.POST.get('high_start_section',None)
         high_end_section = request.POST.get('high_end_section',None)
         low_start_section = request.POST.get('low_start_section',None)

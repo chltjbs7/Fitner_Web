@@ -27,7 +27,7 @@ class Ranking(models.Model):
         db_table = 'ranking'
 
 class Data(models.Model):
-    videoId = models.CharField(max_length=10,verbose_name = '영상 Id')
+    videoId = models.CharField(max_length=256,verbose_name = '영상 Id')
     high = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '최고 유사도')
     low = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '최저 유사도')
     average = models.DecimalField(max_digits = 10, decimal_places = 2,verbose_name = '평균 유사도')

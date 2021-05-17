@@ -392,12 +392,13 @@
                 </div>
             <!--Action Similarity-->
             <div style="float: left; position: absolute;">
-                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상별 동작 유사도</p>
-                <div style="margin-left: 220px;">
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
+                <div style="margin-left: 195px; margin-top: -30px;">
                     {% for result in results %}
                     <div style="float: left; cursor: pointer;">
                         <div class="btn" style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 116px;">{{result.average}}%</span>
+                            <p style="text-align: right; font-size: 38px; line-height: 1.08; color: #ffffff; padding-top: 92px; padding-right: 8px;">
+                                {{result.average}}%</p>
                         </div>
                         <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
                         <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
@@ -423,9 +424,9 @@
                             <p class="modal_subtitle" id="modal_subtitle_2">가장 낮은 유사도 동작</p>
                         </div>
                         <div style="float: left; display: flex;">
-                            <img src="../static/result_high/high ({{result.id}}).png" 
+                            <img src="../static/result/high ({{result.id}}).png" 
                             style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 174px">
-                            <img src="../static/result_low/low ({{result.id}}).png"
+                            <img src="../static/result/low ({{result.id}}).png"
                             style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 210px">
                         </div>
                         <div style="float: left;">
