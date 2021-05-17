@@ -218,7 +218,8 @@
         </style>  
     </head>
 
-    <body style="overflow-x:hidden; overflow-y:auto;">
+    <!--<body style="overflow-x:hidden; overflow-y:auto;">-->
+    <body>
         <!-- Header -->
         <div class="header">
             <a href="{% url 'user_home' %}">
@@ -314,7 +315,7 @@
                     <div class="youtuber_img">
                         <img src='{{ channelImage }}' id='youtuber_img' width="48px" height="48px" style="border-radius: 50px; position: absolute;" />
                         <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 14px 0px 0px 995px; position: absolute;"> 구독 </p>
-                        <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
+                        <p style="width: 200px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
                         <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 {{ channelSubscriber }}명 </p>
                     </div>
                     <hr class="line">   
@@ -327,7 +328,6 @@
                     <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -8px; " class="graph_title"> 이름 </p>
                     <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 0 0 10px; " class="graph_title"> 유사도 비율 </p>
                 </div>
-
                 <div class="graph_bgr">
                     {% for ranking in rankings %}
                     <div class="rank">
@@ -335,12 +335,15 @@
                             <p id="rank" style="font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px;">{{ranking.id}}</p>
                         </div>
                         <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> {{ranking.username}} </p>
-                        <div class="ratio" style="width: 720px;">
-                            <p style="font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                        <div style="width: 720px;">
+                            <div class="ratio" style="width: {{ranking.similarity}}%;">
+                                <p style="font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
+
                 <!-- Fit Videos -->
                 <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 40px 0 15px 140px;"> 맞춤동영상 </p>
 

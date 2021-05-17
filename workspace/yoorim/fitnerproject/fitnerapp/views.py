@@ -159,11 +159,11 @@ def day(request):
     results = Data.objects.all().order_by('-registered_dttm')
 
     result_values=list(results.values())
-    num=len(result_values)
-    print(num)
-    for i in range(num, 0):
+
+    num=1
+    for i in range(0, len(result_values)):
         result_values[i]["id"]=num
-        num-=1
+        num+=1
 
     context = {
         'hours': hours,
