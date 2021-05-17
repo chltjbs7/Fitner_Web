@@ -436,31 +436,33 @@
                             <p class="modal_subtitle" id="modal_subtitle_1">가장 높은 유사도 동작</p>
                             <p class="modal_subtitle" id="modal_subtitle_2">가장 낮은 유사도 동작</p>
                         </div>
-                        <div style="float: left; display: flex;">
+                        <div style="float: left; display: flex; margin-top: -15px;">
                             <img src="../static/result/high ({{result.id}}).png" 
-                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 174px">
+                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 172px">
                             <img src="../static/result/low ({{result.id}}).png"
                             style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 210px">
                         </div>
-                        <div style="float: left;">
-                            <div style="width: 276px; margin: 16px 0 0 186px;">
-                                <span>영상의</span>
-                                <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
-                                <span>의</span>
+                        <div style="margin-left: 10px;">
+                            <div style="float: left;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 248px;">
+                                    <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
+                                </div>
                             </div>
-                            <div style="margin: 0 0 0 256px;">
-                                <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
-                            </div>
-                        </div>
-                        <div style="float: left; margin-left: 25px;">
-                            <div style="width: 276px; margin: 16px 0 0 186px;">
-                                <span>영상의</span>
-                                <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
-                                <span>의</span>
-                            </div>
-                            <div style="margin: 0 0 0 256px;">
-                                <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
-                            </div>
+                            <div style="float: left; margin-left: 25px;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 256px;">
+                                    <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
+                                </div>
+                            </div>               
                         </div>
                     </div>
                 </div>

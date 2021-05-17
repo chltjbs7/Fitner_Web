@@ -136,7 +136,6 @@ def day(request):
 
 
     # 그래프(운동 시간으로 나타냄)
-    #t_day = Data.objects.values('total_time')
     today_data=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).all()
     today_data_values=today_data.values()
     
@@ -157,7 +156,8 @@ def day(request):
 
     for i in graph_data.values():
         graph_data_list.append(i)
-
+    
+    # 운동한 영상별 유사도
     results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('registered_dttm')
     result_values=list(results.values())
 
