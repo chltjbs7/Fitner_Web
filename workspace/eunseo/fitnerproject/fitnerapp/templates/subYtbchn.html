@@ -134,45 +134,13 @@
             #tab3 { margin-left: 50px; }
             #title {
               display: inline-block;
-              margin: 110px 0 14px 235px;
+              margin: 110px 0 0 235px;
               font-size: 16px;
               font-weight: bold;
               line-height: 1;
               letter-spacing: normal;
               text-align: left;
               color: #000000;
-            }
-            #allView {
-              margin-left: 870px;
-              font-size: 14px;
-              font-weight: normal;
-              font-stretch: normal;
-              font-style: normal;
-              line-height: 2;
-              letter-spacing: normal;
-              text-align: left;
-              color: #8a8a8a;
-              cursor: pointer;
-            }
-            .playlist {
-                border-radius: 5px;
-                cursor: pointer;
-                width: 248px;
-                height: 139px;
-                object-fit: cover;
-                margin: 20px 0 0 24px;
-            }
-            .playlist_title {
-                -webkit-box-orient: vertical;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                overflow: hidden;
-                max-height: 42px;
-                margin: 6px 0 0 25px;
-                width: 248px;
-                font-size: 14px;
-                line-height: 1.43;
-                color: #0a0a0a;
             }
             /* Footer */
             #footer {
@@ -252,61 +220,93 @@
                 </div>             
             </div>
         </div>
-        <!--Playlist-->
-        <div style="margin-left: 40px;">
-            <div style="float: left; margin-top: 0px; margin-left: -30px;">
-                <p id="title">재생 목록</p>
-                <a id="allView" href="{% url 'playlist' %}" style="margin-left: 900px; text-decoration: none;">전체보기</a>                
+        <p id="title" style="float: left;">구독한 유튜버</p>
+        <div style="margin-left: 95px;">
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                        margin: 150px 0 0 140px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
             </div>
-            <div>
-                <div style="float:left;">
-                    <div style="margin-top: -15px; margin-left: 180px;">
-                        <div style="float: left; height: 250px;">
-                            <div class="playlist" style="background-color: #8ad3c0;">
-                                <img src="../static/create_new_folder-24px.png" width="30px" height="30px"
-                                style="margin: 45px 0 0 110px;">
-                                <p style="color: white; font-size: 16px; margin: -3px 0 0 55px;">새 재생목록 만들기</p>
-                            </div>
-                            <span class="video_title"></span>
-                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;"></span>
-                        </div>
-                    </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 150px 0 0 355px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                 </div>
-                <div style="float:left;">
-                    <div style="margin-top: -15px; margin-left: -10px;">
-                        <div style="float: left; height: 250px;">
-                            <div class="playlist" style="background-color: #e8e8e8;">
-                                <img src="../static/Fitner logo_grey.png" width="106px" height="38px"
-                                style="margin: 53px 0 0 76px;">
-                            </div>
-                            <span class="playlist_title">전신운동 루틴</span>
-                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 0개</span>
-                        </div>
-                    </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 150px 0 0 570px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                 </div>
-                <div style="float:left;">
-                    <div style="margin-top: -15px; margin-left: -10px;">
-                        <div style="float: left; height: 250px;">
-                            <div class="playlist" style="background-color: #e8e8e8;">
-                            </div>
-                            <span class="playlist_title">30일 홈트레이닝 루틴</span>
-                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 3개</span>
-                        </div>
-                    </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 150px 0 0 785px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                 </div>
-                <div style="float:left;">
-                    <div style="margin-top: -15px; margin-left: -10px;">
-                        <div style="float: left; height: 250px;">
-                            <div class="playlist" style="background-color: #e8e8e8;">
-                            </div>
-                            <span class="playlist_title">하루 10분 운동</span>
-                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 5개</span>
-                        </div>
-                    </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 150px 0 0 1000px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                 </div>
-            </div>              
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>            
         </div>
- 
+
+        <div style="margin-left: 95px;">
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 402px 0 0 140px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 402px 0 0 355px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 402px 0 0 570px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 402px 0 0 785px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+            <div style="position: absolute; width: 179px; height: 202px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
+                margin: 402px 0 0 1000px;">
+                <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
+                    <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
+                </div>
+                <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
+                <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
+            </div>
+        </div>
+        
         <div id="footer"></div>
     <body>
 </html>

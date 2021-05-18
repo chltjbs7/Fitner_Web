@@ -40,7 +40,7 @@
                 margin: 10px 0 0 85px;
                 font-weight: bold;
             }
-            .dropdown { position: relative; display: inline-block; }
+            .dropdown { position: relative; display: inline-block; z-index: 3; }
             .dropdown-content {
                 background-color: #f5f5f5;
                 display: none;
@@ -50,7 +50,6 @@
                 padding: 8px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                 margin-left: 75px;
-                z-index: 1;
             }
             .dropdown-content a {
                 color: black;
@@ -230,14 +229,15 @@
                         <i class="fas fa-user-circle fa-lg"></i>
                         <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
                     </button>
-                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
-                            <a href="#" >Fitner님</a>
-                            <a href="#" >프로필 수정</a>
-                            <a href="{% url 'mypage' %}">마이페이지</a>
-                            <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
-                            >로그아웃</a>
-                        </div>
+                    <div class="dropdown-content" id="tab3" style="min-width: 110px;">
+                        <a href="#" >Fitner님</a>
+                        <a href="#" >프로필 수정</a>
+                        <a href="{% url 'mypage' %}">마이페이지</a>
+                        <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
+                        <a href="{% url 'home' %}"
+                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                        >로그아웃</a>
+                    </div>
                 </div>               
             </div>
             <div style="margin-top: 80px; margin-left: 6px;">
@@ -273,6 +273,7 @@
     
                                     var youtube_video  = document.getElementById('youtube_video');
                                     youtube_video.setAttribute('crossOrigin','Anonymous')
+                                    youtube_video.playbackRate=0.75;
     
                                     var skeleton_canvas = document.getElementById('skeleton_canvas');
                                     var context_skeleton = skeleton_canvas.getContext('2d');
@@ -349,9 +350,7 @@
                                         }
                                     }
                                     }
-    
-                                    
-    
+
                                     function drawCameraIntoCanvas() {
                                         context.drawImage(webcam_video, 0, 0, 466, 423);
                                         window.requestAnimationFrame(drawCameraIntoCanvas);
@@ -426,20 +425,29 @@
                                             net.estimateSinglePose(webcam_video)
                                         ])
                                         }).then(function(poses){
+                                            var noyoutuber=false;
                                             //console.log('poses',poses)
                                             var weightedDistance = poseSimilarity(poses[1], poses[0]);
+                                            if(weightedDistance.toString().slice(-2)=='no'){
+                                                weightedDistance=weightedDistance.slice(0,-2)
+                                                noyoutuber=true;
+                                            }
+
                                             weightedDistance=Math.round(weightedDistance);
-                                            if (weightedDistance==NaN){
+                                            if (isNaN(weightedDistance)==true){
                                                 weightedDistance=0;
                                             }
+
                                             document.getElementById("pose").innerHTML = weightedDistance;
                                             cnt+=1;
                                             total_similarity+=weightedDistance;
                                             avg_similarity=total_similarity/cnt;
                                             total_similarity_section+=weightedDistance;
-                                            if(cnt%3==0){
+                                            if(noyoutuber==false){
+                                                if(cnt%3==0){
                                                 similarity_section();
-                                            }
+                                                }
+                                            }                                            
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
                                         setTimeout(similarity_loop, 1000);
@@ -474,27 +482,34 @@
                                     //strategy: 'cosineDistanceMatching'
                                 };
                                 
-                                for(var i=0; i<pose1.keypoints.length;i++){
-                                    pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
-                                }
+                                // for(var i=0; i<pose1.keypoints.length;i++){
+                                //     pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
+                                // }
+
+                                console.log(pose2.score)
+                                
 
                                 for(var i=0;i<pose1.keypoints.length;i++){
                                     if(pose1.keypoints[i].score<0.2){
                                         pose1.keypoints[i].position.x=0;
                                         pose1.keypoints[i].position.y=0;
-                                       
+
                                     }
 
                                 }
-                                console.log(pose1.keypoints)
                                 var options = Object.assign({}, defaultOptions, overridenOptions);
                                 var _a =vectorizeAndNormalize(pose1, options), vectorPose1XY = _a[0], vectorPose1Scores = _a[1];
                                 var vectorPose2XY = vectorizeAndNormalize(pose2, options)[0];
                                 var cdm= cosineDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
-                                const squareRoot2 = Math.sqrt(2)
+                                const squareRoot2 = Math.sqrt(2);
                                 const percent = (100 / squareRoot2) * (squareRoot2 - cdm)
                                 // var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
                                 // var percent=50 * (2 - wdm);
+
+                                if(pose2.score<0.2){
+                                    var noPose2=String(percent)+'no'
+                                    return noPose2
+                                }
                                 return percent;
          
                             }
@@ -673,7 +688,6 @@
                     </div>
                 </div>   
             </div>
-            <div id="footer"></div>
             <!-- The Modal -->
             <div id="myModal" class="modal">
                 <div class="modal-content">
@@ -689,7 +703,7 @@
 
                         <form method = "POST" action = ".">
                         {% csrf_token %}
-                        <div style="float: left; margin-left: 25px; margin-top: -8px;">
+                        <div style="float: left; margin-left: 35px; margin-top: -8px;">
                             <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
                             <div class="userInput">
                                 <input type="text"
@@ -755,10 +769,21 @@
                         document.getElementById("high").value= high_similarity;
                         document.getElementById("low").value= low_similarity;
                         document.getElementById("average").value= avg_similarity;
-                        document.getElementById("high_start_section").value= high_time-3;
-                        document.getElementById("high_end_section").value= high_time;
-                        document.getElementById("low_start_section").value= low_time-3;
-                        document.getElementById("low_end_section").value= low_time;
+                        
+                        h_s_time = high_time - 3;
+                        h_e_time = high_time;
+                        l_s_time = low_time - 3;
+                        l_e_time = low_time;
+
+                        if (3 > high_time >= 0 && 3 > low_time >= 0) {
+                            h_s_time = 0;
+                            l_s_time = 0;
+                        }
+
+                        document.getElementById("high_start_section").value= h_s_time;
+                        document.getElementById("high_end_section").value= h_e_time;
+                        document.getElementById("low_start_section").value= l_s_time;
+                        document.getElementById("low_end_section").value= l_e_time;
                         document.getElementById("total_time").value= ex_time;
 
                         similarity = Math.round(avg_similarity);
