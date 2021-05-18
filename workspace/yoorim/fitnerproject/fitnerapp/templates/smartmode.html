@@ -273,6 +273,7 @@
     
                                     var youtube_video  = document.getElementById('youtube_video');
                                     youtube_video.setAttribute('crossOrigin','Anonymous')
+                                    youtube_video.playbackRate=0.75;
     
                                     var skeleton_canvas = document.getElementById('skeleton_canvas');
                                     var context_skeleton = skeleton_canvas.getContext('2d');
@@ -426,20 +427,28 @@
                                             net.estimateSinglePose(webcam_video)
                                         ])
                                         }).then(function(poses){
+                                            var noyoutuber=false;
                                             //console.log('poses',poses)
                                             var weightedDistance = poseSimilarity(poses[1], poses[0]);
+                                            if(weightedDistance.toString().slice(-2)=='no'){
+                                                weightedDistance=weightedDistance.slice(0,-2)
+                                                noyoutuber=true;
+                                            }
+
                                             weightedDistance=Math.round(weightedDistance);
                                             if (isNaN(weightedDistance)==true){
                                                 weightedDistance=0;
-                                                console.log('isnan')
                                             }
+
                                             document.getElementById("pose").innerHTML = weightedDistance;
                                             cnt+=1;
                                             total_similarity+=weightedDistance;
                                             avg_similarity=total_similarity/cnt;
                                             total_similarity_section+=weightedDistance;
-                                            if(cnt%3==0){
+                                            if(noyoutuber==false){
+                                                if(cnt%3==0){
                                                 similarity_section();
+                                                }
                                             }
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
@@ -475,6 +484,8 @@
                                     //strategy: 'cosineDistanceMatching'
                                 };
                                 
+                                console.log(pose2.score)
+
                                 for(var i=0;i<pose1.keypoints.length;i++){
                                     if(pose1.keypoints[i].score<0.2){
                                         pose1.keypoints[i].position.x=0;
@@ -492,6 +503,10 @@
                                 const percent = (100 / squareRoot2) * (squareRoot2 - cdm)
                                 // var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
                                 // var percent=50 * (2 - wdm);
+                                if(pose2.score<0.2){
+                                    var noPose2=String(percent)+'no'
+                                    return noPose2
+                                }
                                 return percent;
          
                             }
