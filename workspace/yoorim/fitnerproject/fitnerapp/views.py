@@ -24,6 +24,19 @@ from django.db.models import Count
 def home(request):
     return render(request, 'home.html')
 
+def showRanking(request):
+    rankings = Rank.objects.all().order_by('-similarity')[:5]
+    rankings_values=list(rankings.values())
+    num=1
+    for i in range(0,len(rankings_values)):
+        rankings_values[i]["id"]=num
+        num+=1
+
+    context = {
+        'rankings':rankings_values,
+    }
+    return render(request, 'showRanking.html', context)
+
 def allViewRecord(request):
     return render(request, 'allViewRecord.html')
 
@@ -156,13 +169,7 @@ def day(request):
         graph_data_list.append(i)
     
     # 운동한 영상별 유사도
-    results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('registered_dttm')
-    result_values=list(results.values())
-
-    num=1
-    for i in range(0, len(result_values)):
-        result_values[i]["id"]=num
-        num+=1
+    results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('-registered_dttm')
 
     context = {
         'hours': hours,
@@ -171,7 +178,7 @@ def day(request):
         'video_cnt': video_cnt,
         'gap_time':gap_time,
         'graph_data':graph_data_list,
-        'results':result_values
+        'results':results
     }
 
     return render(request, 'day.html', context)
@@ -408,10 +415,8 @@ def smartmode(request):
         high = request.POST.get('high',None)
         low = request.POST.get('low',None)
         average = request.POST.get('average',None)
-
-        high_img_route = "C:/Users/서유림/Documents/GitHub/Fitner_Web/workspace/yoorim/fitnerproject/fitnerapp/static/resulthigh.png"
-        low_img_route = "C:/Users/서유림/Documents/GitHub/Fitner_Web/workspace/yoorim/fitnerproject/fitnerapp/static/result/low.png"
-
+        high_img_name = request.POST.get('high_img_name',None)
+        low_img_name = request.POST.get('low_img_name',None)
         high_start_section = request.POST.get('high_start_section',None)
         high_end_section = request.POST.get('high_end_section',None)
         low_start_section = request.POST.get('low_start_section',None)
@@ -419,9 +424,11 @@ def smartmode(request):
         total_time = request.POST.get('total_time',None)
 
         data = Data(
-                videoId=videoId, high=high, low=low, average=average, high_img_route=high_img_route,
-                low_img_route=low_img_route, high_start_section=high_start_section, high_end_section=high_end_section,
-                low_start_section=low_start_section, low_end_section=low_end_section, total_time=total_time
+                videoId=videoId, high=high, low=low, average=average,
+                high_img_name=high_img_name, low_img_name=low_img_name,
+                high_start_section=high_start_section, high_end_section=high_end_section,
+                low_start_section=low_start_section, low_end_section=low_end_section,
+                total_time=total_time
         )
         data.save()
     
@@ -491,7 +498,6 @@ def videoplayer(request):
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
         rankings_values=list(rankings.values())
-
         #=============================================================search===============================
         search_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,

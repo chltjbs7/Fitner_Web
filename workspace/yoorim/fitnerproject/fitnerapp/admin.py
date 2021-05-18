@@ -18,7 +18,7 @@ class RankAdmin(admin.ModelAdmin):
 admin.site.register(Rank, RankAdmin)
 
 class DataAdmin(admin.ModelAdmin):
-    list_display = ('videoId', 'high', 'low', 'average', 'high_img_route', 'low_img_route', 
+    list_display = ('videoId', 'high', 'low', 'average', 'high_img_name', 'low_img_name', 
     'high_start_section', 'high_end_section', 'low_start_section', 'low_end_section', 'total_time', 'registered_dttm')
  
 admin.site.register(Data, DataAdmin)

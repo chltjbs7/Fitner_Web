@@ -475,9 +475,6 @@
                                     //strategy: 'cosineDistanceMatching'
                                 };
                                 
-                                for(var i=0; i<pose1.keypoints.length;i++){
-                                    pose1.keypoints[i]["position"]['x']=466-pose1.keypoints[i]["position"]['x']
-                                }
                                 for(var i=0;i<pose1.keypoints.length;i++){
                                     if(pose1.keypoints[i].score<0.2){
                                         pose1.keypoints[i].position.x=0;
@@ -706,8 +703,8 @@
                             <input type="hidden" class="userInput" name = "high" id="high" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "low" id="low" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "average" id="average" placeholder="" value="">     
-                            <input type="hidden" class="userInput" name = "high_img_route" id="high_img_route" placeholder="" value="">
-                            <input type="hidden" class="userInput" name = "low_img_route" id="low_img_route" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "high_img_name" id="high_img_name" placeholder="" value="">
+                            <input type="hidden" class="userInput" name = "low_img_name" id="low_img_name" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "high_start_section" id="high_start_section" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "high_end_section" id="high_end_section" placeholder="" value="">
                             <input type="hidden" class="userInput" name = "low_start_section" id="low_start_section" placeholder="" value="">
@@ -731,24 +728,45 @@
                     // When the user clicks the button, open the modal 
 
                     btn.onclick = smart_end;
+
                     function smart_end() {
                         youtube_video.pause();
                         modal.style.display = "block";
-                        downloadCanvas('high',high_image);
-                        downloadCanvas('low',low_image);
+
+                        let today = new Date();
+                        let year = today.getFullYear(); // 년도
+                        let month = today.getMonth() + 1;  // 월
+                        let date = today.getDate();  // 날짜
+                        let hours = today.getHours(); // 시
+                        let minutes = today.getMinutes();  // 분
+                        let seconds = today.getSeconds();  // 초
+
+                        downloadCanvas(year+'년'+month+'월'+date+'일.'+hours+'시'+minutes+'분'+seconds+'초.'+'high', high_image);
+                        downloadCanvas(year+'년'+month+'월'+date+'일.'+hours+'시'+minutes+'분'+seconds+'초.'+'low',low_image);
+
+                        document.getElementById("high_img_name").value= year+'년'+month+'월'+date+'일.'+hours+'시'+minutes+'분'+seconds+'초.'+'high';
+                        document.getElementById("low_img_name").value= year+'년'+month+'월'+date+'일.'+hours+'시'+minutes+'분'+seconds+'초.'+'low';
 
                         document.getElementById("high").value= high_similarity;
                         document.getElementById("low").value= low_similarity;
                         document.getElementById("average").value= avg_similarity;
-                        
-                        h_s_time = high_time - 3;
-                        h_e_time = high_time;
-                        l_s_time = low_time - 3;
-                        l_e_time = low_time;
 
-                        if (3 > high_time >= 0 && 3 > low_time >= 0) {
+                        if(3 >= high_time && high_time >= 0) {
                             h_s_time = 0;
+                            h_e_time = high_time;
+                        }
+                        else {
+                            h_s_time = high_time - 3;
+                            h_e_time = high_time;
+                        }
+
+                        if (3 >=  low_time && low_time >= 0) {
                             l_s_time = 0;
+                            l_e_time = low_time;
+                        }
+                        else {
+                            l_s_time = low_time - 3;
+                            l_e_time = low_time;
                         }
 
                         document.getElementById("high_start_section").value= h_s_time;
