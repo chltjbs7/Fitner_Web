@@ -147,7 +147,7 @@
             /* 구독한 유튜버 */
             #title {
               display: inline-block;
-              margin: 40px 0 14px 145px;
+              margin: 40px 0 14px 235px;
               font-size: 16px;
               font-weight: bold;
               line-height: 1;
@@ -156,7 +156,7 @@
               color: #000000;
             }
             #allView {
-              margin-left: 1050px;
+              margin-left: 870px;
               font-size: 14px;
               font-weight: normal;
               font-stretch: normal;
@@ -165,20 +165,12 @@
               letter-spacing: normal;
               text-align: left;
               color: #8a8a8a;
+              cursor: pointer;
             }
             .left_arrow_button { position: absolute; margin: 562px 0 0 137px; }
             .fa-arrow-left { color: #adadad; }
             .right_arrow_button { position: absolute; margin: 562px 0 0 1269px; }
             .fa-arrow-right { color: #adadad;}
-            /* 시청기록 */
-            .Video { margin-left: 140px; }
-            .Videoblock { display: inline-block; margin-right: 16px; }
-            .miniVideo {
-              width: 248px;
-              height: 139px;
-              background-color: #aaaaaa;
-            }
-            /* 재생목록 */
             .video_title{
                 -webkit-box-orient: vertical;
                 display: -webkit-box;
@@ -191,33 +183,33 @@
                 line-height: 1.43;
                 color: #0a0a0a;
             }
-            .addList {
-                background-color: #8ad3c0;
-                float: left;
-                height: 250px;
+            .playlist {
+                border-radius: 5px;
                 cursor: pointer;
                 width: 248px;
                 height: 139px;
+                object-fit: cover;
                 margin: 20px 0 0 24px;
-                border-radius: 5px;
             }
-            .Listblock {
-                background-color: #e8e8e8;
-                float: left;
-                height: 250px;
-                cursor: pointer;
+            .playlist_title {
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                max-height: 42px;
+                margin: 6px 0 0 25px;
                 width: 248px;
-                height: 139px;
-                margin: 20px 0 0 24px;
-                border-radius: 5px;
+                font-size: 14px;
+                line-height: 1.43;
+                color: #0a0a0a;
             }
             /* Footer */
             #footer {
                 float: left;
                 position: absolute;
                 width: 50%;
-                height: 70px;
-                margin-top: 650px;
+                height: 30px;
+                margin-top: 1650px;
             }
         </style>
     </head>
@@ -281,8 +273,9 @@
                             <a href="#" >Fitner님</a>
                             <a href="#" >프로필 수정</a>
                             <a href="{% url 'mypage' %}">마이페이지</a>
+                            <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
                             >로그아웃</a>
                         </div>
                 </div>             
@@ -298,7 +291,7 @@
             </div>
             <!--Subscribed Youtuber-->
             <p id="title">구독한 유튜버</p>
-            <a id="allView">전체보기</a>
+            <a id="allView" href="{% url 'subYtbchn' %}" style="text-decoration: none;">전체보기</a>
             <div style="margin-left: 30px; margin-top: -440px;">
               <div class="left_arrow_button">
                   <button style="width: 35px; height: 35px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
@@ -314,7 +307,6 @@
                       <img src="../static/hipeuddeume.jpg" width=74px height=74px style="border-radius: 50px">
                       </div>
                       <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
-                      <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; font-weight: bold; color: #ffffff; margin: 123px 0 0 86px;">1</p>
                       <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">힙으뜸</p>
                   </div>
                   <!-- 2th YouTuber -->
@@ -324,7 +316,6 @@
                           <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px">
                       </div>
                       <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
-                      <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; font-weight: bold; color: #ffffff; margin: 123px 0 0 86px;">2</p>
                       <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">DanoTV</p>
                   </div>
                   <!-- 3th YouTuber -->
@@ -334,7 +325,6 @@
                           <img src="../static/leejieun.jpg" width=74px height=74px style="border-radius: 50px">
                       </div>
                       <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
-                      <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; font-weight: bold; color: #ffffff; margin: 123px 0 0 86px;">3</p>
                       <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 130px 0 0 34px;"> 이지은 <br>다이어트</p>
                   </div>
                   <!-- 4th YouTuber -->
@@ -344,7 +334,6 @@
                           <img src="../static/ballettherafit.jpg" width=74px height=74px style="border-radius: 50px">
                       </div>
                       <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
-                      <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; font-weight: bold; color: #ffffff; margin: 123px 0 0 86px;">4</p>
                       <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 140px 0 0 34px;">발레테라핏</p>
                   </div>
                   <!-- 5th YouTuber -->
@@ -354,7 +343,6 @@
                           <img src="../static/pliates.jpg" width=74px height=74px style="border-radius: 50px">
                       </div>
                       <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 110px 0 0 17px;"></div>
-                      <p style="position: absolute; font-size: 14px; line-height: 1.07; text-align: center; font-weight: bold; color: #ffffff; margin: 123px 0 0 86px;">5</p>
                       <p style="position: absolute; width: 112px; height: 52px;font-size: 16px; line-height: 1.5; text-align: center; color: #0a0a0a; margin: 130px 0 0 34px;">Playing <br> Pliates</p>
                   </div>
               </div>
@@ -363,113 +351,139 @@
                       <i class="fas fa-arrow-right"></i>
                   </button>
               </div>
-            <!-- 시청기록 -->
-            <div style="float: left; margin-top: 300px;">
-              <p style="display: inline-block; margin: 40px 0 14px 120px; font-size: 16px; font-weight: bold; line-height: 1;">시청기록</p>
-              <a href="{% url 'allViewRecord' %}"
-              style="margin-left: 1080px; font-size: 14px; line-height: 2; color: #8a8a8a; text-decoration: none;">전체보기</a>
+            <!--View Record-->
+            <div style="float: left; margin-top: 330px; margin-left: -30px;">
+                <p id="title">시청 기록</p>
+                <a id="allView" href="{% url 'allViewRecord' %}" style="margin-left: 900px; text-decoration: none;">전체보기</a>                
             </div>
-            <div style="margin-left: -35px;">
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+            <div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: 180px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
-                    </div>
-                </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
-                    </div>
-                </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
-                    </div>
-                </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
-                    </div>
-                </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- 재생목록 -->
-            <div style="float: left; margin-top: 10px;">
-              <p style="display: inline-block; margin: 40px 0 14px 120px; font-size: 16px; font-weight: bold; line-height: 1;">재생목록</p>
-              <a href="{% url 'playlist' %}"
-              style="text-decoration: none; margin-left: 1080px; font-size: 14px; line-height: 2; color: #8a8a8a;">전체보기</a>
+            <div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: 180px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <img style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div style="margin-top: 10px;">
-              <div style="margin-left: -35px;">
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div class="addList">
-                        <img src="../static/create_new_folder-24px.png" width="32px" height="32px"
-                        style="margin: 38px 0 0 110px;">
-                        <p style="font-size: 16px; color: #ffffff; margin: 0 0 0 56px;">새 재생목록 만들기</p>
-                    </div>
-                </div> 
-                <!-- <div style="margin-top: -15px; margin-left: 195px;">
-                    <div class="Listblock">
-                        <img src="../static/Fitner logo_grey.png" width="106px" height="38px"
-                        style="margin: 50px 0 0 76px;">
-                    </div>
-                </div> -->
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="border-radius: 5px; background-color: #e8e8e8; cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">전신운동 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 0개</span>
+            <!--Playlist-->
+            <div style="float: left; margin-top: 0px; margin-left: -30px;">
+                <p id="title">재생 목록</p>
+                <a id="allView" href="{% url 'playlist' %}" style="margin-left: 900px; text-decoration: none;">전체보기</a>                
+            </div>
+            <div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: 180px;">
+                        <div style="float: left; height: 250px;">
+                            <div class="playlist" style="background-color: #8ad3c0;">
+                                <img src="../static/create_new_folder-24px.png" width="30px" height="30px"
+                                style="margin: 45px 0 0 110px;">
+                                <p style="color: white; font-size: 16px; margin: -3px 0 0 55px;">새 재생목록 만들기</p>
+                            </div>
+                            <span class="video_title"></span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;"></span>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="border-radius: 5px; background-color: #8ad3c0; cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">30일 홈트레이닝 루틴</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 3개</span>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <div class="playlist" style="background-color: #e8e8e8;">
+                                <img src="../static/Fitner logo_grey.png" width="106px" height="38px"
+                                style="margin: 53px 0 0 76px;">
+                            </div>
+                            <span class="playlist_title">전신운동 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 0개</span>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: -15px; margin-left: 195px;">
-                    <div style="float: left; height: 250px;">
-                        <img style="border-radius: 5px; background-color: #8ad3c0; cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
-                        <span class="video_title">하루 10분 운동</span>
-                        <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 5개</span>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <div class="playlist" style="background-color: #e8e8e8;">
+                            </div>
+                            <span class="playlist_title">30일 홈트레이닝 루틴</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 3개</span>
+                        </div>
                     </div>
                 </div>
-              </div>
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: -10px;">
+                        <div style="float: left; height: 250px;">
+                            <div class="playlist" style="background-color: #e8e8e8;">
+                            </div>
+                            <span class="playlist_title">하루 10분 운동</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">동영상 5개</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="footer"></div>
     <body>

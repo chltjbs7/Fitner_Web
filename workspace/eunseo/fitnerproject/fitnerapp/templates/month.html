@@ -2,7 +2,8 @@
 <html>
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fitner</title>
@@ -303,32 +304,32 @@
             </div>
             <!--Exercise Feedback-->
             <div style="float: left;">
-                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">오늘의 운동피드백</p>
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 92px 0 0 410px;">이번 달 운동피드백</p>
                 <div style="display: flex;">
                     <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 410px;">
                         <img src="../static/clock.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
                         <span style="position: absolute; margin: 18.8px 0 0 120px; font-size: 14px;">총 운동시간</span>
-                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">1시간 30분</span>
+                        <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{hours}}시간 {{mu}}분 {{ss}}초</span>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/play-button.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
                             <span style="position: absolute; margin: 18.8px 0 0 112px; font-size: 14px;">완료한 영상</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">3개</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 139.8px; font-size: 17px;">{{video_cnt}}</span>
                         </div>
                     </div>
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
-                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">+2시간</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전달 대비 운동량</span>
+                            <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
                 </div>
             </div>
             <!--Graph Button-->
             <div style="position: absolute; display: flex; margin-top: 200px;">
-                <div class="left_arrow_button">
+                <div class="left_arrow_button" onclick="location.href='/month?today={{ today }}left'">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -360,7 +361,7 @@
 
                     document.getElementById('currentMonth').innerHTML = getTimeStamp()
                 </script>
-                <div class="right_arrow_button">
+                <div class="right_arrow_button" onclick="location.href='/month?today={{ today }}'">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
                     </button>
@@ -370,36 +371,64 @@
             <div id="graph_container">
                 <canvas id="myChart"></canvas>
                 <script type="text/javascript">
-                    var ctx = document.getElementById("myChart");
-                    var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ["오전 12시", "3시" , "9시" , "오후 12시", "3시" , "9시"],
+                    console.log({% for data in graph_data%}
+                            "{{data|escapejs}}"
+                            {% if not forloop.last %},{% endif %}
+                            {% endfor %})
+                    var chartData={
+                        labels: [
+                            {% for data in month_label%}
+                            "{{data}}"
+                            {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        ],
                         datasets: [
-                        { label: '# time',
-                            data: [0, 0, 0, 91, 0, 0],
-                            backgroundColor :[
-                                'rgba(138, 211, 192, 0.5)',
-                                'rgba(138, 211, 192, 0.5)',
-                                'rgba(138, 211, 192, 0.5)',
-                                'rgba(138, 211, 192, 0.5)',],
-                            borderColor: ['#8ad3c0', '#8ad3c0', '#8ad3c0', '#8ad3c0',],
-                            borderWidth: 1,
-                        }
+                            {
+                            label: '분',
+                            backgroundColor :'rgba(138, 211, 192, 0.5)',
+                            borderColor: '#8ad3c0',
+                            pointBackgroundColor: "#6c5ce7",
+                            pointBorderColor: "#6c5ce7",
+                            fill: true,
+                            borderRadius: 20,
+                            borderWidth: 2,
+                            data: [
+                            {% for data in graph_data %}
+                            {x:"{{data.x}}",y:("{{data.y}}"/60).toFixed(1)}
+                            {% if not forloop.last %},{% endif %}  
+                            {% endfor %}
+                            ]
+                            },
                         ]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true,
+                    };
+                    
+                    window.onload = function() {
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'bar',
+                            data: chartData,
+                            options:{
+                                scales:{
+                                    y: {
+                                        beginAtZero: true
+                                    },
+                                    x:{
+                                        beginAtZero: true,
+                                        grid:{
+                                            display:false,
+                                            //offset:false
+                                            //drawTicks:true
+                                        },
+                                        ticks:{
+                                            autoSkip: true,
+                                            maxTicksLimit: 8
+                                        }
+                                    }
                                 }
-                            }]
-                        }
-                    }
-                    });
-                </script>
-            </div>
+                            }
+                        });
+                    };
+                    </script>
             <!--Action Similarity-->
             <div style="float: left; position: absolute;">
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>

@@ -166,8 +166,9 @@
                             <a href="#" >Fitner님</a>
                             <a href="#" >프로필 수정</a>
                             <a href="{% url 'mypage' %}">마이페이지</a>
+                            <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 30px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
                             >로그아웃</a>
                         </div>
                 </div>               
@@ -180,7 +181,7 @@
                     <div class="videoInfo">
                         <p style="width: 585px; font-size: 16px; color: #000000; margin: 0;">{{ video.title }}</p>
                         <p style="font-size: 13px; color: #aaaaaa; margin: 0; ">조회수 {{ video.viewCount }} 회 · 날짜 {{ video.publishedAt }}</p>
-                        <img src='{{ channelImage }}' class="youtuber_img"></img>
+                        <img src='{{ video.channel_img }}' class="youtuber_img"></img>
                         <p style="width: 160px; font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
                     </div>
                 </div>
