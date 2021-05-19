@@ -660,30 +660,18 @@ def wholebody(request):
 
 def smartmode(request):
     if request.method=='GET':
-        url=request.GET
-        video = pafy.new(url['cmd'])
-        channel_id=url['channel']
-        best = video.getbest(preftype="mp4")
+        data=request.GET
 
-        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
         global video_id
-        video_id=re_result.group(1)
-        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+        video_id=data['video_id']
+        viewCount=data['viewCount']
+        publishedAt=data['publishedAt']
+        videotitle=data['videotitle']
+        video_id=data['video_id']
+        tags=data['videoTag']
+        video_address=data['video_address']
 
-        video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part' : 'snippet, statistics',
-            'id' : video_id,
-        }
-
-        r = requests.get(video_url, params=video_params)
-        result = r.json()['items'][0]
-        snippet=result['snippet']
-        statistics=result['statistics']
-        pre_publishedAt=snippet['publishedAt']
-        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
         try:
-            tags=snippet["tags"]
             tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
             '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
             '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
@@ -692,14 +680,14 @@ def smartmode(request):
             tags_rand=['']
 
         global v_data
-        v_data={'video_address': best.url,
+        v_data={'video_address': video_address,
                 'video_id':video_id,
-                'url':url['cmd'],
-                'title':snippet['title'],
-                'publishedAt':publishedAt_result.group(0),
-                'viewCount':statistics['viewCount'],
+                'url':data['video_address'],
+                'title':videotitle,
+                'publishedAt':publishedAt,
+                'viewCount':viewCount,
                 'tags':tags_rand[0],
-                'channelId':channel_id,
+                #'channelId':channel_id,
             }
 
     if request.method == "POST":
@@ -747,9 +735,6 @@ def videoplayer(request):
         viewCount = request.POST.get('viewCount',None)
         publishedAt = request.POST.get('publishedAt',None)
 
-
-       
-
         rankings = Rank.objects.all().order_by('-similarity')[:5]
 
         
@@ -765,17 +750,13 @@ def videoplayer(request):
         #=============================================================video===============================
         video_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part' : 'snippet, statistics',
+            'part' : 'snippet',
             'id' : video_id,
         }
 
         r = requests.get(video_url, params=video_params)
         result = r.json()['items'][0]
         snippet=result['snippet']
-        statistics=result['statistics']
-        pre_publishedAt=snippet['publishedAt']
-        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
-
         try:
             tags=snippet["tags"]
             tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
@@ -786,18 +767,14 @@ def videoplayer(request):
             tags_rand=['']
 
         #=============================================================channel===============================
-        channelTitle=snippet["channelTitle"]
-
         channel_params={
             'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part':"statistics,snippet",
+            'part':"statistics",
             'id':channel_id
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
-        #print(channel_r.json())
         channel_result=channel_r.json()['items'][0]
-        #print(channel_result['snippet']['thumbnails']['default']['url'])
         rankings_values=list(rankings.values())
         #=============================================================search===============================
         search_params = {
@@ -816,8 +793,6 @@ def videoplayer(request):
             video_ids.append(result['id']['videoId'])
         
         for result in search_results:
-            #print(result)
-            #print(videos)
             try:
                 video_data = {
                     'title' : result['snippet']['title'],
@@ -841,20 +816,16 @@ def videoplayer(request):
     data={ 'video_address': best.url,
             'url':videoUrl,
             'rankings':rankings_values,
-            #'title':snippet['title'],
             'title':video_title,
-            #'publishedAt':publishedAt_result.group(0),
             'publishedAt':publishedAt,
-            #'viewCount':statistics['viewCount'],
             'viewCount':viewCount,
             'tags':tags_rand[0],
-            #'channelTitle':channelTitle,
             'channelTitle':channel_title,
-            #'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
             'channelImage':channelImage,
             'channelSubscriber':channel_result['statistics']['subscriberCount'],
             'channelId':channel_id,
             'videos':videos[:8],
+            'video_id':video_id
     }
 
     return render(request, 'videoplayer.html', data)

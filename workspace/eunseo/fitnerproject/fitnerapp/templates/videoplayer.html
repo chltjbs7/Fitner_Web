@@ -85,6 +85,8 @@
                 text-align: center;
             }
             .ai_fitner {
+                font-size: 18px;
+                color: #ffffff; 
                 position: absolute;
                 width: 248px;
                 height: 44px;
@@ -92,6 +94,7 @@
                 background-color: #8ad3c0;
                 margin: 15px 140px 0px 792px;
                 cursor: pointer;
+                
             }
             .line {
                 width: 1058px;
@@ -301,9 +304,19 @@
                                 <button type='submit'><img src="../static/videolist.png" style="cursor: pointer;"></button>
                                 <p style="width: 120px; font-size: 14px; color: #8a8a8a; margin: 0px"> 재생목록에 추가 </p>
                             </div>
-                            <div class="ai_fitner" onclick="location.href='/smartmode?cmd='+'{{ url }}'+'&channel='+'{{ channelId }}';">
-                                <p style="width: 160px; font-size: 18px; color: #ffffff; margin: 10px 20% 8px 22%"> 유사도 측정 시작 </p>
-                            </div>                            
+
+                            <form method = "GET" action = "/smartmode/">
+                                <input type="hidden" class="userInput" name = "video_url" id="video_url" placeholder="" value="{{ url }}">
+                                <input type="hidden" class="userInput" name = "channel" id="channel" placeholder="" value="{{ channelId }}">
+                                <input type="hidden" class="userInput" name = "viewCount" id="viewCount" placeholder="" value="{{viewCount}}">
+                                <input type="hidden" class="userInput" name = "publishedAt" id="publishedAt" placeholder="" value="{{publishedAt}}">     
+                                <input type="hidden" class="userInput" name = "videotitle" id="videotitle" placeholder="" value="{{ title }}">
+                                <input type="hidden" class="userInput" name = "videoTag" id="videoTag" placeholder="" value="{{ tags }}">
+                                <input type="hidden" class="userInput" name = "video_address" id="video_address" placeholder="" value="{{video_address}}">
+                                <input type="hidden" class="userInput" name = "video_id" id="video_id" placeholder="" value="{{video_id}}">
+                                <button class="ai_fitner" type="submit" value="유사도 측정 시작">유사도 측정 시작</button>
+                            </form>
+                                                        
                         </div>
 
 
