@@ -137,15 +137,15 @@
                 font-weight: bolder;
                 line-height: 0.94;
                 text-align: center;
-                color: #aaaaaa;
-                margin-top: 40px;
+                color: #8ad3c0;
+                padding-top: 40px;
             }
             .modal_title1 {
                 font-size: 16px;
                 font-weight: bolder;
                 line-height: 0.94;
                 text-align: center;
-                color: #0a0a0a;
+                color: white;
                 margin-top: 10px;
             }
             .modal_title2 {
@@ -153,7 +153,7 @@
                 font-weight: bold;
                 line-height: 0.83;
                 text-align: center;
-                color: #0a0a0a;
+                color: white;
             }
             .modal_subtitle {
                 font-size: 16px;
@@ -168,10 +168,10 @@
             .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
-                z-index: 1; /* Sit on top */
+                z-index: 4; /* Sit on top */
                 padding-top: 100px; /* Location of the box */
                 left: 0;
-                top: 0;
+                top: -25px;
                 width: 100%; /* Full width */
                 height: 100%; /* Full height */
                 overflow: auto; /* Enable scroll if needed */
@@ -184,7 +184,7 @@
                 margin: auto;
                 padding: 20px;
                 border-radius: 20px;
-                border: solid 1px #707070;
+                border:  0px;
                 width: 70%;
                 height: 75%;
             }
@@ -194,7 +194,7 @@
                 float: right;
                 font-size: 28px;
                 font-weight: bold;
-                margin-top: -10px;
+                margin-top: -35px;
                 cursor: pointer;
             }
             .close:hover,
@@ -202,6 +202,33 @@
             color: #000;
             text-decoration: none;
             cursor: pointer;
+            }
+            .average {
+                position: absolute;
+                z-index: 3;
+                text-align: right;
+                font-size: 38px;
+                line-height: 1.08;
+                font-weight: bold;
+                color: #8ad3c0;
+                margin-top: 110px;
+                margin-left: -140px;
+                width: 132px;
+                height: 41px;
+                text-shadow: 2px 2px 2px gray;
+            }
+            .video_title {
+                display: flex;
+                width: 248px;
+                font-size: 14px;
+                line-height: 1.43;
+                color: #0a0a0a;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                max-height: 42px;
+                margin-left: 24px;
             }
             /* Footer */
             #footer {
@@ -314,7 +341,7 @@
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 91px; font-size: 14px;">전날 대비 운동량</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 87px; font-size: 14px;">전날 대비 운동량</span>
                             <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
@@ -323,23 +350,12 @@
             <!--Graph Button-->
             <div style="position: absolute; display: flex; margin-top: 200px;">
                 <div class="left_arrow_button" onclick="location.href='/day?today={{ today }}left'" >
-                    <button class="prev" 
+                    <button class="prev"
                     style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;"></p>
-                <script type="text/javascript">
-                    today = new Date()
-
-                    var week = new Array('일', '월', '화', '수', '목', '금', '토');
-                    document.getElementById('currentDay').innerHTML =
-                        today.getMonth()+1 + "월 " +
-                        today.getDate() + "일 " +
-                        week[today.getDay()] + "요일";
-
-
-                </script>
+                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;">{{month}}월 {{day}}일 {{weekday}}요일</p>
                 <div class="right_arrow_button">
                     <button class="next" onclick="location.href='/day?today={{ today }}'"
                     style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
@@ -361,25 +377,23 @@
                         labels: ['0시','1시','2시','3시','4시','5시','6시','7시','8시',
                         '9시','10시','11시','12시','13시','14시','15시','16시',
                         '17시','18시','19시','20시','21시','22시','23시'],
-                        datasets: [
-                            {
-                            label: 'time',
+                        datasets: [{
+                            label: '분',
                             backgroundColor :'rgba(138, 211, 192, 0.5)',
                             borderColor: '#8ad3c0',
                             pointBackgroundColor: "#6c5ce7",
                             borderjoinstyle:'round',
-                            tension:1,
-                            borderWidth: 2,
                             pointBorderColor: "#6c5ce7",
+                            tension:0.3,
+                            borderWidth:2,
                             fill: true,
                             data: [
-                            {% for data in graph_data %}
-                            {x:"{{data.x}}",y:("{{data.y}}"/60).toFixed(1)}
-                            {% if not forloop.last %},{% endif %}  
-                            {% endfor %}
+                                {% for data in graph_data %}
+                                {x:"{{data.x}}",y:("{{data.y}}"/60).toFixed(1)}
+                                {% if not forloop.last %},{% endif %}  
+                                {% endfor %}
                             ]
-                            },
-                        ]
+                        }]
                     };
 
                     window.onload = function() {
@@ -406,16 +420,14 @@
                 </div>
             <!--Action Similarity-->
             <div style="float: left; position: absolute;">
-                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상별 동작 유사도</p>
-                <div style="margin-left: 220px;">
+                <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
+                <div style="margin-left: 195px; margin-top: -20px;">
                     {% for result in results %}
                     <div style="float: left; cursor: pointer;">
-                        
-                            <img class="btn" src="{{result.video_thumbnail}}" style= " width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;" />
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 116px;">{{result.average}}%</span>
-                        
-                        
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">{{result.video_title}}</span>
+                        <img class="btn" src="{{result.video_thumbnail}}"
+                        style="z-index: 2; object-fit: cover; width: 248px; height: 139px; opacity: 0.85; margin: 20px 0 0 24px;" />
+                        <span class="average">{{result.average}}%</span>
+                        <span class="video_title">{{result.video_title}}</span>
                         <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{result.channelTitle}}</span>                    
                     </div>
                     {% endfor %}
@@ -429,40 +441,43 @@
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <div style="margin-left: -15px;">
-                        <div>
+                        <div style="background-color: #6c5ce7; border-radius: 20px 20px 0 0; width: 102.3%; height: 150px;
+                        margin: -60px 0 0 -5px;">
                             <p class="modal_title0">{{result.registered_dttm}}</p>
                             <p class="modal_title1">{{result.video_title}}</p>
                             <p class="modal_title2">영상의 전체 평균 유사도 : {{result.average}}%</p>
                         </div>
-                        <div style="float: left; display: flex;">
+                        <div style="float: left; display: flex; margin-top: 30px;">
                             <p class="modal_subtitle" id="modal_subtitle_1">가장 높은 유사도 동작</p>
                             <p class="modal_subtitle" id="modal_subtitle_2">가장 낮은 유사도 동작</p>
                         </div>
-                        <div style="float: left; display: flex;">
-                            <img src="C:/Users/서유림/Download/high ({{result.id}}).png" 
-                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 174px">
-                            <img src="C:/Users/서유림/Download/low ({{result.id}}).png"
+                        <div style="float: left; display: flex; margin-top: -15px;">
+                            <img src="../static/result/{{result.high_img_name}}.png" 
+                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 172px">
+                            <img src="../static/result/{{result.low_img_name}}.png"
                             style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 210px">
                         </div>
-                        <div style="float: left;">
-                            <div style="width: 276px; margin: 16px 0 0 186px;">
-                                <span>영상의</span>
-                                <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
-                                <span>의</span>
+                        <div style="margin-left: 10px;">
+                            <div style="float: left;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 248px;">
+                                    <span>유사도 </span><span style="color: #1e1c2e;">{{result.high}}%</span>
+                                </div>
                             </div>
-                            <div style="margin: 0 0 0 256px;">
-                                <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
-                            </div>
-                        </div>
-                        <div style="float: left; margin-left: 25px;">
-                            <div style="width: 276px; margin: 16px 0 0 186px;">
-                                <span>영상의</span>
-                                <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
-                                <span>의</span>
-                            </div>
-                            <div style="margin: 0 0 0 256px;">
-                                <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
-                            </div>
+                            <div style="float: left; margin-left: 25px;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.low_start_section}}초에서 ~ {{result.low_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 256px;">
+                                    <span>유사도 </span><span style="color: #6c5ce7;">{{result.low}}%</span>
+                                </div>
+                            </div>               
                         </div>
                     </div>
                 </div>

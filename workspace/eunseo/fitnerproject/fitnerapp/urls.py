@@ -28,4 +28,7 @@ urlpatterns = [
 
     path('search/', fitnerapp.views.search, name='search'),
     path('smartmode/', fitnerapp.views.smartmode, name='smartmode'),
+
+    path('showRanking/', fitnerapp.views.showRanking, name='showRanking'),
+
 ]

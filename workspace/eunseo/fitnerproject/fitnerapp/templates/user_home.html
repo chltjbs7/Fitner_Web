@@ -3,6 +3,7 @@
 <html>
     <head>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Fitner</title>
@@ -49,15 +50,13 @@
                 text-decoration: none;
                 text-align: center;
                 display: block;
-                font-size: 16px;
             }
             .dropdown-content a:hover { color: #6c5ce7; }
             .dropdown:hover .dropdown-content { display: block; }
             .dropdown:hover .dropdown-button { color: #8ad3c0; }
             #tab0 { margin-left: 778px; }
             #tab1 { margin-right: 10px; }
-            #tab2 { margin-left: 58px; }
-            #tab3 { margin-left: 50px; }
+            #tab2 { margin-left: 58px;; }
             /* Top Title */
             #top_title {
                 margin: 192px 0 0 130px;
@@ -111,6 +110,19 @@
                 text-align: left;
                 color: #0a0a0a;
             }
+            .video_title {
+                margin-top: -35px;
+                display: flex;
+                width: 210px;
+                font-size: 14px;
+                line-height: 1.43;
+                color: #0a0a0a;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                max-height: 42px;
+            }
             #footer {
                 float: left;
                 position: absolute;
@@ -129,7 +141,7 @@
             <div style="margin-left: 107px; float: left;">
                 <div class="dropdown">
                     <button class="dropdown-button" id="tab0">
-                        <a href="{% url 'user_home' %}" style="text-decoration: none; color: black;">홈</a>
+                        <a href="{% url 'home' %}" style="text-decoration: none; color: black;">홈</a>
                     </button>
                 </div>  
                 <div class="dropdown">
@@ -168,14 +180,15 @@
                             onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
                             >로그아웃</a>
                         </div>
-                </div>
+                </div>               
             </div>
             <div style="margin-left: 90px;">
                 <!-- Logo -->
                 <div style="float: left; position: absolute;">
                     <img src="../static/logo.png" width="160px" height="57px" style="margin: 115px 0 0 130px; float: left;">
                 </div>
-                <!--Search Bar-->
+                
+                <!-- Search Bar -->
                 <form method="POST" action="{% url 'search' %}">
                     <div>
                         {% csrf_token %}
@@ -199,7 +212,6 @@
                                     이제 스마트한 파트너와 함께 하세요.</p>            
                 </div>              
             </div>
-
             <!-- Middle Title -->
             <div style="margin-left: 50px;">
                 <div>
@@ -217,7 +229,7 @@
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
                         margin: 461px 0 0 140px;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
-                            <img src="../static/hipeuddeume.jpg" width=74px height=74px style="outline: none; border-radius: 50px">
+                            <img src="../static/hipeuddeume.jpg" width=74px height=74px style="border-radius: 50px; outline: none;">
                             </div>
                             <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
                             <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
@@ -230,7 +242,7 @@
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
                                     margin: 461px 0 0 355px;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
-                                <img src="../static/danotv.jpg" width=74px height=74px style="outline: none; border-radius: 50px">
+                                <img src="../static/danotv.jpg" width=74px height=74px style="border-radius: 50px; outline: none;">
                             </div>
                             <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
                             <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
@@ -242,7 +254,7 @@
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
                                     margin: 461px 0 0 570px;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
-                                <img src="../static/leejieun.jpg" width=74px height=74px style="outline: none; border-radius: 50px">
+                                <img src="../static/leejieun.jpg" width=74px height=74px style="border-radius: 50px; outline: none;">
                             </div>
                             <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
                             <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
@@ -254,7 +266,7 @@
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
                                     margin: 461px 0 0 785px;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
-                                <img src="../static/ballettherafit.jpg" width=74px height=74px style="outline: none; border-radius: 50px">
+                                <img src="../static/ballettherafit.jpg" width=74px height=74px style="border-radius: 50px; outline: none;">
                             </div>
                             <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
                             <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
@@ -266,7 +278,7 @@
                         style="cursor: pointer; position: absolute; width: 179px; height: 227px; border-radius: 40px; box-shadow: 5px 5px 6px 0 rgba(96, 96, 96, 0.1); background-color: #f5f5f5;
                                     margin: 461px 0 0 1000px;">
                             <div style="position: absolute; width: 74px; height: 74px; border-radius: 50px; background-color: #6c5ce7; margin: 20px 0 0 53.5px;">
-                                <img src="../static/pliates.jpg" width=74px height=74px style="outline: none; border-radius: 50px">
+                                <img src="../static/pliates.jpg" width=74px height=74px style="border-radius: 50px; outline: none;">
                             </div>
                             <div style="position: absolute; width: 146px; height: 80px; border-radius: 20px; background-color: #ffffff; margin: 130px 0 0 17px;"></div>
                             <div style="position: absolute; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7; margin: 114px 0 0 74px;"></div>
@@ -287,62 +299,78 @@
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">맞춤 동영상</p>
                 <div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></div>
-                        <div style="margin-left: 220px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 260px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 260px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=FsqhUFcjL8k'+'&channel='+'UC4yq3FWEWqMvFNFBsV3gbKQ';"
+                        src="https://i.ytimg.com/vi/FsqhUFcjL8k/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwnhH3QCR8PYXkM0RyDjjTvVCB_86Gu70-vTj_jTUHg=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 220px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 260px;">"ENG)심으뜸과 스쿼트 100개 챌린지 Squats For Beginners: How to do a Squat Correctly"</span>
+                        <span style="margin-left: 260px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=fZPbq9pmkyM'+'&channel='+'UCmAjT4O_3HPqOCfukgAUacQ';"
+                        src="https://i.ytimg.com/vi/fZPbq9pmkyM/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwngcfg2hqxdZ6WezGIbVCB-i0KpjfUihsR-EEX03oA=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">코어가 뭔지 알아? 키크는 코어운동 하자!</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">몰래크는친구들</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=6D2YRpc9Pms'+'&channel='+'UCcmCbG1-TDwpJwosHt8QP5A';"
+                        src="https://i.ytimg.com/vi/6D2YRpc9Pms/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwni_oh1sZz1Ty7vU2cqfzt_xTyQm2sI3e-lX3nyRpg=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">F비키니 프로젝트🔥매일 10분 최고의 복근 + 코어 운동🔥 처진 뱃살 · 아랫뱃살 · 윗뱃살 · 옆구리살 빨리 빼는 법 // 11자 복근운동 ·  아랫뱃살 빼는 운동</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">발레테라핏 Ballet Thera Fit</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=sjvT0mHkCQA'+'&channel='+'UC4yq3FWEWqMvFNFBsV3gbKQ';"
+                        src="https://i.ytimg.com/vi/sjvT0mHkCQA/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwnhH3QCR8PYXkM0RyDjjTvVCB_86Gu70-vTj_jTUHg=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">(층간소음X 땀폭발주의O) 이거 하나로 운동 끝!!!! 올인원 전신운동 업그레이드 루틴공개</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">힙으뜸</span>
                     </div>
                 </div>
                 <div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;"></div>
-                        <div style="margin-left: 220px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 260px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 260px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=_slzMCn-kww'+'&channel='+'UCmAjT4O_3HPqOCfukgAUacQ';"
+                        src="https://i.ytimg.com/vi/_slzMCn-kww/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwngcfg2hqxdZ6WezGIbVCB-i0KpjfUihsR-EEX03oA=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 220px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 260px;">[5분] 쉿! 너만 알고 있어, 키 190cm이 몰래 알려주는 무조건 키크는 성장판 자극운동 2탄</span>
+                        <span style="margin-left: 260px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">몰래크는친구들</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=upkOMuBLBk8'+'&channel='+'UCxM_KJ601hwrOpjVC07iMVQ';"
+                        src="https://i.ytimg.com/vi/upkOMuBLBk8/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwngYcCDt_Z9UMSQzkQ2hjxVfGfqOMaGdP0e961J9VYc=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">뭉친 종아리를 시원하고 가볍게✨  종아리 라인 싹 정리하는 운동 후 레전드 스트레칭 [자기 전/하체/쿨다운] @DanoTV ㅣ다노티비</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">DanoTV</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=M6vNZs3iM1A'+'&channel='+'UCxM_KJ601hwrOpjVC07iMVQ';"
+                        src="https://i.ytimg.com/vi/M6vNZs3iM1A/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwngYcCDt_Z9UMSQzkQ2hjxVfGfqOMaGdP0e961J9VYc=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">반팔 날씨가 코앞..😱 팔뚝살 등살 뱃살 상체 라인 한 번에 다듬기✨  여름 눈바디 대비 매일 10개 운동 [초간단 다이어트 습관/Eng] @DanoTV ㅣ다노티비</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">DanoTV</span>
                     </div>
                     <div style="float: left;">
-                        <div onclick="location.href='/videoplayer';"
-                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;"></div>
-                        <div style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;"></div>
-                        <span style="margin-left: 64px; margin-top: -35px; display: flex; width: 210px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                        <img onclick="location.href='/videoplayer?cmd='+'https\:\/\/www.youtube.com/watch?v=RAA3VHwDc9I'+'&channel='+'UCmAjT4O_3HPqOCfukgAUacQ';"
+                        src="https://i.ytimg.com/vi/RAA3VHwDc9I/maxresdefault.jpg"
+                        style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
+                        <img src="https://yt3.ggpht.com/ytc/AAUvwngcfg2hqxdZ6WezGIbVCB-i0KpjfUihsR-EEX03oA=s88-c-k-c0x00ffffff-no-rj"
+                        style="margin-left: 24px; margin-top: 9px; width: 32px; height: 32px; border-radius: 50px; background-color: #6c5ce7;">
+                        <span class="video_title" style="margin-left: 64px;">키크고 싶은 사람? 아랫집에서도 안올라오는 하체뿌시기 성장 운동하자!!</span>
+                        <span style="margin-left: 64px; margin-top: -35px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">몰래크는친구들</span>
                     </div>
                 </div>
             </div>

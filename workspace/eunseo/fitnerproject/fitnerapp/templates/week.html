@@ -213,6 +213,33 @@
             text-decoration: none;
             cursor: pointer;
             }
+            .average {
+                position: absolute;
+                z-index: 3;
+                text-align: right;
+                font-size: 38px;
+                line-height: 1.08;
+                font-weight: bold;
+                color: #8ad3c0;
+                margin-top: 110px;
+                margin-left: -140px;
+                width: 132px;
+                height: 41px;
+                text-shadow: 2px 2px 2px gray;
+            }
+            .video_title {
+                display: flex;
+                width: 248px;
+                font-size: 14px;
+                line-height: 1.43;
+                color: #0a0a0a;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                max-height: 42px;
+                margin-left: 24px;
+            }
             /* Footer */
             #footer {
                 float: left;
@@ -322,7 +349,7 @@
                     <div>
                         <div style="width: 224px; height: 84px; border-radius: 30px; background-color: #f5f5f5; margin: 14px 0 0 24px;">
                             <img src="../static/running.png" width="40px" height="40px" style="margin: 22px 0 0 30px; position: absolute;">
-                            <span style="position: absolute; margin: 18.8px 0 0 86px; font-size: 14px;">전 주 대비 운동량</span>
+                            <span style="position: absolute; margin: 18.8px 0 0 87px; font-size: 14px;">전주 대비 운동량</span>
                             <span style="position: absolute; margin: 40.2px 0 0 114px; font-size: 17px;">{{gap_time}}</span>
                         </div>
                     </div>                    
@@ -335,27 +362,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;"></p>
-                <script>
-                    Date.prototype.getWeek = function(start)
-                    {
-                            //Calcing the starting point
-                        start = start || 0;
-                        var today = new Date(this.setHours(0, 0, 0, 0));
-                        var day = today.getDay() - start;
-                        var date = today.getDate() - day+1;
-
-                            // Grabbing Start/End Dates
-                        var StartDate = new Date(today.setDate(date));
-                        var EndDate = new Date(today.setDate(date + 6));
-                        return [StartDate, EndDate];
-                    }
-
-                    // test code
-                    var Dates = new Date().getWeek();
-
-                    document.getElementById('currentWeek').innerHTML = (Dates[0].toLocaleDateString() + ' ~ '+ Dates[1].toLocaleDateString());
-                </script>
+                <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;">{{term}}</p>
                 <div class="right_arrow_button" onclick="location.href='/week?today={{ today }}'">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>
@@ -407,128 +414,96 @@
             <!--Action Similarity-->
             <div style="float: left; position: absolute;">
                 <p style="font-size: 16px; font-weight: bold; line-height: 2.75; margin: 64px 0 0 220px;">운동한 영상 별 동작 유사도</p>
-                <div>
-                    <div style="float: left;">
-                        <div id="myBtn" style="cursor: pointer; width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
+                <div style="margin-left: 195px; margin-top: -20px;">
+                    {% for result in results %}
+                    <div style="float: left; cursor: pointer;">
+                        <img class="btn" src="{{result.video_thumbnail}}"
+                        style="z-index: 2; object-fit: cover; width: 248px; height: 139px; opacity: 0.85; margin: 20px 0 0 24px;" />
+                        <span class="average">{{result.average}}%</span>
+                        <span class="video_title">{{result.video_title}}</span>
+                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{result.channelTitle}}</span>                    
                     </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>                    
+                    {% endfor %}
                 </div>
-                <div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 220px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 220px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 220px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>
-                    </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>
-                    <div style="float: left;">
-                        <div style="width: 248px; height: 139px; opacity: 0.9; background-color: grey; margin: 20px 0 0 24px;">
-                            <span style="position: absolute; font-size: 38px; line-height: 1.08; color: #ffffff; margin: 91px 0 0 166px;">80%</span>
-                        </div>
-                        <span style="margin-left: 24px; display: flex; width: 248px; height: 42px; font-size: 14px; line-height: 1.43; color: #0a0a0a;">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</span>
-                        <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">Playing Pilates</span>                    
-                    </div>            
-                </div>
+                <div id="footer"></div>
             </div>
-            <div id="footer"></div>
+            {% for result in results %}
             <!-- The Modal -->
             <div id="myModal" class="modal">
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <div style="margin-left: -15px;">
-                        <div>
-                            <p class="modal_title1">Full body workout 50min | 살 찐 분들 들어오세요! 전신운동 루틴</p>
-                            <p class="modal_title2">영상의 전체 평균 유사도 : 80%</p>
+                        <div style="background-color: #6c5ce7; border-radius: 20px 20px 0 0; width: 102.3%; height: 150px;
+                        margin: -60px 0 0 -5px;">
+                            <p class="modal_title0">{{result.registered_dttm}}</p>
+                            <p class="modal_title1">{{result.video_title}}</p>
+                            <p class="modal_title2">영상의 전체 평균 유사도 : {{result.average}}%</p>
                         </div>
-                        <div style="float: left; display: flex;">
+                        <div style="float: left; display: flex; margin-top: 30px;">
                             <p class="modal_subtitle" id="modal_subtitle_1">가장 높은 유사도 동작</p>
                             <p class="modal_subtitle" id="modal_subtitle_2">가장 낮은 유사도 동작</p>
                         </div>
-                        <div style="float: left; display: flex;">
-                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 91px"></div>
-                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 20px"></div>
-                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 71px"></div>
-                            <div style="width: 200px; height: 200px; border-radius: 10px; background-color: grey; margin: 14px 0 0 20px"></div>
+                        <div style="float: left; display: flex; margin-top: -15px;">
+                            <img src="../static/result/{{result.high_img_name}}.png" 
+                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 172px">
+                            <img src="../static/result/{{result.low_img_name}}.png"
+                            style="width: 276px; height: 276px; border-radius: 10px; background-color: grey; margin: 14px 0 0 210px">
                         </div>
-                        <div style="float: left;">
-                            <div style="margin: 16px 0 0 174px;">
-                                <span>영상의</span><span style="color: #6c5ce7;"> 5분 20초에서~25초 사이</span><span>의</span>
+                        <div style="margin-left: 10px;">
+                            <div style="float: left;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.high_start_section}}초에서 ~ {{result.high_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 248px;">
+                                    <span>유사도 </span><span style="color: #1e1c2e;">{{result.high}}%</span>
+                                </div>
                             </div>
-                            <div style="margin: 0 0 0 254px;">
-                                <span>유사도</span><span style="color: #6c5ce7;"> 90%</span>
-                            </div>
-                        </div>
-                        <div style="float: left;">
-                            <div style="margin: 16px 0 0 238px;">
-                                <span>영상의</span><span style="color: #6c5ce7;"> 8분 12초에서~17초 사이</span><span>의</span>
-                            </div>
-                            <div style="margin: 0 0 0 324px;">
-                                <span>유사도</span><span style="color: #6c5ce7;"> 90%</span>
-                            </div>
+                            <div style="float: left; margin-left: 25px;">
+                                <div style="width: 276px; margin: 16px 0 0 186px;">
+                                    <span>영상의</span>
+                                    <span style="color: #6c5ce7;"> {{result.low_start_section}}초에서 ~ {{result.low_end_section}}초 사이</span>
+                                    <span>의</span>
+                                </div>
+                                <div style="margin: 0 0 0 256px;">
+                                    <span>유사도 </span><span style="color: #6c5ce7;">{{result.low}}%</span>
+                                </div>
+                            </div>               
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
             <script>
-                // Get the modal
-                var modal = document.getElementById("myModal");
-                // Get the button that opens the modal
-                var btn = document.getElementById("myBtn");
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-                // When the user clicks the button, open the modal 
-                btn.onclick = function() {
-                  modal.style.display = "block";
+                var modals = document.getElementsByClassName("modal");
+                var btns = document.getElementsByClassName("btn");
+                var spanes = document.getElementsByClassName("close");
+                var funcs = [];
+                
+                function Modal(num) {
+                return function() {
+                    btns[num].onclick =  function() {
+                        modals[num].style.display = "block";
+                        console.log(num);
+                    };
+                    spanes[num].onclick = function() {
+                        modals[num].style.display = "none";
+                    };
+                };
                 }
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                  modal.style.display = "none";
+                for(var i = 0; i < btns.length; i++) {
+                    funcs[i] = Modal(i);
                 }
-                // When the user clicks anywhere outside of the modal, close it
+                for(var j = 0; j < btns.length; j++) {
+                    funcs[j]();
+                }
                 window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                  }
-                }
+                    if (event.target.className == "modal") {
+                        event.target.style.display = "none";
+                    }
+                };
             </script>
         </div>
     <body>
