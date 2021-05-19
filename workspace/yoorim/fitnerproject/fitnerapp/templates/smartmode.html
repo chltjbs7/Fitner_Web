@@ -450,6 +450,8 @@
                                                 similarity_section();
                                                 }
                                             }
+                                            avg_similarity_section=0;
+                                            total_similarity_section=0;
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
                                         setTimeout(similarity_loop, 1000);

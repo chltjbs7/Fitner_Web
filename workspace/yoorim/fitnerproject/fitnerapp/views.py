@@ -169,6 +169,7 @@ def day(request):
     results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('-registered_dttm')
 
     result_values=list(results.values())
+
     video_ids=[]
     for i in result_values:
         video_ids.append(i['videoId'])
