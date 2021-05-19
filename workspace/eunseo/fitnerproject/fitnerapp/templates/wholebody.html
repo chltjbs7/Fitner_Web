@@ -252,8 +252,8 @@
                     <button class="dropdown-button">통계</button>
                     <div class="dropdown-content" id="tab2">
                         <a href="{% url 'day' %}">일</a>
-                        <a href="#">주</a>
-                        <a href="#">월</a>
+                        <a href="{% url 'week' %}">주</a>
+                        <a href="{% url 'month' %}">월</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -299,7 +299,7 @@
                     <div class="videoInfo">
                         <p class="video_title">{{ video.title }}</p>
                         <p style="font-size: 13px; color: #aaaaaa; margin: 0; ">조회수 {{ video.viewCount }} 회 · 날짜 {{ video.publishedAt }}</p>
-                        <img src='{{ channelImage }}' class="youtuber_img"></img>
+                        <img src='{{ video.channel_img }}' class="youtuber_img"></img>
                         <p style="font-size: 13px; color: #aaaaaa; margin-top: 21px">{{ video.channelTitle }}</p>
                     </div>
                 </div>

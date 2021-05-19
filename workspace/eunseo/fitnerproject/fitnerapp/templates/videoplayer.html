@@ -188,6 +188,7 @@
             .cVideoblock {
                 display: inline-block;
                 margin-right: 16px;
+                height: 210px;
             }
             .miniVideo {
                 width: 248px;
@@ -202,18 +203,18 @@
                 -webkit-line-clamp: 2;
                 overflow: hidden;
                 max-height: 42px;
+                margin-left: 25px;
                 width: 248px;
                 font-size: 14px;
                 line-height: 1.43;
                 color: #0a0a0a;
-                margin-top: -2px;
             }
             #footer {
                 float: left;
                 position: absolute;
                 width: 100%;
-                height: 70px;
-                margin-top: 50px;
+                height: 10px;
+                margin-top: 550px;
             }
         </style>  
     </head>
@@ -314,7 +315,7 @@
                     <div class="youtuber_img">
                         <img src='{{ channelImage }}' id='youtuber_img' width="48px" height="48px" style="border-radius: 50px; position: absolute;" />
                         <p style="font-size: 16px; color: #6c5ce7; font-weight: bold; margin: 14px 0px 0px 995px; position: absolute;"> 구독 </p>
-                        <p style="width: 160px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
+                        <p style="width: 200px; font-size: 16px; color: #000000; margin:0px 0px 0px 64px; "> {{ channelTitle }} </p>
                         <p style="width: 160px; font-size: 14px; color: #aaaaaa; margin:0px 0px 0px 64px; "> 구독자 {{ channelSubscriber }}명 </p>
                     </div>
                     <hr class="line">   
@@ -324,10 +325,9 @@
                 <div class="graph">
                     <p style="width: 160px; font-size: 16px; color: #000000; font-weight: bold; margin-top: 40px; "> 유사도 랭킹 </p>
                     <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 83px 0 30px; " class="graph_title"> 순위 </p>
-                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -8px; " class="graph_title"> 이름 </p>
+                    <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 405px 0 -10px; " class="graph_title"> 이름 </p>
                     <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin: 10px 0 0 10px; " class="graph_title"> 유사도 비율 </p>
                 </div>
-
                 <div class="graph_bgr">
                     {% for ranking in rankings %}
                     <div class="rank">
@@ -335,16 +335,31 @@
                             <p id="rank" style="font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px;">{{ranking.id}}</p>
                         </div>
                         <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> {{ranking.username}} </p>
-                        <div class="ratio" style="width: 720px;">
-                            <p style="font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                        <div style="width: 720px;">
+                            <div class="ratio" style="width: {{ranking.similarity}}%;">
+                                <p style="font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
+
                 <!-- Fit Videos -->
                 <p style="width: 248px; font-size: 16px; color: #000000; font-weight: bold; margin: 40px 0 15px 140px;"> 맞춤동영상 </p>
-
-                <div style="margin-top: -15px;">
+                <div style="float:left;">
+                    <div style="margin-top: -15px; margin-left: 115px;">
+                        {% for video in videos %}
+                        <div style="float: left; height: 230px;">
+                            <img onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ channelId }}';"
+                            src="{{ video.thumbnail }}"
+                            style="cursor: pointer; width: 248px; height: 139px; object-fit: cover; margin: 20px 0 0 24px;"></img>
+                            <span class="video_title">{{ video.title }}</span>
+                            <span style="margin-left: 25px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{ video.channelTitle }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>                
+                </div>
+                <!-- <div style="margin-top: -15px;">
                     <div class="customizedVideo">
                         {% for video in videos %}
                         <div class="cVideoblock">
@@ -354,7 +369,7 @@
                         </div>
                         {% endfor %}
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="footer"></div>
             <!-- The Modal -->
@@ -405,6 +420,5 @@
                 }
             </script>
         </div>
-        <div id="footer"></div>
     <body>
 </html>

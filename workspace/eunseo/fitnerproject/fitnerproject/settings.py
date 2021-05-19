@@ -26,7 +26,7 @@ SECRET_KEY = 'uzk8^($gjvi6ach-#htq8^t!n_=owg2=^9#9(h-2ei(np9%zpe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -107,25 +107,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 #YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
-YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyABM_JBb8xR-Cx8HzrqGyBZhO8DZZY-YYE' #서윤 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyDwI98WwinmS7UD2GUlW1Lofhc_p4kCoRA' #서윤 API 2
 #YOUTUBE_DATA_API_KEY = 'AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50' #피트너 API
+YOUTUBE_DATA_API_KEY = 'AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8' #피트너 테스트1
 
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'fitneraapp','static')
-] #static 파일들이 어디에 있는지를 쓰는곳
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'fitneraapp','static')] #static 파일들이 어디에 있는지를 쓰는곳
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') #개발자가 관리하는 파일들 

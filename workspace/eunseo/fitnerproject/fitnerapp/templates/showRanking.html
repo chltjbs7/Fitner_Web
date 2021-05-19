@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Fitner</title>
+        <style>
+            /* body {
+                background-image: url('../static/ranking.png');
+                background-repeat: no-repeat;
+                background-position-x: right;
+                z-index: 1;
+            } */
+            /* Graph */
+            .graph {
+                margin-left: 230px;
+                height: 90px;
+            }
+            .graph_title {
+                display: inline-block;
+                text-align: center;
+            }
+            .graph_bgr {
+                margin-left: 230px;
+                width: 1058px;
+                height: 1800px;
+                border-radius: 20px;
+                background-color: #fbfbfb;
+                margin-top: 2px;
+            }
+            .rank {
+                height: 32px;
+                margin: 24px 31px 0px 31px;
+                float: left;
+            }
+            #list {
+                float: left;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                margin-right: 90px;
+            }
+            .ratio {
+                height: 28px;
+                border-radius: 20px;
+                border: solid 2px #8ad3c0;
+                background-color: rgba(138, 211, 192, 0.5);
+                margin-left: 270px;
+            }
+            #footer {
+                float: left;
+                position: absolute;
+                width: 100%;
+                height: 150px;
+                margin-top: 50px;
+            }
+        </style>  
+    </head>
+
+    <body style="overflow-x:hidden; overflow-y:auto; margin:0">
+        <img src="../static/main_image(1320).png" width="50%" height="50%" style="margin-left: 760px; z-index: 1;">
+        <div style="width: 100%; height: 62px; background-color: #e8e8e8; margin-top: -650px;"></div>
+        <div style="position: absolute; z-index: 3;">
+            <img src="../static/logo.png" width="160px" height="57px"
+            style="margin: 94px 0 0 230px;">
+            <p style="font-size: 50px; color: #000000; font-weight: bold; margin: 0; padding-left: 230px;"> 실시간 유사도 랭킹 순위 </p>
+            <!-- Ranking -->
+            <div class="graph">
+                <p style="width: 35px; font-size: 16px; color: #000000; font-weight: bold; margin: 60px 83px 0 30px; " class="graph_title"> 순위 </p>
+                <p style="width: 50px; font-size: 16px; color: #000000; font-weight: bold; margin: 60px 405px 0 -10px; " class="graph_title"> 이름 </p>
+                <p style="width: 90px; font-size: 16px; color: #000000; font-weight: bold; margin: 60px 0 0 10px; " class="graph_title"> 유사도 비율 </p>
+            </div>
+            <div class="graph_bgr">
+                {% for ranking in rankings %}
+                <div class="rank">
+                    <div id="list" style="background-color: #6c5ce7">
+                        <p id="rank" style="font-size: 16px; color: #ffffff; font-weight: bold;  text-align: center; margin:4px;">{{ranking.id}}</p>
+                    </div>
+                    <p style=" width: 54px; font-size: 16px; color: #000000; margin: 0px; float: left;"> {{ranking.username}} </p>
+                    <div style="width: 720px;">
+                        <div class="ratio" style="width: {{ranking.similarity}}%;">
+                            <p style="font-size: 14px; color: #8a8a8a; text-align: center; margin:4px;"> {{ranking.similarity}}% </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div id="footer"></div> 
+        </div>
+    <body>
+</html>

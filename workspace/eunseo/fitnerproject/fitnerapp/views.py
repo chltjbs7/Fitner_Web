@@ -2,28 +2,41 @@ import requests
 import pafy
 import re
 import random
-from datetime import datetime, timedelta
+import pandas
+
 from collections import Counter
-from isodate import parse_duration
+from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.hashers import make_password, check_password #비밀번호 암호화 / 패스워드 체크(db에있는거와 일치성확인)
+from django.contrib.auth.hashers import make_password
 from .models import User
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import Ranking
+from .models import Rank
 from django.views.decorators.http import condition
 from .models import Data
 from django.db.models import Sum
 from django.db.models import Count
-import pandas
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
+
+def showRanking(request):
+    rankings = Rank.objects.all().order_by('-similarity')[:5]
+    rankings_values=list(rankings.values())
+    num=1
+    for i in range(0,len(rankings_values)):
+        rankings_values[i]["id"]=num
+        num+=1
+
+    context = {
+        'rankings':rankings_values,
+    }
+    return render(request, 'showRanking.html', context)
 
 def allViewRecord(request):
     return render(request, 'allViewRecord.html')
@@ -31,10 +44,41 @@ def allViewRecord(request):
 def playlist(request):
     return render(request, 'playlist.html')
 
+def barChart(request):
+#     labels = []
+#     data = []
+
+#     # 그래프(운동 시간으로 나타냄)
+#     #t_day = Data.objects.values('total_time')
+#     today_data=Data.objects.filter(registered_dttm__date=datetime.date(datetime.now()).isoformat()).all()
+#     today_data_values=today_data.values()
+#     graph_data={}
+#     graph_data_list=[]
+#     index=[0,]
+#     for i in today_data_values:
+#         a=datetime.time(i["registered_dttm"]).hour
+#         start=0
+#         end=3
+#         for j in range(8):
+#             if a>=start and a<end:
+#                 if str(start) not in graph_data:
+#                     graph_data[str(start)]={"x": str(start)+"시", "y": i["total_time"]}
+#                 else:
+#                     graph_data[str(start)]["y"]+=i["total_time"]
+#                 start+=3
+#                 end+=3
+#     for i in graph_data.values():
+#         graph_data_list.append(i)
+
+    
+#     return render(request, 'barChart.html', {
+#         'graph_data':graph_data_list
+#     })
+    return render(request, 'barChart.html')
+
 def day(request):
     if request.method=='GET':
         r=request.GET
-
         try:
             today = r['today']
             part=today[-4:]
@@ -46,18 +90,21 @@ def day(request):
         except:
             now=datetime.now()
 
-
     # 총 운동 시간
     #time_sum = Data.objects.aggregate(Sum('total_time'))
     time_filter=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).aggregate(Sum('total_time'))
+    print(time_filter)
     #t_values = time_sum.values()
     t_values=time_filter.values()
 
     for i in t_values:
         t_values = i
+    
     if(t_values==None):
         t_values=0
+
     t_value_sec=t_values
+
     hours = t_values // 3600
     t_values = t_values - hours*3600
     mu = t_values // 60
@@ -109,7 +156,6 @@ def day(request):
 
 
     # 그래프(운동 시간으로 나타냄)
-    #t_day = Data.objects.values('total_time')
     today_data=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).all()
     today_data_values=today_data.values()
     
@@ -118,8 +164,9 @@ def day(request):
     for i in today_data_values:
         a=datetime.time(i["registered_dttm"]).hour
         graph_data_list.append({"x": str(a)+"시", "y": i["total_time"]})
-
-    results = Data.objects.all().order_by('-registered_dttm')
+    
+    # 운동한 영상별 유사도
+    results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('-registered_dttm')
 
     result_values=list(results.values())
     video_ids=[]
@@ -134,24 +181,44 @@ def day(request):
             'id' : video_ids,
     }
     video_r=requests.get(video_url,params=video_params)
-    video_results=video_r.json()['items']
-
-    for i in result_values:
+    try:
+        video_results=video_r.json()['items']
         index=0
-        i['channelTitle']=video_results[index]['snippet']['channelTitle']
-        i['video_title']=video_results[index]['snippet']['title']
-        i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
-        index+=1
+        for i in result_values:
+            i['channelTitle']=video_results[index]['snippet']['channelTitle']
+            i['video_title']=video_results[index]['snippet']['title']
+            i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
+            index+=1
+    except:
+        video_results=[]
 
+    if now.weekday()==0:
+        weekday='월'
+    elif now.weekday()==1:
+        weekday='화'
+    elif now.weekday()==2:
+        weekday='수'
+    elif now.weekday()==3:
+        weekday='목'
+    elif now.weekday()==4:
+        weekday='금'
+    elif now.weekday()==5:
+        weekday='토'
+    elif now.weekday()==6:
+        weekday='일'
+    
     context = {
         'today':str(now.strftime("%Y-%m-%d")),
+        'month':now.month,
+        'day':now.day,
+        'weekday':weekday,
         'hours': hours,
         'mu': mu,
         'ss': ss,
         'video_cnt': video_cnt,
         'gap_time':gap_time,
         'graph_data':graph_data_list,
-        'results':result_values,
+        'results':result_values
     }
 
     return render(request, 'day.html', context)
@@ -160,15 +227,14 @@ def day(request):
 def week(request):
     if request.method=='GET':
         r=request.GET
-
         try:
             today = r['today']
             part=today[-4:]
             if part=='left':
                 today=today[:-4]
-                now=datetime.strptime(today,"%Y-%m-%d")-timedelta(1)
+                now=datetime.strptime(today,"%Y-%m-%d")-timedelta(7)
             else:
-                now=datetime.strptime(today,"%Y-%m-%d")+timedelta(1)
+                now=datetime.strptime(today,"%Y-%m-%d")+timedelta(7)
         except:
             now=datetime.now()
 
@@ -289,20 +355,71 @@ def week(request):
     except IndexError:
         total_graph_data=[]
 
+    # 운동한 영상별 유사도
+    results = Data.objects.filter(registered_dttm__range=[datetime.date(start_date),datetime.date(start_date)+timedelta(6)]).order_by('-registered_dttm')
+
+    result_values=list(results.values())
+    video_ids=[]
+    for i in result_values:
+        video_ids.append(i['videoId'])
+
+    # 모달창 썸네일,비디오 이름
+    video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+    video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet',
+            'id' : video_ids,
+    }
+    video_r=requests.get(video_url,params=video_params)
+    try:
+
+        video_results=video_r.json()['items']
+        index=0
+        for i in result_values:
+            i['channelTitle']=video_results[index]['snippet']['channelTitle']
+            i['video_title']=video_results[index]['snippet']['title']
+            i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
+            index+=1
+    except:
+        video_results=[]
+
+
+    start_week=now-timedelta(days=now.weekday())
+    end_week=start_week+timedelta(days=6)
+
+    start_week=start_week.strftime("%Y. %m. %d")
+    end_week=end_week.strftime("%Y. %m. %d")
+    term=str(start_week)+' ~ '+str(end_week)
 
     context = {
         'today':str(now.strftime("%Y-%m-%d")),
+        'term':term,
         'hours': hours,
         'mu': mu,
         'ss': ss,
         'video_cnt': video_cnt,
         'gap_time':gap_time,
         'graph_data':total_graph_data,
+        'results':result_values
     }
 
     return render(request, 'week.html',context)
 
 def month(request):
+    def IsLeapYear(year): 
+        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): 
+            return True 
+        else: 
+            return False 
+    MonthDayCountList = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] 
+    def GetMonthLastDate(sourceDate): 
+        dayCount = MonthDayCountList[sourceDate.month - 1] 
+        if sourceDate.month == 2: 
+            if IsLeapYear(sourceDate.year): 
+                dayCount += 1 
+        targetDate =datetime(sourceDate.year, sourceDate.month, dayCount) 
+        return targetDate 
+    
     if request.method=='GET':
         r=request.GET
         try:
@@ -311,8 +428,11 @@ def month(request):
             if part=='left':
                 today=today[:-4]
                 now=datetime.strptime(today,"%Y-%m-%d")-timedelta(1)
+                first_day = now.replace(day=1)
+                now=first_day-timedelta(days=1)
             else:
-                now=datetime.strptime(today,"%Y-%m-%d")+timedelta(1)
+                last_day=GetMonthLastDate(datetime.strptime(today,"%Y-%m-%d"))
+                now=last_day+timedelta(1)
         except:
             now=datetime.now()
     
@@ -384,25 +504,10 @@ def month(request):
     # 그래프(운동 시간으로 나타냄)
     #t_day = Data.objects.values('total_time')
     #매월 마지막날 구하기
-    def IsLeapYear(year): 
-        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): 
-            return True 
-        else: 
-            return False 
-    MonthDayCountList = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] 
-    def GetMonthLastDate(sourceDate): 
-        dayCount = MonthDayCountList[sourceDate.month - 1] 
-        if sourceDate.month == 2: 
-            if IsLeapYear(sourceDate.year): 
-                dayCount += 1 
-        targetDate =datetime(sourceDate.year, sourceDate.month, dayCount) 
-        return targetDate 
-
-    #매월 첫째날
-    first_day = now.replace(day=1)
-    last_day=GetMonthLastDate(now)
 
     #총 날짜
+    first_day = now.replace(day=1)
+    last_day=GetMonthLastDate(now)
     month_label=[]
     dt_index = pandas.date_range(start=datetime.date(first_day), end=datetime.date(last_day))
     for time in dt_index:
@@ -430,8 +535,38 @@ def month(request):
             total_graph_data.append({'x':keys[j][5:],'y':values[j]})
     except IndexError :
         total_graph_data=[]
+
+    # 운동한 영상별 유사도
+    results = Data.objects.filter(registered_dttm__month=now.month).order_by('-registered_dttm')
+
+    result_values=list(results.values())
+    video_ids=[]
+    for i in result_values:
+        video_ids.append(i['videoId'])
+
+    # 모달창 썸네일,비디오 이름
+    video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+    video_params = {
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet',
+            'id' : video_ids,
+    }
+    video_r=requests.get(video_url,params=video_params)
+    try:
+        video_results=video_r.json()['items']
+        index=0
+        for i in result_values:
+            i['channelTitle']=video_results[index]['snippet']['channelTitle']
+            i['video_title']=video_results[index]['snippet']['title']
+            i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
+            index+=1
+    except:
+        video_results=[]
+
+    month=now.strftime('%Y. %m')
     context = {
         'today':str(now.strftime("%Y-%m-%d")),
+        'month':month,
         'hours': hours,
         'mu': mu,
         'ss': ss,
@@ -439,6 +574,7 @@ def month(request):
         'gap_time':gap_time,
         'month_label':month_label,
         'graph_data':total_graph_data,
+        'results':result_values
     }
 
     return render(request, 'month.html',context)
@@ -451,12 +587,13 @@ def wholebody(request):
     if request.method=='GET':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+        channel_url='https://youtube.googleapis.com/youtube/v3/channels'
 
         search_params = {
             'part' : 'snippet',
             'q' : request.GET['part']+'운동',
             'key' : settings.YOUTUBE_DATA_API_KEY,
-            'maxResults' : 1,
+            'maxResults' : 10,
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
@@ -472,6 +609,10 @@ def wholebody(request):
         for result in results:
             video_ids.append(result['id']['videoId'])
 
+        channel_ids=[]
+        for result in results:
+            channel_ids.append(result['snippet']['channelId'])
+
         video_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'part' : 'snippet,contentDetails,statistics',
@@ -482,21 +623,34 @@ def wholebody(request):
         r = requests.get(video_url, params=video_params)
 
         results = r.json()['items']
-        
+
+
+        #채널 이미지
+        channel_params={
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'part':"snippet",
+            'id':channel_ids
+        }
+
+        channel_imgs={}
+        channel_r = requests.get(channel_url, params=channel_params)
+        channel_results = channel_r.json()['items']
+
+        for i in channel_results:
+            channel_imgs[i['id']]=i['snippet']['thumbnails']['default']['url']
+
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
                 'id' : result['id'],
                 'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
-                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
-                # 'publishedAt' : result['snippet']['publishedAt'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount' : result['statistics']['viewCount'],
-                'channel_id':result['snippet']['channelId']
+                'channel_id':result['snippet']['channelId'],
+                'channel_img':channel_imgs[result['snippet']['channelId']]
             }
-
             videos.append(video_data)
     context = {
         'videos' : videos,
@@ -553,8 +707,8 @@ def smartmode(request):
         high = request.POST.get('high',None)
         low = request.POST.get('low',None)
         average = request.POST.get('average',None)
-        high_img_route = "C:/Users/서유림/Download/high.png"
-        low_img_route = "C:/Users/서유림/Download/low.png"
+        high_img_name = request.POST.get('high_img_name',None)
+        low_img_name = request.POST.get('low_img_name',None)
         high_start_section = request.POST.get('high_start_section',None)
         high_end_section = request.POST.get('high_end_section',None)
         low_start_section = request.POST.get('low_start_section',None)
@@ -562,9 +716,11 @@ def smartmode(request):
         total_time = request.POST.get('total_time',None)
 
         data = Data(
-                videoId=videoId, high=high, low=low, average=average, high_img_route=high_img_route,
-                low_img_route=low_img_route, high_start_section=high_start_section, high_end_section=high_end_section,
-                low_start_section=low_start_section, low_end_section=low_end_section, total_time=total_time
+                videoId=videoId, high=high, low=low, average=average,
+                high_img_name=high_img_name, low_img_name=low_img_name,
+                high_start_section=high_start_section, high_end_section=high_end_section,
+                low_start_section=low_start_section, low_end_section=low_end_section,
+                total_time=total_time
         )
         data.save()
     
@@ -573,7 +729,7 @@ def smartmode(request):
         userphone = request.POST.get('userphone',None)
         similarity = request.POST.get('similarity',None)
         if username and userphone :
-            ranking = Ranking(username=username, userphone=userphone, similarity=similarity)
+            ranking = Rank(username=username, userphone=userphone, similarity=similarity)
             ranking.save()
             #return redirect('smartmode')
 
@@ -582,15 +738,24 @@ def smartmode(request):
 @csrf_exempt
 def videoplayer(request):
     videos=[]
-    if request.method=='GET':
-        url=request.GET
-        video = pafy.new(url['cmd'])
-        channel_id=url['channel']
+    if request.method == "POST":
+        videoUrl = request.POST.get('video_url',None)
+        channel_id = request.POST.get('channel_id',None)
+        channelImage = request.POST.get('channel_img',None)
+        video_title = request.POST.get('video_title',None)
+        channel_title = request.POST.get('channel_title',None)
+        viewCount = request.POST.get('viewCount',None)
+        publishedAt = request.POST.get('publishedAt',None)
 
-        rankings = Ranking.objects.all().order_by('-similarity')[:5]
 
+       
+
+        rankings = Rank.objects.all().order_by('-similarity')[:5]
+
+        
+        video = pafy.new(videoUrl)
         best = video.getbest(preftype="mp4")
-        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
+        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',videoUrl)
         video_id=re_result.group(1)
 
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
@@ -634,7 +799,6 @@ def videoplayer(request):
         channel_result=channel_r.json()['items'][0]
         #print(channel_result['snippet']['thumbnails']['default']['url'])
         rankings_values=list(rankings.values())
-
         #=============================================================search===============================
         search_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
@@ -672,21 +836,26 @@ def videoplayer(request):
         for i in range(0,len(rankings_values)):
             rankings_values[i]["id"]=num
             num+=1
+        
 
-        #print(rankings_values)
-        data={ 'video_address': best.url,
-                'url':url['cmd'],
-                'rankings':rankings_values,
-                'title':snippet['title'],
-                'publishedAt':publishedAt_result.group(0),
-                'viewCount':statistics['viewCount'],
-                'tags':tags_rand[0],
-                'channelTitle':channelTitle,
-                'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
-                'channelSubscriber':channel_result['statistics']['subscriberCount'],
-                'channelId':channel_id,
-                'videos':videos[:8],
-             }
+    data={ 'video_address': best.url,
+            'url':videoUrl,
+            'rankings':rankings_values,
+            #'title':snippet['title'],
+            'title':video_title,
+            #'publishedAt':publishedAt_result.group(0),
+            'publishedAt':publishedAt,
+            #'viewCount':statistics['viewCount'],
+            'viewCount':viewCount,
+            'tags':tags_rand[0],
+            #'channelTitle':channelTitle,
+            'channelTitle':channel_title,
+            #'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
+            'channelImage':channelImage,
+            'channelSubscriber':channel_result['statistics']['subscriberCount'],
+            'channelId':channel_id,
+            'videos':videos[:8],
+    }
 
     return render(request, 'videoplayer.html', data)
 
@@ -780,6 +949,7 @@ def mypage(request):
 def user_home(request):
     return render(request, 'user_home.html')
 
+@csrf_exempt
 def search(request):
     videos = []
     if request.method == 'POST':
@@ -791,7 +961,7 @@ def search(request):
             'part' : 'snippet',
             'q' : request.POST['search'],
             'key' : settings.YOUTUBE_DATA_API_KEY,
-            'maxResults' : 1,
+            'maxResults' : 10,
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
@@ -811,7 +981,6 @@ def search(request):
         for result in results:
             channel_ids.append(result['snippet']['channelId'])
 
-
         video_params = {
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'part' : 'snippet,contentDetails,statistics',
@@ -823,36 +992,33 @@ def search(request):
 
         results = r.json()['items']
 
+
+        #채널 이미지
         channel_params={
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'part':"snippet",
             'id':channel_ids
         }
 
-        channel_imgs=[]
+        channel_imgs={}
         channel_r = requests.get(channel_url, params=channel_params)
-
         channel_results = channel_r.json()['items']
+
         for i in channel_results:
-            channel_imgs.append(i['snippet']['thumbnails']['default']['url'])
+            channel_imgs[i['id']]=i['snippet']['thumbnails']['default']['url']
 
         for result in results:
-            channel_img_index=0
             video_data = {
                 'title' : result['snippet']['title'],
                 'id' : result['id'],
                 'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
-                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
-                # 'publishedAt' : result['snippet']['publishedAt'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount' : result['statistics']['viewCount'],
                 'channel_id':result['snippet']['channelId'],
-                'channel_img':channel_imgs[channel_img_index]
+                'channel_img':channel_imgs[result['snippet']['channelId']]
             }
-            channel_img_index+=1
-
             videos.append(video_data)
     context = {
         'videos' : videos,
