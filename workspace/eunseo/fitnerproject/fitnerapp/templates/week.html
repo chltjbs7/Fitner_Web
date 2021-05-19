@@ -225,7 +225,8 @@
                 margin-left: -140px;
                 width: 132px;
                 height: 41px;
-                text-shadow: 2px 2px 2px gray;
+                /* text-shadow: 2px 2px 2px gray; */
+                background-color: rgb(255, 255, 255);
             }
             .video_title {
                 display: flex;
@@ -312,7 +313,7 @@
                             <a href="{% url 'mypage' %}">마이페이지</a>
                             <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                             >로그아웃</a>
                         </div>
                 </div>               
@@ -363,6 +364,23 @@
                     </button>
                 </div>
                 <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;">{{term}}</p>
+                <script>
+                    Date.prototype.getWeek = function(start)
+                    {
+                        //Calcing the starting point
+                        start = start || 0;
+
+                        // Grabbing Start/End Dates
+                        var StartDate = new Date(today.setDate(date));
+                        var EndDate = new Date(today.setDate(date + 6));
+                        return [StartDate, EndDate];
+                    }
+
+                    // test code
+                    var Dates = new Date().getWeek();
+
+                    document.getElementById('currentWeek').innerHTML = (Dates[0].toLocaleDateString() + ' ~ '+ Dates[1].toLocaleDateString());
+                </script>
                 <div class="right_arrow_button" onclick="location.href='/week?today={{ today }}'">
                     <button style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
                         <i class="fas fa-arrow-right"></i>

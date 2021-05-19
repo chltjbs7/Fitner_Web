@@ -235,7 +235,7 @@
                         <a href="{% url 'mypage' %}">마이페이지</a>
                         <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                         <a href="{% url 'home' %}"
-                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                         >로그아웃</a>
                     </div>
                 </div>               
@@ -450,6 +450,8 @@
                                                 similarity_section();
                                                 }
                                             }
+                                            avg_similarity_section=0;
+                                            total_similarity_section=0;
                                             document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         })
                                         setTimeout(similarity_loop, 1000);
@@ -703,8 +705,7 @@
                         <div style="float: left; margin-left: 35px; margin-top: -8px;">
                             <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 6px 0 0 25px;">이름</p>
                             <div class="userInput">
-                                <input type="text" class="form-control" name = "username" id="username" placeholder=""
-                                autocomplete="off">                                
+                                <input type="text" class="form-control" name = "username" id="username" placeholder="" autocomplete="off">                                
                             </div>
                             <p style="font-size: 14px; color: #6c5ce7; font-weight: bold; margin: 10px 0 0 25px;">전화번호</p>
                             <div class="userInput">

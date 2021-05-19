@@ -97,7 +97,6 @@
             }
             #footer {
                 float: left;
-                position: absolute;
                 width: 100%;
                 height: 70px;
                 margin-top: 150px;
@@ -166,7 +165,7 @@
                             <a href="{% url 'mypage' %}">마이페이지</a>
                             <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                             >로그아웃</a>
                         </div>
                 </div>             
@@ -199,7 +198,7 @@
                     {% endfor %}
                 </div>                
             </div>
-
-        <div id="footer"></div>
+            <div id="footer"></div>
+        </div>
     <body>
 </html>
