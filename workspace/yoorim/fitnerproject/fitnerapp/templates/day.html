@@ -303,7 +303,7 @@
                         <a href="{% url 'mypage' %}">마이페이지</a>
                         <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                         <a href="{% url 'home' %}"
-                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                         >로그아웃</a>
                     </div>
                 </div>             
@@ -356,15 +356,10 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;"></p>
+                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;">
+                {{month}}월 {{day}}일 {{weekday}}요일</p>
                 <script type="text/javascript">
                     today = new Date()
-
-                    var week = new Array('일', '월', '화', '수', '목', '금', '토');
-                    document.getElementById('currentDay').innerHTML =
-                        today.getMonth()+1 + "월 " +
-                        today.getDate() + "일 " +
-                        week[today.getDay()] + "요일";
 
                     yesterday=today;
                     yesterday.setDate(today.getDate() - 1);
@@ -380,7 +375,7 @@
                 </div>
             </div>
             <!--Graph-->
-                <div id="graph_container">
+            <div id="graph_container">
                 <canvas id="myChart"></canvas>
                 <script>
                     console.log("{{graph_data| escapejs}}")
@@ -394,13 +389,14 @@
                         '9시','10시','11시','12시','13시','14시','15시','16시',
                         '17시','18시','19시','20시','21시','22시','23시'],
                         datasets: [{
-                            label: 'time',
+                            label: '분',
                             backgroundColor :'rgba(138, 211, 192, 0.5)',
                             borderColor: '#8ad3c0',
                             pointBackgroundColor: "#6c5ce7",
                             borderjoinstyle:'round',
-                            tension:1,
                             pointBorderColor: "#6c5ce7",
+                            tension:0.3,
+                            borderWidth:2,
                             fill: true,
                             data: [
                                 {% for data in graph_data %}

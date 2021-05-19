@@ -281,7 +281,7 @@
                             <a href="{% url 'mypage' %}">마이페이지</a>
                             <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                             >로그아웃</a>
                         </div>
                 </div>              
@@ -359,17 +359,6 @@
                         {% endfor %}
                     </div>                
                 </div>
-                <!-- <div style="margin-top: -15px;">
-                    <div class="customizedVideo">
-                        {% for video in videos %}
-                        <div class="cVideoblock">
-                            <img class="miniVideo" onclick="location.href='/videoplayer?cmd='+'{{ video.url }}'+'&channel='+'{{ video.channel_id }}';" src="{{ video.thumbnail }}"></img>
-                            <p class="video_title"> {{video.title}} </p>
-                            <p style="width: 248px; font-size: 13px; color: #8a8a8a; margin-top: -10px;"> {{video.channelTitle}} </p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div> -->
             </div>
             <div id="footer"></div>
             <!-- The Modal -->

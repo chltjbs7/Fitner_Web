@@ -110,12 +110,12 @@ LANGUAGE_CODE = 'en-us'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
 #YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
 #YOUTUBE_DATA_API_KEY = 'AIzaSyABM_JBb8xR-Cx8HzrqGyBZhO8DZZY-YYE' #서윤 API
 #YOUTUBE_DATA_API_KEY = 'AIzaSyDwI98WwinmS7UD2GUlW1Lofhc_p4kCoRA' #서윤 API 2
 #YOUTUBE_DATA_API_KEY = 'AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50' #피트너 API
-#YOUTUBE_DATA_API_KEY = 'AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8' #피트너 테스트1
+YOUTUBE_DATA_API_KEY = 'AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8' #피트너 테스트1
 
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'fitneraapp','static')] #static 파일들이 어디에 있는지를 쓰는곳
 

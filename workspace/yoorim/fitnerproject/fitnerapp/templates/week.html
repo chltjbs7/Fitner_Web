@@ -225,7 +225,8 @@
                 margin-left: -140px;
                 width: 132px;
                 height: 41px;
-                text-shadow: 2px 2px 2px gray;
+                /* text-shadow: 2px 2px 2px gray; */
+                background-color: rgb(255, 255, 255);
             }
             .video_title {
                 display: flex;
@@ -312,7 +313,7 @@
                             <a href="{% url 'mypage' %}">마이페이지</a>
                             <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
                             <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
+                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
                             >로그아웃</a>
                         </div>
                 </div>               
@@ -362,17 +363,14 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;"></p>
+                <p id="currentWeek" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 265px;">{{term}}</p>
                 <script>
                     Date.prototype.getWeek = function(start)
                     {
-                            //Calcing the starting point
+                        //Calcing the starting point
                         start = start || 0;
-                        var today = new Date(this.setHours(0, 0, 0, 0));
-                        var day = today.getDay() - start;
-                        var date = today.getDate() - day+1;
 
-                            // Grabbing Start/End Dates
+                        // Grabbing Start/End Dates
                         var StartDate = new Date(today.setDate(date));
                         var EndDate = new Date(today.setDate(date + 6));
                         return [StartDate, EndDate];
