@@ -20,7 +20,42 @@ from .models import Data
 from django.db.models import Sum
 from django.db.models import Count
 
-# Create your views here.
+#YOUTUBE_DATA_API_KEY = 'AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA' #유림 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4' #은서 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyABM_JBb8xR-Cx8HzrqGyBZhO8DZZY-YYE' #서윤 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyDwI98WwinmS7UD2GUlW1Lofhc_p4kCoRA' #서윤 API 2
+#YOUTUBE_DATA_API_KEY = 'AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50' #피트너 API
+#YOUTUBE_DATA_API_KEY = 'AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8' #피트너 테스트1
+
+
+
+# with open('fitnerapp/static/api_key.txt', 'r') as f:
+#     key = f.read()
+#     YOUTUBE_DATA_API_KEY =key
+
+def api_key(response,YOUTUBE_DATA_API_KEY):
+    if response.json()['error']['code']==403:
+        if YOUTUBE_DATA_API_KEY=='AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4')
+        elif YOUTUBE_DATA_API_KEY=='AIzaSyAIWKgObhbmy--wGWlCtCc8Gjljc1yDqi4':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyABM_JBb8xR-Cx8HzrqGyBZhO8DZZY-YYE')
+        elif YOUTUBE_DATA_API_KEY=='AIzaSyABM_JBb8xR-Cx8HzrqGyBZhO8DZZY-YYE':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyDwI98WwinmS7UD2GUlW1Lofhc_p4kCoRA')
+        elif YOUTUBE_DATA_API_KEY=='AIzaSyDwI98WwinmS7UD2GUlW1Lofhc_p4kCoRA':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50')
+        elif YOUTUBE_DATA_API_KEY=='AIzaSyB_RPCwTeCJvAjCTDqm35gMsyPsK6vxv50':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8')
+        elif YOUTUBE_DATA_API_KEY=='AIzaSyCpZ6P54w0pj-zy5oUuujO1DE6aQI--Ic8':
+            with open('fitnerapp/static/api_key.txt', 'w') as f:
+                f.write('AIzaSyCW5nD-xurh9Rx2sdH0Y4vjEr72vRmc8YA')
+            
+    
+
 
 def home(request):
     return render(request, 'home.html')
@@ -77,6 +112,10 @@ def barChart(request):
     return render(request, 'barChart.html')
 
 def day(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
+
     if request.method=='GET':
         r=request.GET
         try:
@@ -169,6 +208,7 @@ def day(request):
     results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('-registered_dttm')
 
     result_values=list(results.values())
+
     video_ids=[]
     for i in result_values:
         video_ids.append(i['videoId'])
@@ -176,11 +216,13 @@ def day(request):
     # 모달창 썸네일,비디오 이름
     video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
     video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet',
             'id' : video_ids,
     }
+    
     video_r=requests.get(video_url,params=video_params)
+
     try:
         video_results=video_r.json()['items']
         index=0
@@ -190,8 +232,8 @@ def day(request):
             i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
             index+=1
     except:
+        api_key(video_r,YOUTUBE_DATA_API_KEY)
         video_results=[]
-
     if now.weekday()==0:
         weekday='월'
     elif now.weekday()==1:
@@ -206,7 +248,7 @@ def day(request):
         weekday='토'
     elif now.weekday()==6:
         weekday='일'
-    
+
     context = {
         'today':str(now.strftime("%Y-%m-%d")),
         'month':now.month,
@@ -225,8 +267,13 @@ def day(request):
 
 
 def week(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
+
     if request.method=='GET':
         r=request.GET
+
         try:
             today = r['today']
             part=today[-4:]
@@ -366,7 +413,7 @@ def week(request):
     # 모달창 썸네일,비디오 이름
     video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
     video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet',
             'id' : video_ids,
     }
@@ -381,6 +428,7 @@ def week(request):
             i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
             index+=1
     except:
+        api_key(video_r,YOUTUBE_DATA_API_KEY)
         video_results=[]
 
 
@@ -406,6 +454,9 @@ def week(request):
     return render(request, 'week.html',context)
 
 def month(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     def IsLeapYear(year): 
         if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): 
             return True 
@@ -419,7 +470,7 @@ def month(request):
                 dayCount += 1 
         targetDate =datetime(sourceDate.year, sourceDate.month, dayCount) 
         return targetDate 
-    
+
     if request.method=='GET':
         r=request.GET
         try:
@@ -504,6 +555,19 @@ def month(request):
     # 그래프(운동 시간으로 나타냄)
     #t_day = Data.objects.values('total_time')
     #매월 마지막날 구하기
+    def IsLeapYear(year): 
+        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): 
+            return True 
+        else: 
+            return False 
+    MonthDayCountList = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] 
+    def GetMonthLastDate(sourceDate): 
+        dayCount = MonthDayCountList[sourceDate.month - 1] 
+        if sourceDate.month == 2: 
+            if IsLeapYear(sourceDate.year): 
+                dayCount += 1 
+        targetDate =datetime(sourceDate.year, sourceDate.month, dayCount) 
+        return targetDate 
 
     #총 날짜
     first_day = now.replace(day=1)
@@ -547,7 +611,7 @@ def month(request):
     # 모달창 썸네일,비디오 이름
     video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
     video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet',
             'id' : video_ids,
     }
@@ -561,9 +625,11 @@ def month(request):
             i['video_thumbnail']=video_results[index]['snippet']['thumbnails']['high']['url']
             index+=1
     except:
+        api_key(video_r,YOUTUBE_DATA_API_KEY)
         video_results=[]
 
     month=now.strftime('%Y. %m')
+
     context = {
         'today':str(now.strftime("%Y-%m-%d")),
         'month':month,
@@ -583,6 +649,9 @@ def subYtbchn(request):
     return render(request, 'subYtbchn.html')
 
 def wholebody(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     videos=[]
     if request.method=='GET':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
@@ -592,14 +661,17 @@ def wholebody(request):
         search_params = {
             'part' : 'snippet',
             'q' : request.GET['part']+'운동',
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'maxResults' : 10,
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
 
         r = requests.get(search_url, params=search_params)
-        result = r.json()['items'][0]
+        try:
+            result = r.json()['items'][0]
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
         snippet=result['snippet']
         pre_publishedAt=snippet['publishedAt']
         publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
@@ -614,43 +686,49 @@ def wholebody(request):
             channel_ids.append(result['snippet']['channelId'])
 
         video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet,contentDetails,statistics',
             'id' : ','.join(video_ids),
             'maxResults' : 1
         }
 
         r = requests.get(video_url, params=video_params)
-
-        results = r.json()['items']
-
-
+        try:
+            results = r.json()['items']
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
         #채널 이미지
         channel_params={
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part':"snippet",
             'id':channel_ids
         }
 
         channel_imgs={}
         channel_r = requests.get(channel_url, params=channel_params)
-        channel_results = channel_r.json()['items']
+        try:
+            channel_results = channel_r.json()['items']
+        except:
+            api_key(channel_r,YOUTUBE_DATA_API_KEY)
 
         for i in channel_results:
             channel_imgs[i['id']]=i['snippet']['thumbnails']['default']['url']
-
+        
         for result in results:
             video_data = {
                 'title' : result['snippet']['title'],
                 'id' : result['id'],
                 'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
+                #'duration' : int(parse_duration(result['contentDetails']['duration']).total_seconds() // 60),
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
+                # 'publishedAt' : result['snippet']['publishedAt'],
                 'publishedAt':publishedAt_result.group(0),
                 'viewCount' : result['statistics']['viewCount'],
                 'channel_id':result['snippet']['channelId'],
                 'channel_img':channel_imgs[result['snippet']['channelId']]
             }
+
             videos.append(video_data)
     context = {
         'videos' : videos,
@@ -659,19 +737,37 @@ def wholebody(request):
     return render(request, 'wholebody.html',context)
 
 def smartmode(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     if request.method=='GET':
-        data=request.GET
+        url=request.GET
+        video = pafy.new(url['cmd'])
+        channel_id=url['channel']
+        best = video.getbest(preftype="mp4")
 
+        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
         global video_id
-        video_id=data['video_id']
-        viewCount=data['viewCount']
-        publishedAt=data['publishedAt']
-        videotitle=data['videotitle']
-        video_id=data['video_id']
-        tags=data['videoTag']
-        video_address=data['video_address']
+        video_id=re_result.group(1)
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
 
+        video_params = {
+            'key' : YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet, statistics',
+            'id' : video_id,
+        }
+
+        r = requests.get(video_url, params=video_params)
         try:
+            result = r.json()['items'][0]
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
+        snippet=result['snippet']
+        statistics=result['statistics']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+        try:
+            tags=snippet["tags"]
             tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
             '#'+tags[round(random.randrange(len(tags)/4,len(tags)/4*2))]+' '+\
             '#'+tags[round(random.randrange(len(tags)/4*2,len(tags)/4*3))]+' '+\
@@ -680,14 +776,14 @@ def smartmode(request):
             tags_rand=['']
 
         global v_data
-        v_data={'video_address': video_address,
+        v_data={'video_address': best.url,
                 'video_id':video_id,
-                'url':data['video_address'],
-                'title':videotitle,
-                'publishedAt':publishedAt,
-                'viewCount':viewCount,
+                'url':url['cmd'],
+                'title':snippet['title'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount':statistics['viewCount'],
                 'tags':tags_rand[0],
-                #'channelId':channel_id,
+                'channelId':channel_id,
             }
 
     if request.method == "POST":
@@ -725,22 +821,19 @@ def smartmode(request):
 
 @csrf_exempt
 def videoplayer(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     videos=[]
-    if request.method == "POST":
-        videoUrl = request.POST.get('video_url',None)
-        channel_id = request.POST.get('channel_id',None)
-        channelImage = request.POST.get('channel_img',None)
-        video_title = request.POST.get('video_title',None)
-        channel_title = request.POST.get('channel_title',None)
-        viewCount = request.POST.get('viewCount',None)
-        publishedAt = request.POST.get('publishedAt',None)
+    if request.method=='GET':
+        url=request.GET
+        video = pafy.new(url['cmd'])
+        channel_id=url['channel']
 
         rankings = Rank.objects.all().order_by('-similarity')[:5]
 
-        
-        video = pafy.new(videoUrl)
         best = video.getbest(preftype="mp4")
-        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',videoUrl)
+        re_result = re.search('https\:\/\/www\.youtube\.com\/watch\?v\=(\S+)',url['cmd'])
         video_id=re_result.group(1)
 
         video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
@@ -749,14 +842,23 @@ def videoplayer(request):
 
         #=============================================================video===============================
         video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part' : 'snippet',
+            'key' : YOUTUBE_DATA_API_KEY,
+            'part' : 'snippet, statistics',
             'id' : video_id,
         }
+        
+        try:
+            r = requests.get(video_url, params=video_params)
+            result = r.json()['items'][0]
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
+            
 
-        r = requests.get(video_url, params=video_params)
-        result = r.json()['items'][0]
         snippet=result['snippet']
+        statistics=result['statistics']
+        pre_publishedAt=snippet['publishedAt']
+        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+
         try:
             tags=snippet["tags"]
             tags_rand=['#'+tags[round(random.randrange(0,len(tags)/4))]+' '+\
@@ -767,18 +869,24 @@ def videoplayer(request):
             tags_rand=['']
 
         #=============================================================channel===============================
+        channelTitle=snippet["channelTitle"]
+
         channel_params={
-            'key' : settings.YOUTUBE_DATA_API_KEY,
-            'part':"statistics",
+            'key' : YOUTUBE_DATA_API_KEY,
+            'part':"statistics,snippet",
             'id':channel_id
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
-        channel_result=channel_r.json()['items'][0]
+        try:
+            channel_result=channel_r.json()['items'][0]
+        except:
+            api_key(channel_r,YOUTUBE_DATA_API_KEY)
         rankings_values=list(rankings.values())
+
         #=============================================================search===============================
         search_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet',
             'type':'video',
             'relatedToVideoId' : video_id,
@@ -786,7 +894,10 @@ def videoplayer(request):
             'videoLicense' : 'creativeCommon'
         }
         search_r=requests.get(search_url, params=search_params)
-        search_results=search_r.json()['items']
+        try:
+            search_results=search_r.json()['items']
+        except:
+            api_key(search_r,YOUTUBE_DATA_API_KEY)
 
         video_ids = []
         for result in search_results:
@@ -796,8 +907,8 @@ def videoplayer(request):
             try:
                 video_data = {
                     'title' : result['snippet']['title'],
-                    'id' : result['id'],
-                    'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
+                    'id' : result['id']['videoId'],
+                    'url' : 'https://www.youtube.com/watch?v='+str(result['id']['videoId']),
                     'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                     'channelTitle' : result['snippet']['channelTitle'],
                     'channel_id':result['snippet']['channelId']
@@ -811,46 +922,51 @@ def videoplayer(request):
         for i in range(0,len(rankings_values)):
             rankings_values[i]["id"]=num
             num+=1
-        
 
-    data={ 'video_address': best.url,
-            'url':videoUrl,
-            'rankings':rankings_values,
-            'title':video_title,
-            'publishedAt':publishedAt,
-            'viewCount':viewCount,
-            'tags':tags_rand[0],
-            'channelTitle':channel_title,
-            'channelImage':channelImage,
-            'channelSubscriber':channel_result['statistics']['subscriberCount'],
-            'channelId':channel_id,
-            'videos':videos[:8],
-            'video_id':video_id
-    }
+        #print(rankings_values)
+        data={ 'video_address': best.url,
+                'url':url['cmd'],
+                'rankings':rankings_values,
+                'title':snippet['title'],
+                'publishedAt':publishedAt_result.group(0),
+                'viewCount':statistics['viewCount'],
+                'tags':tags_rand[0],
+                'channelTitle':channelTitle,
+                'channelImage':channel_result['snippet']['thumbnails']['default']['url'],
+                'channelSubscriber':channel_result['statistics']['subscriberCount'],
+                'channelId':channel_id,
+                'videos':videos[:8],
+             }
 
     return render(request, 'videoplayer.html', data)
 
 def ytbchannel(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     videos = []
     if request.method == "GET":
         data=request.GET
         channel_id=data['channelId']
         channel_url='https://youtube.googleapis.com/youtube/v3/channels'
         playlist_url='https://www.googleapis.com/youtube/v3/playlistItems'
-        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'
+        video_url = 'https://youtube.googleapis.com/youtube/v3/videos'  
 
         channel_params={
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part':"statistics,snippet,contentDetails",
             'id':channel_id
         }
 
         channel_r=requests.get(channel_url, params=channel_params)
-        channel_result=channel_r.json()['items'][0]
+        try:
+            channel_result=channel_r.json()['items'][0]
+        except:
+            api_key(channel_r,YOUTUBE_DATA_API_KEY)
         #print(channel_r.json())
         playlist_id=channel_result["contentDetails"]["relatedPlaylists"]["uploads"]
         playlist_params={
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part':"snippet,contentDetails",
             'playlistId':playlist_id,
             'maxResults':16
@@ -858,15 +974,17 @@ def ytbchannel(request):
 
     
         playlist_r=requests.get(playlist_url, params=playlist_params)
-        playlist_results=playlist_r.json()['items']
-
+        try:
+            playlist_results=playlist_r.json()['items']
+        except:
+            api_key(playlist_r,YOUTUBE_DATA_API_KEY)
         video_ids = []
         for result in playlist_results:
             video_ids.append(result['contentDetails']['videoId'])
 
 
         video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'statistics',
             'id' : ','.join(video_ids),
             'maxResults' : 1
@@ -874,8 +992,10 @@ def ytbchannel(request):
 
         video_r = requests.get(video_url, params=video_params)
 
-        video_results = video_r.json()['items']
-
+        try:
+            video_results = video_r.json()['items']
+        except:
+            api_key(video_r,YOUTUBE_DATA_API_KEY)
 
 
         for result in playlist_results:
@@ -922,6 +1042,9 @@ def user_home(request):
 
 @csrf_exempt
 def search(request):
+    with open('fitnerapp/static/api_key.txt', 'r') as f:
+        key = f.read()
+        YOUTUBE_DATA_API_KEY =key
     videos = []
     if request.method == 'POST':
         search_url = 'https://youtube.googleapis.com/youtube/v3/search'
@@ -931,19 +1054,23 @@ def search(request):
         search_params = {
             'part' : 'snippet',
             'q' : request.POST['search'],
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'maxResults' : 10,
             'type' : 'video',
             'videoLicense' : 'creativeCommon'
         }
 
         r = requests.get(search_url, params=search_params)
-        result = r.json()['items'][0]
-        snippet=result['snippet']
-        pre_publishedAt=snippet['publishedAt']
-        publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
-        results = r.json()['items']
-
+        try:
+            results = r.json()['items']
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
+        Fit_publishedAt={}
+        for i in results:
+            pre_publishedAt=i['snippet']['publishedAt']
+            publishedAt_result = re.search('(\d+)\-(\d+)\-(\d+)',pre_publishedAt)
+            Fit_publishedAt[i['id']['videoId']]=publishedAt_result.group(0)
+            
         video_ids = []
         for result in results:
             video_ids.append(result['id']['videoId'])
@@ -953,44 +1080,49 @@ def search(request):
             channel_ids.append(result['snippet']['channelId'])
 
         video_params = {
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part' : 'snippet,contentDetails,statistics',
             'id' : ','.join(video_ids),
             'maxResults' : 1
         }
 
         r = requests.get(video_url, params=video_params)
-
-        results = r.json()['items']
-
-
+        try:
+            results = r.json()['items']
+        except:
+            api_key(r,YOUTUBE_DATA_API_KEY)
         #채널 이미지
         channel_params={
-            'key' : settings.YOUTUBE_DATA_API_KEY,
+            'key' : YOUTUBE_DATA_API_KEY,
             'part':"snippet",
             'id':channel_ids
         }
 
         channel_imgs={}
         channel_r = requests.get(channel_url, params=channel_params)
-        channel_results = channel_r.json()['items']
-
+        try:
+            channel_results = channel_r.json()['items']
+        except:
+            api_key(channel_r,YOUTUBE_DATA_API_KEY)
         for i in channel_results:
             channel_imgs[i['id']]=i['snippet']['thumbnails']['default']['url']
-
+        
         for result in results:
+            channel_img_index=0
             video_data = {
                 'title' : result['snippet']['title'],
                 'id' : result['id'],
                 'url' : f'https://www.youtube.com/watch?v={ result["id"] }',
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
                 'channelTitle' : result['snippet']['channelTitle'],
-                'publishedAt':publishedAt_result.group(0),
+                'publishedAt':Fit_publishedAt[result['id']],
                 'viewCount' : result['statistics']['viewCount'],
                 'channel_id':result['snippet']['channelId'],
                 'channel_img':channel_imgs[result['snippet']['channelId']]
             }
+
             videos.append(video_data)
+            
     context = {
         'videos' : videos,
     }

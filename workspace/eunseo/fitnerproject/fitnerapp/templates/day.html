@@ -215,7 +215,8 @@
                 margin-left: -140px;
                 width: 132px;
                 height: 41px;
-                text-shadow: 2px 2px 2px gray;
+                /* text-shadow: 2px 2px 2px gray; */
+                background-color: rgb(255, 255, 255);
             }
             .video_title {
                 display: flex;
@@ -296,15 +297,15 @@
                         <i class="fas fa-user-circle fa-lg"></i>
                         <i style="margin-left: 3px;" class="fas fa-caret-down  fa-sm"></i>
                     </button>
-                        <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
-                            <a href="#" >Fitner님</a>
-                            <a href="#" >프로필 수정</a>
-                            <a href="{% url 'mypage' %}">마이페이지</a>
-                            <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
-                            <a href="{% url 'home' %}"
-                            onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 15px;"
-                            >로그아웃</a>
-                        </div>
+                    <div class="dropdown-content" id="tab3" style=" min-width: 110px;">
+                        <a href="#" >Fitner님</a>
+                        <a href="#" >프로필 수정</a>
+                        <a href="{% url 'mypage' %}">마이페이지</a>
+                        <hr style="border: solid 0.1px #e8e8e8; margin-top: 15px;">
+                        <a href="{% url 'home' %}"
+                        onclick="alert('로그아웃 되었습니다.');" style="cursor:pointer; margin-top: 5px;"
+                        >로그아웃</a>
+                    </div>
                 </div>             
             </div>
             <!--Banner-->
@@ -355,7 +356,17 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
-                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;">{{month}}월 {{day}}일 {{weekday}}요일</p>
+                <p id="currentDay" style="font-size: 18px; font-weight: bold; line-height: 1; color: #9b90ee; margin: 259px 0 0 304px;">
+                {{month}}월 {{day}}일 {{weekday}}요일</p>
+                <script type="text/javascript">
+                    today = new Date()
+
+                    yesterday=today;
+                    yesterday.setDate(today.getDate() - 1);
+                    yesterday=yesterday.getFullYear()+"-"+(yesterday.getMonth()+1)+"-"+yesterday.getDate();
+                    document.getElementById('yesterday').onclick="\"location.href=\'/day?yesterday="+yesterday+"\'\";"
+                    
+                </script>
                 <div class="right_arrow_button">
                     <button class="next" onclick="location.href='/day?today={{ today }}'"
                     style="width: 30px; height: 30px; border: solid 1px #adadad; border-radius: 50px; background-color: white;">
@@ -364,7 +375,7 @@
                 </div>
             </div>
             <!--Graph-->
-                <div id="graph_container">
+            <div id="graph_container">
                 <canvas id="myChart"></canvas>
                 <script>
                     console.log("{{graph_data| escapejs}}")
@@ -425,7 +436,7 @@
                     {% for result in results %}
                     <div style="float: left; cursor: pointer;">
                         <img class="btn" src="{{result.video_thumbnail}}"
-                        style="z-index: 2; object-fit: cover; width: 248px; height: 139px; opacity: 0.85; margin: 20px 0 0 24px;" />
+                        style="z-index: 2; object-fit: cover; width: 248px; height: 139px; opacity: 0.8; margin: 20px 0 0 24px;" />
                         <span class="average">{{result.average}}%</span>
                         <span class="video_title">{{result.video_title}}</span>
                         <span style="margin-left: 24px; width: 248px; height: 20px; font-size: 13px; line-height: 1.23; color: #8a8a8a;">{{result.channelTitle}}</span>                    
@@ -465,7 +476,7 @@
                                     <span>의</span>
                                 </div>
                                 <div style="margin: 0 0 0 248px;">
-                                    <span>유사도 </span><span style="color: #1e1c2e;">{{result.high}}%</span>
+                                    <span>유사도 </span><span style="color: #6c5ce7;">{{result.high}}%</span>
                                 </div>
                             </div>
                             <div style="float: left; margin-left: 25px;">
