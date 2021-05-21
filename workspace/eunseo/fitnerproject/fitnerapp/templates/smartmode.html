@@ -168,6 +168,19 @@
                 outline: none;
                 border: none;
             }
+            #pose {
+                position: absolute;
+                margin: 22px 20px 0px 390px;
+                font-size: 30px;
+                font-weight: bold;
+                color: #6c5ce7;
+                z-index: 2;
+                background-color: white;
+                height: 50px;
+                width: 50px;
+                border-radius: 20px;
+                padding: 8px 0 0 11px;
+            }
             /* footer */
             #footer { width: 100%; height: 150px; }
         </style>  
@@ -257,7 +270,7 @@
                         </div>
                         <!--====================================================camera=========================================-->
                         <div class="camera">
-                            <p id="pose" style="position: absolute; margin: 22px 20px 0px 400px; font-size: 30px; font-weight: bold; color: #6c5ce7; z-index: 2;"></p>
+                            <p id="pose"></p>
                            
                             <video id="webcam" width="466px" height="423px" autoplay style="display:none;"></video>
                                 <div style="position: relative;">
@@ -440,21 +453,32 @@
                                                 weightedDistance=0;
                                             }
 
-                                            document.getElementById("pose").innerHTML = weightedDistance;
+                                            
                                             cnt+=1;
                                             total_similarity+=weightedDistance;
                                             avg_similarity=total_similarity/cnt;
                                             total_similarity_section+=weightedDistance;
                                             if(noyoutuber==false){
                                                 if(cnt%3==0){
-                                                similarity_section();
+                                                    similarity_section();
                                                 }
+                                                document.getElementById("pose").innerHTML = weightedDistance;
                                             }
-                                            avg_similarity_section=0;
-                                            total_similarity_section=0;
-                                            document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
+                                            else{
+                                                if(cnt%3==0){
+                                                avg_similarity_section=0;
+                                                total_similarity_section=0;
+                                                
+
+                                            }
+
+                                            
+                                            }
+                                            
                                         })
+                                        
                                         setTimeout(similarity_loop, 1000);
+                                        document.getElementById("avg_similarity").innerHTML = Math.round(avg_similarity) + "%";
                                         } 
                                     })();
                                 })
@@ -478,12 +502,12 @@
 
                                 // merge options
                                 var defaultOptions = {
-                                    strategy: 'weightedDistanceMatching'
-                                    //strategy: 'cosineDistanceMatching'
+                                    // strategy: 'weightedDistanceMatching'
+                                    strategy: 'cosineDistanceMatching'
                                 };
                                 var overridenOptions = {
-                                    strategy: 'weightedDistanceMatching'
-                                    //strategy: 'cosineDistanceMatching'
+                                    // strategy: 'weightedDistanceMatching'
+                                    strategy: 'cosineDistanceMatching'
                                 };
                                 
                                 console.log(pose2.score)
@@ -505,7 +529,7 @@
                                 const percent = (100 / squareRoot2) * (squareRoot2 - cdm)
                                 // var wdm= weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose1Scores);
                                 // var percent=50 * (2 - wdm);
-                                if(pose2.score<0.2){
+                                if(pose2.score<0.25){
                                     var noPose2=String(percent)+'no'
                                     return noPose2
                                 }

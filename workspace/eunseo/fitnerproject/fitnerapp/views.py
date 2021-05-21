@@ -132,7 +132,6 @@ def day(request):
     # 총 운동 시간
     #time_sum = Data.objects.aggregate(Sum('total_time'))
     time_filter=Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).aggregate(Sum('total_time'))
-    print(time_filter)
     #t_values = time_sum.values()
     t_values=time_filter.values()
 
@@ -202,7 +201,21 @@ def day(request):
     graph_data_list=[]
     for i in today_data_values:
         a=datetime.time(i["registered_dttm"]).hour
-        graph_data_list.append({"x": str(a)+"시", "y": i["total_time"]})
+        graph_data_list.append({str(a)+"시": i["total_time"]})
+
+    tmp_total_graph_data=[]
+    try:
+        sum_graph_data=Counter(graph_data_list[0])
+        total_graph_data=[]
+        for i in range(1,len(graph_data_list)):
+            sum_graph_data=sum_graph_data+Counter(graph_data_list[i])
+        sum_graph_data_dict=dict(sum_graph_data)
+        for j in range(len(sum_graph_data_dict)):
+            keys=list(sum_graph_data_dict.keys())
+            values=list(sum_graph_data_dict.values())
+            total_graph_data.append({'x':keys[j],'y':values[j]})
+    except IndexError:
+        total_graph_data=[]
     
     # 운동한 영상별 유사도
     results = Data.objects.filter(registered_dttm__date=datetime.date(now).isoformat()).order_by('-registered_dttm')
@@ -259,7 +272,7 @@ def day(request):
         'ss': ss,
         'video_cnt': video_cnt,
         'gap_time':gap_time,
-        'graph_data':graph_data_list,
+        'graph_data':total_graph_data,
         'results':result_values
     }
 
